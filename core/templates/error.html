@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Oops! - Bobbies Creator{% endblock %}
+
+{% block content %}
+<div class="error-page text-center">
+    <!-- Error Icon -->
+    <div class="mb-8">
+        <div class="w-24 h-24 mx-auto mb-6 flex items-center justify-center rounded-full" 
+             style="background: linear-gradient(135deg, #DC2626, #B91C1C);">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.232 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Error Content -->
+    <div class="vintage-border book-shadow p-8 max-w-lg mx-auto" style="background-color: #FFFEF7;">
+        <h1 class="text-3xl font-bold mb-4" style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+            📖 Oops! Página não encontrada
+        </h1>
+        
+        <div class="w-16 h-1 mx-auto mb-6" style="background-color: var(--book-brown);"></div>
+        
+        <!-- Error Message -->
+        <div class="vintage-border p-4 mb-6" style="background-color: #FEF2F2; border-color: #FCA5A5;">
+            <div class="flex items-center justify-center mb-2">
+                <svg class="w-5 h-5 mr-2 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-red-800 font-semibold">Mensagem de Erro:</span>
+            </div>
+            <p class="text-red-700">{{ message }}</p>
+        </div>
+        
+        <!-- Helpful Text -->
+        <p class="text-lg mb-8" style="color: var(--leather);">
+            Parece que algo deu errado em nossa biblioteca. Não se preocupe, vamos ajudar você a voltar ao caminho certo!
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="space-y-4">
+            <a href="{% url 'home' %}" 
+               class="inline-flex items-center px-8 py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
+               style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); font-family: 'Playfair Display', serif;">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                </svg>
+                📚 Voltar à Biblioteca
+            </a>
+            
+            <div class="text-center">
+                <button onclick="history.back()" 
+                        class="inline-flex items-center px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                        style="border-color: var(--book-brown); color: var(--book-brown);">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    ⏪ Página Anterior
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="mt-12">
+        <div class="flex items-center justify-center space-x-4" style="color: var(--light-brown);">
+            <span class="text-3xl">📚</span>
+            <span class="text-3xl">💔</span>
+            <span class="text-3xl">🔧</span>
+        </div>
+        <p class="text-sm mt-4" style="color: var(--leather);">
+            Nossa equipe está sempre trabalhando para melhorar sua experiência
+        </p>
+    </div>
+</div>
+
+<style>
+    .error-page .vintage-border:hover {
+        transform: translateY(-2px);
+        box-shadow: 
+            0 12px 20px rgba(139, 69, 19, 0.3),
+            0 16px 32px rgba(139, 69, 19, 0.15);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,49 @@
+# General Python ignores
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+*.venv
+venv/
+ENV/
+env/
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# Django specific ignores
+*.sqlite3
+db.sqlite3
+media/
+staticfiles/
+*.pot
+*.py[co]
+
+# IDE and editor ignores
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Node.js and Tailwind CSS related ignores
+node_modules/
+package-lock.json
+yarn.lock
+
+# Coverage and testing ignores
+.coverage
+*.cover
+*.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.code-workspace
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
