@@ -11,8 +11,17 @@ urlpatterns = [
     path("", include(core_urls)),
     path(
         "login/",
-        auth_views.LoginView.as_view(template_name="login.html"),
+        auth_views.LoginView.as_view(template_name="core/login.html"),
         name="login",
     ),
-    path("logout/", custom_logout, name="custom_logout"),
+    path(
+        "logout/",
+        custom_logout,
+        name="custom_logout",
+    ),
+    path(
+        "accounts/",
+        include("allauth.urls"),
+        name="accounts",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
