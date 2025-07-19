@@ -2,20 +2,14 @@
 
 {% block title %}Entrar - Bobbies Creator{% endblock %}
 
-{% block content %}
-<div class="login-page max-w-md mx-auto">
+{% block body %}
+<div class="login-page max-w-md mx-auto mt-12">
     <!-- Login Card -->
     <div class="vintage-border book-shadow p-8" style="background-color: #FFFEF7;">
         <!-- Header -->
         <div class="text-center mb-8">
-            <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full" 
-                 style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                </svg>
-            </div>
             <h1 class="text-2xl font-bold mb-2" style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
-                🔐 Entrar no Livro
+                Bobbies Creator
             </h1>
             <p class="text-sm" style="color: var(--leather);">
                 Acesse sua biblioteca pessoal de páginas para colorir
@@ -25,8 +19,22 @@
         <!-- Login Form -->
         <form method="post" class="space-y-6">
             {% csrf_token %}
-            
-            <!-- Username Field -->
+
+            <div>
+                <button type="button" 
+                        class="w-full py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center"
+                        style="background: #000; font-family: 'Playfair Display', serif;">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M21.35 11.1h-9.18v2.72h5.26c-.23 1.4-1.4 2.6-2.8 3.04v2.52h4.54c2.67-2.46 4.18-6.1 4.18-10.28 0-.68-.06-1.34-.16-1.98z" fill="#4285F4"/>
+                        <path d="M12.17 21.1c2.4 0 4.42-.8 5.9-2.16l-4.54-2.52c-.64.42-1.46.68-2.36.68-1.8 0-3.32-1.2-3.86-2.8H3.9v2.52c1.48 2.94 4.52 4.88 8.27 4.88z" fill="#34A853"/>
+                        <path d="M8.31 14.3c-.28-.84-.28-1.76 0-2.6v-2.52H3.9c-.8 1.6-.8 3.4 0 5.04l4.41-.92z" fill="#FBBC05"/>
+                        <path d="M12.17 7.1c1.3 0 2.46.44 3.36 1.3l2.52-2.52c-1.48-1.36-3.5-2.16-5.88-2.16-3.76 0-6.8 1.94-8.27 4.88l4.41.92c.54-1.6 2.06-2.8 3.86-2.8z" fill="#EA4335"/>
+                    </svg>
+                    Entrar com Google
+                </button>
+            </div>
+
+            <!--
             <div>
                 <label for="username" class="block text-sm font-semibold mb-2" style="color: var(--dark-brown);">
                     👤 Nome de Usuário
@@ -42,7 +50,6 @@
                 </div>
             </div>
             
-            <!-- Password Field -->
             <div>
                 <label for="password" class="block text-sm font-semibold mb-2" style="color: var(--dark-brown);">
                     🔑 Senha
@@ -58,7 +65,6 @@
                 </div>
             </div>
             
-            <!-- Submit Button -->
             <button type="submit" 
                     class="w-full py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
                     style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); font-family: 'Playfair Display', serif;">
@@ -69,14 +75,9 @@
                     📖 Entrar na Biblioteca
                 </span>
             </button>
+             -->
         </form>
 
-        <!-- Footer -->
-        <div class="text-center mt-6">
-            <p class="text-xs" style="color: var(--leather);">
-                Não tem uma conta? Entre em contato com o administrador
-            </p>
-        </div>
     </div>
 
     <!-- Decorative Elements -->
@@ -87,7 +88,7 @@
             <span class="text-2xl">🎨</span>
         </div>
         <p class="text-sm mt-2" style="color: var(--leather);">
-            Sua biblioteca pessoal de criatividade
+            Solte sua criatividade e transforme suas imagens em páginas para colorir
         </p>
     </div>
 </div>

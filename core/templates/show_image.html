@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_site.html" %}
 
 {% block title %}{{ uploaded_image.title }} - Bobbies Creator{% endblock %}
 
@@ -6,29 +6,30 @@
 <div class="book-viewer">
     <!-- Page Navigation Header -->
     <div class="flex justify-between items-center mb-8">
-        <a href="{% url 'home' %}" 
-           class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
-           style="border-color: var(--book-brown); color: var(--book-brown);">
+        <a href="{% url 'home' %}"
+            class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
+            style="border-color: var(--book-brown); color: var(--book-brown);">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                </path>
             </svg>
             📚 Biblioteca
         </a>
-        
+
         <div class="flex items-center space-x-4">
             <button class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
-                    style="border-color: var(--book-brown); color: var(--book-brown);">
+                style="border-color: var(--book-brown); color: var(--book-brown);">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                 </svg>
                 Página Anterior
             </button>
-            
-            <span class="px-4 py-2 rounded-lg font-semibold text-white" 
-                  style="background-color: var(--book-brown);">Página Atual</span>
-            
+
+            <span class="px-4 py-2 rounded-lg font-semibold text-white"
+                style="background-color: var(--book-brown);">Página Atual</span>
+
             <button class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
-                    style="border-color: var(--book-brown); color: var(--book-brown);">
+                style="border-color: var(--book-brown); color: var(--book-brown);">
                 Próxima Página
                 <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
@@ -42,7 +43,8 @@
         <div>
             <!-- Page Header -->
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold mb-4" style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                <h1 class="text-3xl font-bold mb-4"
+                    style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
                     📖 {{ uploaded_image.title }}
                 </h1>
                 <div class="w-24 h-1 mx-auto mb-4" style="background-color: var(--book-brown);"></div>
@@ -55,17 +57,23 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <div class="image-container">
                     <div class="vintage-border p-4" style="background-color: #FFFEF7;">
-                        <h3 class="text-lg font-bold mb-4 text-center" 
+                        <h3 class="text-lg font-bold mb-4 text-center"
                             style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
                             🖼️ Imagem Original
                         </h3>
-                        <div class="relative overflow-hidden rounded-lg cursor-pointer" onclick="openImageModal('{{ uploaded_image.image.url }}', '{{ uploaded_image.title }}')">
-                            <img src="{{ uploaded_image.image.url }}" alt="{{ uploaded_image.title }}" 
-                                 class="w-full h-auto rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
-                            <div class="absolute inset-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                                <svg class="w-8 h-8 text-white opacity-0 hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        <div class="relative overflow-hidden rounded-lg cursor-pointer"
+                            onclick="openImageModal('{{ uploaded_image.image.url }}', '{{ uploaded_image.title }}')">
+                            <img src="{{ uploaded_image.image.url }}" alt="{{ uploaded_image.title }}"
+                                class="w-full h-auto rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+                            <div
+                                class="absolute inset-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-white opacity-0 hover:opacity-100 transition-opacity duration-300"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                    </path>
                                 </svg>
                             </div>
                         </div>
@@ -74,29 +82,33 @@
 
                 <div class="conversion-panel">
                     <div class="vintage-border p-6" style="background-color: #FFFEF7;">
-                        <h3 class="text-lg font-bold mb-6 text-center" 
+                        <h3 class="text-lg font-bold mb-6 text-center"
                             style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
                             🎨 Opções de Conversão
                         </h3>
-                        
+
                         <div class="space-y-4">
-                            <button id="simple-convert-btn" 
-                                    class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-                                    style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
+                            <button id="simple-convert-btn"
+                                class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+                                style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
                                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                    </path>
                                 </svg>
                                 ✨ Conversão Simples
                             </button>
 
-                            <button id="ia-convert-btn" 
-                                    class="w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
-                                    style="border-color: var(--book-brown); color: var(--book-brown);"
-                                    data-bs-toggle="modal" data-bs-target="#iaConvertModal">
+                            <button id="ia-convert-btn"
+                                class="w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                                style="border-color: var(--book-brown); color: var(--book-brown);"
+                                data-bs-toggle="modal" data-bs-target="#iaConvertModal">
                                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                                    </path>
                                 </svg>
-                                🤖 Conversão IA (Em breve)
+                                🤖 Conversão IA
                             </button>
                         </div>
                     </div>
@@ -105,54 +117,65 @@
 
             <!-- Variations Display -->
             <div class="variations-section">
-                <h3 class="text-2xl font-bold mb-6 text-center" 
+                <h3 class="text-2xl font-bold mb-6 text-center"
                     style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
                     🎨 Variações Criadas
                 </h3>
-                
+
                 {% if uploaded_image.variations.all %}
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {% for image in uploaded_image.variations.all %}
-                            <div class="variation-item">
-                                <div class="vintage-border p-4 transition-all duration-300 hover:shadow-lg" 
-                                     style="background-color: #FFFEF7;">
-                                    <h4 class="text-lg font-bold mb-3 text-center" 
-                                        style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
-                                        {{ image.title }}
-                                    </h4>
-                                    <div class="relative overflow-hidden rounded-lg mb-4 cursor-pointer" onclick="openImageModal('{{ image.image.url }}', '{{ image.title }}')">
-                                        <img src="{{ image.image.url }}" alt="{{ image.title }}" 
-                                             class="w-full h-auto rounded-lg hover:scale-105 transition-transform duration-300">
-                                        <div class="absolute inset-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-white opacity-0 hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <a href="{{ image.image.url }}" download 
-                                           class="inline-flex items-center px-4 py-2 text-white text-sm font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
-                                           style="background: linear-gradient(135deg, #10B981, #047857);">
-                                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                            </svg>
-                                            Baixar
-                                        </a>
-                                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for image in uploaded_image.variations.all %}
+                    <div class="variation-item">
+                        <div class="vintage-border p-4 transition-all duration-300 hover:shadow-lg"
+                            style="background-color: #FFFEF7;">
+                            <h4 class="text-lg font-bold mb-3 text-center"
+                                style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                                {{ image.title }}
+                            </h4>
+                            <div class="relative overflow-hidden rounded-lg mb-4 cursor-pointer"
+                                onclick="openImageModal('{{ image.image.url }}', '{{ image.title }}')">
+                                <img src="{{ image.image.url }}" alt="{{ image.title }}"
+                                    class="w-full h-auto rounded-lg hover:scale-105 transition-transform duration-300">
+                                <div
+                                    class="absolute inset-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-white opacity-0 hover:opacity-100 transition-opacity duration-300"
+                                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                        </path>
+                                    </svg>
                                 </div>
                             </div>
-                        {% endfor %}
+                            <div class="text-center">
+                                <a href="{{ image.image.url }}" download
+                                    class="inline-flex items-center px-4 py-2 text-white text-sm font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                                    style="background: linear-gradient(135deg, #10B981, #047857);">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                        </path>
+                                    </svg>
+                                    Baixar
+                                </a>
+                            </div>
+                        </div>
                     </div>
+                    {% endfor %}
+                </div>
                 {% else %}
-                    <div class="text-center py-12">
-                        <svg class="w-16 h-16 mx-auto mb-4 opacity-50" style="color: var(--light-brown);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                        </svg>
-                        <p class="text-lg" style="color: var(--leather);">
-                            Nenhuma variação criada ainda. Use as opções acima para criar páginas para colorir!
-                        </p>
-                    </div>
+                <div class="text-center py-12">
+                    <svg class="w-16 h-16 mx-auto mb-4 opacity-50" style="color: var(--light-brown);" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                        </path>
+                    </svg>
+                    <p class="text-lg" style="color: var(--leather);">
+                        Nenhuma variação criada ainda. Use as opções acima para criar páginas para colorir!
+                    </p>
+                </div>
                 {% endif %}
             </div>
         </div>
@@ -163,41 +186,66 @@
 <div id="simpleConvertModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="vintage-border book-shadow m-4 max-w-md w-full" style="background-color: #FFFEF7;">
         <div class="p-8">
-            <h2 class="text-2xl font-bold mb-6 text-center" 
+            <h2 class="text-2xl font-bold mb-6 text-center"
                 style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
                 ⚙️ Opções de Conversão Simples
             </h2>
-            
+
             <form id="simple-convert-form" action="{% url 'simple_convert' uploaded_image.id %}" method="post">
                 {% csrf_token %}
                 <div class="mb-6">
-                    <label for="detail_level" class="block text-lg font-semibold mb-4" 
-                           style="color: var(--dark-brown);">
+                    <label for="detail_level" class="block text-lg font-semibold mb-4"
+                        style="color: var(--dark-brown);">
                         🎯 Nível de Detalhes:
                     </label>
-                    <input type="range" id="detail_level" name="detail_level" 
-                           min="1" max="50" value="21" 
-                           class="w-full h-2 rounded-lg appearance-none cursor-pointer"
-                           style="background: var(--light-brown);">
+                    <input type="range" id="detail_level" name="detail_level" min="1" max="50" value="21"
+                        class="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                        style="background: var(--light-brown);">
                     <div class="flex justify-between text-sm mt-2" style="color: var(--leather);">
                         <span>Menos detalhes</span>
                         <span>Mais detalhes</span>
                     </div>
                 </div>
-                
+
                 <div class="flex justify-end space-x-4">
-                    <button type="button" 
-                            class="px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
-                            style="border-color: var(--book-brown); color: var(--book-brown);"
-                            onclick="document.getElementById('simpleConvertModal').classList.add('hidden');">
+                    <button type="button"
+                        class="px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                        style="border-color: var(--book-brown); color: var(--book-brown);"
+                        onclick="document.getElementById('simpleConvertModal').classList.add('hidden');">
                         Cancelar
                     </button>
-                    <button type="submit" 
-                            class="px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
-                            style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
+                    <button type="submit"
+                        class="px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                        style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
                         ✨ Converter
                     </button>
                 </div>
+        </div>
+    </div>
+</div>
+
+<!-- IA Convert Modal -->
+<div id="iaConvertModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="vintage-border book-shadow m-4 max-w-md w-full" style="background-color: #FFFEF7;">
+        <div class="p-8">
+            <h2 class="text-2xl font-bold mb-6 text-center"
+                style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                🤖 Opções de Conversão por IA
+            </h2>
+
+            <div class="flex justify-end space-x-4">
+                <button type="button"
+                    class="px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                    style="border-color: var(--book-brown); color: var(--book-brown);"
+                    onclick="document.getElementById('simpleConvertModal').classList.add('hidden');">
+                    Cancelar
+                </button>
+                <a href="{% url 'generate_by_ai' uploaded_image.id %}" 
+                    class="px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                    style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
+                    ✨ Converter
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -207,58 +255,63 @@
     <div class="relative max-w-7xl max-h-screen p-4 w-full h-full flex items-center justify-center">
         <!-- Close Button -->
         <button onclick="closeImageModal()" type="button"
-                class="absolute top-4 right-4 z-10 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300">
+            class="absolute top-4 right-4 z-10 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
         </button>
-        
+
         <!-- Image Container -->
         <div class="relative bg-white rounded-lg book-shadow overflow-hidden max-w-full max-h-full">
             <!-- Image Header -->
             <div class="px-6 py-4 border-b" style="background-color: var(--parchment);">
-                <h3 id="modalImageTitle" class="text-xl font-bold text-center" 
+                <h3 id="modalImageTitle" class="text-xl font-bold text-center"
                     style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
                     Visualizar Imagem
                 </h3>
             </div>
-            
+
             <!-- Image Display -->
             <div class="p-4" style="background-color: #FFFEF7;">
-                <img id="modalImage" src="" alt="" 
-                     class="max-w-full max-h-[70vh] object-contain mx-auto rounded-lg shadow-md">
+                <img id="modalImage" src="" alt=""
+                    class="max-w-full max-h-[70vh] object-contain mx-auto rounded-lg shadow-md">
             </div>
-            
+
             <!-- Image Actions -->
             <div class="px-6 py-4 border-t flex justify-center space-x-4" style="background-color: var(--parchment);">
-                <a id="modalDownloadBtn" href="" download 
-                   class="inline-flex items-center px-4 py-2 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
-                   style="background: linear-gradient(135deg, #10B981, #047857);">
+                <a id="modalDownloadBtn" href="" download
+                    class="inline-flex items-center px-4 py-2 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                    style="background: linear-gradient(135deg, #10B981, #047857);">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
                     </svg>
                     📥 Baixar Imagem
                 </a>
-                
+
                 <button onclick="closeImageModal()" type="button"
-                        class="inline-flex items-center px-4 py-2 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
-                        style="border-color: var(--book-brown); color: var(--book-brown);">
+                    class="inline-flex items-center px-4 py-2 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                    style="border-color: var(--book-brown); color: var(--book-brown);">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
                     </svg>
                     Fechar
                 </button>
             </div>
         </div>
-        
+
         <!-- Navigation Arrows (for future enhancement) -->
-        <button class="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300 opacity-50 cursor-not-allowed">
+        <button
+            class="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300 opacity-50 cursor-not-allowed">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
             </svg>
         </button>
-        
-        <button class="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300 opacity-50 cursor-not-allowed">
+
+        <button
+            class="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300 opacity-50 cursor-not-allowed">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>
@@ -270,7 +323,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('simpleConvertModal');
         const openBtn = document.getElementById('simple-convert-btn');
-        
+
         openBtn.addEventListener('click', function () {
             modal.classList.remove('hidden');
         });
@@ -283,10 +336,26 @@
 
         // Range slider styling
         const rangeInput = document.getElementById('detail_level');
-        rangeInput.addEventListener('input', function() {
+        rangeInput.addEventListener('input', function () {
             const value = ((this.value - this.min) / (this.max - this.min)) * 100;
             this.style.background = `linear-gradient(to right, var(--book-brown) 0%, var(--book-brown) ${value}%, var(--light-brown) ${value}%, var(--light-brown) 100%)`;
         });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('iaConvertModal');
+        const openBtn = document.getElementById('ia-convert-btn');
+
+        openBtn.addEventListener('click', function () {
+            modal.classList.remove('hidden');
+        });
+
+        modal.addEventListener('click', function (event) {
+            if (event.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+
     });
 
     // Image Modal Functions
@@ -295,13 +364,13 @@
         const modalImage = document.getElementById('modalImage');
         const modalTitle = document.getElementById('modalImageTitle');
         const downloadBtn = document.getElementById('modalDownloadBtn');
-        
+
         modalImage.src = imageSrc;
         modalImage.alt = imageTitle;
         modalTitle.textContent = `🖼️ ${imageTitle}`;
         downloadBtn.href = imageSrc;
         downloadBtn.download = imageTitle + '.jpg';
-        
+
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
@@ -313,14 +382,14 @@
     }
 
     // Close modal when clicking outside the image
-    document.getElementById('imageViewerModal').addEventListener('click', function(event) {
+    document.getElementById('imageViewerModal').addEventListener('click', function (event) {
         if (event.target === this) {
             closeImageModal();
         }
     });
 
     // Close modal with Escape key
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
             closeImageModal();
         }
@@ -330,11 +399,11 @@
 <style>
     .variation-item:hover .vintage-border {
         transform: translateY(-4px);
-        box-shadow: 
+        box-shadow:
             0 12px 20px rgba(139, 69, 19, 0.3),
             0 16px 32px rgba(139, 69, 19, 0.15);
     }
-    
+
     input[type="range"]::-webkit-slider-thumb {
         appearance: none;
         height: 20px;
@@ -342,9 +411,9 @@
         border-radius: 50%;
         background: var(--book-brown);
         cursor: pointer;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
-    
+
     input[type="range"]::-moz-range-thumb {
         height: 20px;
         width: 20px;
@@ -352,7 +421,7 @@
         background: var(--book-brown);
         cursor: pointer;
         border: none;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 </style>
 {% endblock %}
