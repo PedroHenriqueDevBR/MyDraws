@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Entrar - Bobbies Creator{% endblock %}
+
+{% block body %}
+<div class="login-page max-w-md mx-auto mt-12">
+    <!-- Login Card -->
+    <div class="vintage-border book-shadow p-8" style="background-color: #FFFEF7;">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold mb-2"
+                style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                Bobbies Creator
+            </h1>
+            <p class="text-sm" style="color: var(--leather);">
+                Acesse sua biblioteca pessoal de páginas para colorir
+            </p>
+        </div>
+
+        <!-- Login Form -->
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+
+            <div>
+                <label for="username" class="block text-sm font-semibold mb-2" style="color: var(--dark-brown);">
+                    👤 Nome de Usuário
+                </label>
+                <div class="relative">
+                    <input type="text" id="username" name="username" required
+                        class="w-full px-4 py-3 pl-12 border-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
+                        style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);"
+                        placeholder="Digite seu nome de usuário">
+                    <svg class="w-5 h-5 absolute left-4 top-4" style="color: var(--book-brown);" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-semibold mb-2" style="color: var(--dark-brown);">
+                    🔑 Senha
+                </label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" required
+                        class="w-full px-4 py-3 pl-12 border-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
+                        style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);"
+                        placeholder="Digite sua senha">
+                    <svg class="w-5 h-5 absolute left-4 top-4" style="color: var(--book-brown);" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
+                style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); font-family: 'Playfair Display', serif;">
+                <span class="flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
+                        </path>
+                    </svg>
+                    📖 Entrar na Biblioteca
+                </span>
+            </button>
+        </form>
+        <div class="mt-4">
+            <a href="/accounts/google/login/"
+                class="w-full py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center"
+                style="background: #000; font-family: 'Playfair Display', serif;">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M21.35 11.1h-9.18v2.72h5.26c-.23 1.4-1.4 2.6-2.8 3.04v2.52h4.54c2.67-2.46 4.18-6.1 4.18-10.28 0-.68-.06-1.34-.16-1.98z"
+                        fill="#4285F4" />
+                    <path
+                        d="M12.17 21.1c2.4 0 4.42-.8 5.9-2.16l-4.54-2.52c-.64.42-1.46.68-2.36.68-1.8 0-3.32-1.2-3.86-2.8H3.9v2.52c1.48 2.94 4.52 4.88 8.27 4.88z"
+                        fill="#34A853" />
+                    <path d="M8.31 14.3c-.28-.84-.28-1.76 0-2.6v-2.52H3.9c-.8 1.6-.8 3.4 0 5.04l4.41-.92z"
+                        fill="#FBBC05" />
+                    <path
+                        d="M12.17 7.1c1.3 0 2.46.44 3.36 1.3l2.52-2.52c-1.48-1.36-3.5-2.16-5.88-2.16-3.76 0-6.8 1.94-8.27 4.88l4.41.92c.54-1.6 2.06-2.8 3.86-2.8z"
+                        fill="#EA4335" />
+                </svg>
+                Entrar com Google
+            </a>
+        </div>
+    </div>
+
+    <!-- Decorative Element1s -->
+    <div class="text-center mt-8">
+        <div class="flex items-center justify-center space-x-2" style="color: var(--light-brown);">
+            <span class="text-2xl">📚</span>
+            <span class="text-2xl">✨</span>
+            <span class="text-2xl">🎨</span>
+        </div>
+        <p class="text-sm mt-2" style="color: var(--leather);">
+            Solte sua criatividade e transforme suas imagens em páginas para colorir
+        </p>
+    </div>
+</div>
+
+<style>
+    .login-page input:focus {
+        transform: translateY(-1px);
+    }
+
+    .login-page button:active {
+        transform: translateY(1px) !important;
+    }
+</style>
+{% endblock %}

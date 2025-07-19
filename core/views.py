@@ -29,9 +29,9 @@ def home(request: HttpRequest):
         )
 
     uploaded_images = UploadedImage.objects.filter(
-        profile=request.user.profile, based_on__isnull=True
+        profile=request.user, based_on__isnull=True
     ).order_by("-created_at")
-    return render(request, "home.html", {"uploaded_images": uploaded_images})
+    return render(request, "core/home.html", {"uploaded_images": uploaded_images})
 
 
 @login_required
@@ -48,13 +48,13 @@ def upload_image(request: HttpRequest):
         uploaded_image = UploadedImage.objects.create(
             title=request.POST.get("title", "Untitled"),
             image=image_file,
-            profile=request.user.profile,
+            profile=request.user,
         )
 
         return redirect("show_uploaded_image", image_id=uploaded_image.id)
     else:
         form = ImageUploadForm()
-    return render(request, "upload.html", {"form": form})
+    return render(request, "core/upload.html", {"form": form})
 
 
 @login_required
@@ -75,7 +75,7 @@ def show_uploaded_image(request: HttpRequest, image_id: int):
             {"message": "Image not found."},
         )
 
-    return render(request, "show_image.html", {"uploaded_image": uploaded_image})
+    return render(request, "core/show_image.html", {"uploaded_image": uploaded_image})
 
 
 @login_required
@@ -108,7 +108,7 @@ def simple_convert(request: HttpRequest, image_id: int):
     UploadedImage.objects.create(
         title=f"Converted {uploaded_image.title}",
         image=converted_image_file,
-        profile=request.user.profile,
+        profile=request.user,
         based_on=uploaded_image,
     )
 
@@ -142,7 +142,7 @@ def generate_by_ai(request: HttpRequest, image_id: int):
     UploadedImage.objects.create(
         title=f"IA {uploaded_image.title}",
         image=converted_image_file,
-        profile=request.user.profile,
+        profile=request.user,
         based_on=uploaded_image,
     )
 
