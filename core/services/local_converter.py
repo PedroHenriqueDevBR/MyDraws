@@ -1,16 +1,13 @@
 import os
 import cv2
-from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-from django.core.files.uploadedfile import UploadedFile
-from django.http.request import HttpRequest
 
 
-def converter(filename: str, image_path: str, detail_level: int = 21) -> str:
-    from django.conf import settings
-    import cv2
-
-    # Extrai só o nome do arquivo, sem diretórios
+def converter(
+    filename: str,
+    image_path: str,
+    detail_level: int = 21,
+) -> str:
     base_filename = os.path.basename(filename)
     name_no_ext = os.path.splitext(base_filename)[0]
     sketch_filename = name_no_ext + "_sketch.jpg"

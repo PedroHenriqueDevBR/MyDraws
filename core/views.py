@@ -1,13 +1,25 @@
-from django.shortcuts import render, redirect
+from pathlib import Path
+
+from django.core.files import File
 from django.http.request import HttpRequest
+from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
+from core.services.design_by_ai import DesignByAI
 
 from .forms import ImageUploadForm
 from .models import UploadedImage
 from .services import local_converter
-from django.core.files import File
-from pathlib import Path
 
 
+def custom_logout(request: HttpRequest):
+    logout(request)
+    request.session.flush()
+    return redirect("login")
+
+
+@login_required
 def home(request: HttpRequest):
     if not request.user.is_authenticated:
         return render(
@@ -16,10 +28,13 @@ def home(request: HttpRequest):
             {"message": "You must be logged in to view this page."},
         )
 
-    uploaded_images = UploadedImage.objects.filter(profile=request.user.profile, based_on__isnull=True).order_by("-created_at")
+    uploaded_images = UploadedImage.objects.filter(
+        profile=request.user.profile, based_on__isnull=True
+    ).order_by("-created_at")
     return render(request, "home.html", {"uploaded_images": uploaded_images})
 
 
+@login_required
 def upload_image(request: HttpRequest):
     if not request.user.is_authenticated:
         return render(
@@ -42,7 +57,9 @@ def upload_image(request: HttpRequest):
     return render(request, "upload.html", {"form": form})
 
 
+@login_required
 def show_uploaded_image(request: HttpRequest, image_id: int):
+    # TODO: verification if the image belongs to the user
     if not request.user.is_authenticated:
         return render(
             request,
@@ -61,7 +78,9 @@ def show_uploaded_image(request: HttpRequest, image_id: int):
     return render(request, "show_image.html", {"uploaded_image": uploaded_image})
 
 
+@login_required
 def simple_convert(request: HttpRequest, image_id: int):
+    # TODO: verification if the image belongs to the user
     if not request.user.is_authenticated:
         return render(
             request,
@@ -92,7 +111,41 @@ def simple_convert(request: HttpRequest, image_id: int):
         profile=request.user.profile,
         based_on=uploaded_image,
     )
-    
+
+    Path(converted_image_path).unlink()
+
+    return redirect("show_uploaded_image", image_id=uploaded_image.id)
+
+
+@login_required
+def generate_by_ai(request: HttpRequest, image_id: int):
+    # TODO: verification if the image belongs to the user
+    if not request.user.is_authenticated:
+        return render(
+            request,
+            "error.html",
+            {"message": "You must be logged in to perform this action."},
+        )
+
+    uploaded_image = UploadedImage.objects.filter(id=image_id).first()
+    if not uploaded_image:
+        return render(
+            request,
+            "error.html",
+            {"message": "Image not found."},
+        )
+
+    designer = DesignByAI(image_path=uploaded_image.image.path)
+    converted_image_path, _ = designer.generate_from_gemini()
+    converted_image_file = File(open(converted_image_path, "rb"))
+
+    UploadedImage.objects.create(
+        title=f"IA {uploaded_image.title}",
+        image=converted_image_file,
+        profile=request.user.profile,
+        based_on=uploaded_image,
+    )
+
     Path(converted_image_path).unlink()
 
     return redirect("show_uploaded_image", image_id=uploaded_image.id)
