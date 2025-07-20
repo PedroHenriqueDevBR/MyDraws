@@ -234,6 +234,6 @@ class UploadedImageAdmin(admin.ModelAdmin):
 
 
 # Customização do site admin
-admin.site.site_header = "📖 Bobbies Creator - Administração"
-admin.site.site_title = "Bobbies Creator Admin"
+admin.site.site_header = "📖 MyDraws - Administração"
+admin.site.site_title = "MyDraws Admin"
 admin.site.index_title = "Painel de Administração"

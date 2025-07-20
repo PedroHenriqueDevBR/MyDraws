@@ -1,40 +1,33 @@
 {% extends "base_site.html" %}
 
-{% block title %}{{ uploaded_image.title }} - Bobbies Creator{% endblock %}
+{% block title %}{{ uploaded_image.title }} - MyDraws{% endblock %}
 
 {% block content %}
 <div class="book-viewer">
     <!-- Page Navigation Header -->
     <div class="flex justify-between items-center mb-8">
-        <a href="{% url 'home' %}"
-            class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
-            style="border-color: var(--book-brown); color: var(--book-brown);">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
-                </path>
-            </svg>
-            📚 Biblioteca
-        </a>
-
         <div class="flex items-center space-x-4">
-            <button class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
+            <a href="{% url 'home' %}"
+                class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
                 style="border-color: var(--book-brown); color: var(--book-brown);">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                    </path>
                 </svg>
-                Página Anterior
-            </button>
-
-            <span class="px-4 py-2 rounded-lg font-semibold text-white"
-                style="background-color: var(--book-brown);">Página Atual</span>
-
-            <button class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
+                Biblioteca
+            </a>
+            <a href="{% url 'book_detail' uploaded_image.book.id %}"
+                class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
                 style="border-color: var(--book-brown); color: var(--book-brown);">
-                Próxima Página
-                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                    </path>
                 </svg>
-            </button>
+                {{ uploaded_image.book.title }}
+            </a>
+
         </div>
     </div>
 
@@ -43,8 +36,7 @@
         <div>
             <!-- Page Header -->
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold mb-4"
-                    style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                <h1 class="text-3xl font-bold mb-4" style="color: var(--dark-brown);">
                     📖 {{ uploaded_image.title }}
                 </h1>
                 <div class="w-24 h-1 mx-auto mb-4" style="background-color: var(--book-brown);"></div>
@@ -56,9 +48,8 @@
             <!-- Image Display -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                 <div class="image-container">
-                    <div class="vintage-border p-4" style="background-color: #FFFEF7;">
-                        <h3 class="text-lg font-bold mb-4 text-center"
-                            style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                    <div class="p-4" style="background-color: #FFFEF7;">
+                        <h3 class="text-lg font-bold mb-4 text-center" style="color: var(--dark-brown);">
                             🖼️ Imagem Original
                         </h3>
                         <div class="relative overflow-hidden rounded-lg cursor-pointer"
@@ -82,33 +73,27 @@
 
                 <div class="conversion-panel">
                     <div class="vintage-border p-6" style="background-color: #FFFEF7;">
-                        <h3 class="text-lg font-bold mb-6 text-center"
-                            style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                        <h3 class="text-lg font-bold mb-6 text-center" style="color: var(--dark-brown);">
                             🎨 Opções de Conversão
                         </h3>
 
                         <div class="space-y-4">
                             <button id="simple-convert-btn"
-                                class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-                                style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
+                                class="w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                                style="border-color: var(--book-brown); color: var(--book-brown);">
                                 <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
                                     </path>
                                 </svg>
-                                ✨ Conversão Simples
+                                Conversão Simples
                             </button>
 
                             <button id="ia-convert-btn"
-                                class="w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
-                                style="border-color: var(--book-brown); color: var(--book-brown);"
+                                class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+                                style="background: linear-gradient(135deg, var(--book-brown), var(--leather));"
                                 data-bs-toggle="modal" data-bs-target="#iaConvertModal">
-                                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
-                                    </path>
-                                </svg>
-                                🤖 Conversão IA
+                                ✨ Conversão por IA
                             </button>
                         </div>
                     </div>
@@ -117,8 +102,7 @@
 
             <!-- Variations Display -->
             <div class="variations-section">
-                <h3 class="text-2xl font-bold mb-6 text-center"
-                    style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                <h3 class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
                     🎨 Variações Criadas
                 </h3>
 
@@ -128,10 +112,6 @@
                     <div class="variation-item">
                         <div class="vintage-border p-4 transition-all duration-300 hover:shadow-lg"
                             style="background-color: #FFFEF7;">
-                            <h4 class="text-lg font-bold mb-3 text-center"
-                                style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
-                                {{ image.title }}
-                            </h4>
                             <div class="relative overflow-hidden rounded-lg mb-4 cursor-pointer"
                                 onclick="openImageModal('{{ image.image.url }}', '{{ image.title }}')">
                                 <img src="{{ image.image.url }}" alt="{{ image.title }}"
@@ -183,11 +163,10 @@
 </div>
 
 <!-- Simple Convert Modal -->
-<div id="simpleConvertModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+<div id="simpleConvertModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="vintage-border book-shadow m-4 max-w-md w-full" style="background-color: #FFFEF7;">
         <div class="p-8">
-            <h2 class="text-2xl font-bold mb-6 text-center"
-                style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+            <h2 class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
                 ⚙️ Opções de Conversão Simples
             </h2>
 
@@ -225,11 +204,10 @@
 </div>
 
 <!-- IA Convert Modal -->
-<div id="iaConvertModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+<div id="iaConvertModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="vintage-border book-shadow m-4 max-w-md w-full" style="background-color: #FFFEF7;">
         <div class="p-8">
-            <h2 class="text-2xl font-bold mb-6 text-center"
-                style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+            <h2 class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
                 🤖 Opções de Conversão por IA
             </h2>
 
@@ -240,7 +218,7 @@
                     onclick="document.getElementById('simpleConvertModal').classList.add('hidden');">
                     Cancelar
                 </button>
-                <a href="{% url 'generate_by_ai' uploaded_image.id %}" 
+                <a href="{% url 'generate_by_ai' uploaded_image.id %}"
                     class="px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                     style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
                     ✨ Converter
@@ -251,11 +229,11 @@
 </div>
 
 <!-- Image Viewer Modal -->
-<div id="imageViewerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 hidden">
+<div id="imageViewerModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="relative max-w-7xl max-h-screen p-4 w-full h-full flex items-center justify-center">
         <!-- Close Button -->
         <button onclick="closeImageModal()" type="button"
-            class="absolute top-4 right-4 z-10 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300">
+            class="absolute top-4 right-4 z-10 w-12 h-12 bg-black bg-opacity-50 text-white rounded-full flex items-center justify-center transition-all duration-300">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -265,8 +243,7 @@
         <div class="relative bg-white rounded-lg book-shadow overflow-hidden max-w-full max-h-full">
             <!-- Image Header -->
             <div class="px-6 py-4 border-b" style="background-color: var(--parchment);">
-                <h3 id="modalImageTitle" class="text-xl font-bold text-center"
-                    style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                <h3 id="modalImageTitle" class="text-xl font-bold text-center" style="color: var(--dark-brown);">
                     Visualizar Imagem
                 </h3>
             </div>
@@ -287,7 +264,7 @@
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
-                    📥 Baixar Imagem
+                    📥 Baixar
                 </a>
 
                 <button onclick="closeImageModal()" type="button"
@@ -301,21 +278,6 @@
                 </button>
             </div>
         </div>
-
-        <!-- Navigation Arrows (for future enhancement) -->
-        <button
-            class="absolute left-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300 opacity-50 cursor-not-allowed">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-        </button>
-
-        <button
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300 opacity-50 cursor-not-allowed">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-        </button>
     </div>
 </div>
 

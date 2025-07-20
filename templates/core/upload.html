@@ -1,12 +1,12 @@
 {% extends "base_site.html" %}
 
-{% block title %}Nova Página - Bobbies Creator{% endblock %}
+{% block title %}Nova Página - MyDraws{% endblock %}
 
 {% block content %}
 <div class="book-upload-page">
     <!-- Chapter Title -->
     <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold mb-4" style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+        <h1 class="text-4xl font-bold mb-4" style="color: var(--dark-brown);">
             ✨ Criar Nova Página para Colorir
         </h1>
         <div class="w-32 h-1 mx-auto mb-6" style="background-color: var(--book-brown);"></div>
@@ -16,47 +16,41 @@
     </div>
 
     <!-- Upload Form -->
-    <div class="max-w-2xl mx-auto mb-12">
-        <form method="post" enctype="multipart/form-data" class=" p-8" style="background-color: #FFFEF7;">
+    <div class="mx-auto">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            
-            <!-- Upload Area -->
-            <div class="mb-8">
-                <label for="image" class="block text-lg font-semibold mb-4" 
-                       style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
-                    📷 Escolha sua Imagem
-                </label>
-                <div class="border-3 border-dashed rounded-lg p-8 text-center transition-all duration-300 hover:border-solid"
-                     style="border-color: var(--light-brown);">
-                    <svg class="w-16 h-16 mx-auto mb-4" style="color: var(--book-brown);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                    </svg>
-                    <input type="file" id="image" name="image" accept="image/*" required 
-                           class="block w-full text-sm file:mr-4 file:py-3 file:px-6 file:rounded-lg file:border-0 file:font-semibold file:text-white file:transition-all file:duration-300 hover:file:shadow-lg file:bg-gradient-to-r file:from-amber-800 file:to-amber-700"
-                           style="color: var(--dark-brown);" required>
-                    <p class="mt-2 text-sm" style="color: var(--leather);">
-                        Arraste e solte ou clique para selecionar uma imagem
-                    </p>
-                </div>
-            </div>
-                
+
             <!-- Title Input -->
             <div class="mb-8">
                 <label for="title" class="block text-lg font-semibold mb-4" 
-                       style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
-                    📝 Título da Página
+                       style="color: var(--dark-brown);">
+                    📝 Detalhes da foto
                 </label>
                 <input type="text" id="title" name="title" required
                        placeholder="Digite um título para sua página..."
                        class="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
                        style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);">
             </div>
+            
+            <!-- Upload Area -->
+            <div class="mb-8">
+                <label for="image" class="block text-lg font-semibold mb-4" 
+                       style="color: var(--dark-brown);">
+                    📷 Escolha sua Imagem
+                </label>
+                <input type="file" id="image" name="image" required
+                       class="block w-full px-4 py-6 border-3 border-dashed rounded-lg text-center transition-all duration-300 hover:border-solid focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
+                       style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);">
+                <label for="image" class="mt-2 text-sm block text-center" style="color: var(--leather);">
+                    Arraste e solte ou clique para selecionar uma imagem
+                </label>
+            </div>
 
             <!-- Submit Button -->
-            <div class="text-center">
+            <div>
                 <button type="submit" 
                         class="inline-flex items-center px-8 py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
-                        style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); font-family: 'Playfair Display', serif;">
+                        style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); ">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
@@ -70,7 +64,7 @@
     {% if original_image_url or sketch_image_url %}
         <div class="border-t-4 pt-12" style="border-color: var(--book-brown);">
             <h2 class="text-3xl font-bold text-center mb-8" 
-                style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                style="color: var(--dark-brown);">
                 🎨 Sua Obra de Arte Foi Criada!
             </h2>
             
@@ -80,7 +74,7 @@
                         <div class="vintage-border book-shadow p-6" style="background-color: #FFFEF7;">
                             <div class="text-center mb-4">
                                 <h3 class="text-xl font-bold flex items-center justify-center" 
-                                    style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                                    style="color: var(--dark-brown);">
                                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
                                     </svg>
@@ -106,7 +100,7 @@
                         <div class="vintage-border book-shadow p-6" style="background-color: #FFFEF7;">
                             <div class="text-center mb-4">
                                 <h3 class="text-xl font-bold flex items-center justify-center" 
-                                    style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                                    style="color: var(--dark-brown);">
                                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
                                     </svg>
@@ -171,7 +165,7 @@
 </style>
 
 <!-- Image Viewer Modal -->
-<div id="imageViewerModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 hidden">
+<div id="imageViewerModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 hidden">
     <div class="relative max-w-7xl max-h-screen p-4 w-full h-full flex items-center justify-center">
         <!-- Close Button -->
         <button onclick="closeImageModal()" 
@@ -186,7 +180,7 @@
             <!-- Image Header -->
             <div class="px-6 py-4 border-b" style="background-color: var(--parchment);">
                 <h3 id="modalImageTitle" class="text-xl font-bold text-center" 
-                    style="font-family: 'Playfair Display', serif; color: var(--dark-brown);">
+                    style="color: var(--dark-brown);">
                     Visualizar Imagem
                 </h3>
             </div>

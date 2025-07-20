@@ -9,7 +9,7 @@ from django.contrib.auth import logout
 from core.services.design_by_ai import DesignByAI
 
 from .forms import ImageUploadForm
-from .models import UploadedImage
+from .models import UploadedImage, Book
 from .services import local_converter
 
 
@@ -21,26 +21,53 @@ def custom_logout(request: HttpRequest):
 
 @login_required
 def home(request: HttpRequest):
-    if not request.user.is_authenticated:
-        return render(
-            request,
-            "error.html",
-            {"message": "You must be logged in to view this page."},
-        )
-
-    uploaded_images = UploadedImage.objects.filter(
-        profile=request.user, based_on__isnull=True
-    ).order_by("-created_at")
-    return render(request, "core/home.html", {"uploaded_images": uploaded_images})
+    books = Book.objects.filter(author=request.user).order_by("-created_at")
+    return render(request, "core/home.html", {"books": books})
 
 
 @login_required
-def upload_image(request: HttpRequest):
-    if not request.user.is_authenticated:
+def book_detail(request: HttpRequest, book_id: int):
+    book = Book.objects.filter(id=book_id, author=request.user).first()
+    if not book:
         return render(
             request,
             "error.html",
-            {"message": "You must be logged in to view this page."},
+            {"message": "Book not found or you do not have permission to view it."},
+        )
+
+    uploaded_images = book.uploaded_images.all().order_by("-created_at")
+    return render(
+        request,
+        "core/book_detail.html",
+        {"book": book, "uploaded_images": uploaded_images},
+    )
+
+
+@login_required
+def book_create(request: HttpRequest):
+    if request.method == "POST":
+        title = request.POST.get("title", "Untitled Book")
+        description = request.POST.get("description", "")
+        book = Book.objects.create(
+            title=title,
+            description=description,
+            author=request.user,
+        )
+        return redirect("book_detail", book_id=book.id)
+    else:
+        return redirect("home")
+
+
+@login_required
+def upload_image(request: HttpRequest, book_id: int):
+    book = Book.objects.filter(id=book_id, author=request.user).first()
+    if not book:
+        return render(
+            request,
+            "error.html",
+            {
+                "message": "Book not found or you do not have permission to upload images."
+            },
         )
 
     if request.method == "POST":
@@ -49,6 +76,7 @@ def upload_image(request: HttpRequest):
             title=request.POST.get("title", "Untitled"),
             image=image_file,
             profile=request.user,
+            book=book,
         )
 
         return redirect("show_uploaded_image", image_id=uploaded_image.id)
@@ -60,13 +88,6 @@ def upload_image(request: HttpRequest):
 @login_required
 def show_uploaded_image(request: HttpRequest, image_id: int):
     # TODO: verification if the image belongs to the user
-    if not request.user.is_authenticated:
-        return render(
-            request,
-            "error.html",
-            {"message": "You must be logged in to view this page."},
-        )
-
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
     if not uploaded_image:
         return render(
@@ -81,13 +102,6 @@ def show_uploaded_image(request: HttpRequest, image_id: int):
 @login_required
 def simple_convert(request: HttpRequest, image_id: int):
     # TODO: verification if the image belongs to the user
-    if not request.user.is_authenticated:
-        return render(
-            request,
-            "error.html",
-            {"message": "You must be logged in to perform this action."},
-        )
-
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
     if not uploaded_image:
         return render(
@@ -120,13 +134,6 @@ def simple_convert(request: HttpRequest, image_id: int):
 @login_required
 def generate_by_ai(request: HttpRequest, image_id: int):
     # TODO: verification if the image belongs to the user
-    if not request.user.is_authenticated:
-        return render(
-            request,
-            "error.html",
-            {"message": "You must be logged in to perform this action."},
-        )
-
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
     if not uploaded_image:
         return render(

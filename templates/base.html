@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
-    <title>{% block title %}Bobbies Creator - Livro de Colorir{% endblock %}</title>
+    <title>{% block title %}MyDraws - Livro de Colorir{% endblock %}</title>
     <style>
         :root {
-            --book-brown: #3F51B5; /* Steel Blue */
+            --book-brown: #673AB7; /* Steel Blue */
             --light-brown: #C5CAE9; /* Light Steel Blue */
-            --dark-brown: #1A237E; /* Cadet Blue */
+            --dark-brown: #311B92; /* Cadet Blue */
             --parchment: #f1faff; /* Ghost White */
             --leather: #0D47A1; /* Sky Blue */
+        }
+
+        .app-primary-bg {
+            background-color: var(--book-brown);
         }
         
         .book-shadow {
@@ -56,9 +60,21 @@
             border-radius: 12px;
             pointer-events: none;
         }
+
+        .modal {
+            z-index: 1000;
+        }
+
+        .bg-black.bg-opacity-50 {
+            background-color: rgba(0, 0, 0, 0.75) !important;
+        }
+
+        button {
+            cursor: pointer !important;
+        }
     </style>
 </head>
-<body class="min-h-screen " style="background-color: var(--parchment); font-family: 'Crimson Text', serif;">
+<body style="background-color: var(--parchment);">
     
     {% block body %}
     {% endblock body %}

@@ -1,40 +1,32 @@
 {% extends "base.html" %}
 
 {% block body %}
-<!-- Book Cover Header -->
-    <header class="book-binding py-4 mb-8">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-bold text-white" style="font-family: 'Playfair Display', serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">
-                    📖 Bobbies Creator - Livro de Colorir
-                </h1>
-                <p class="text-white mt-2">Transforme suas imagens em páginas para colorir</p>
-            </div>
-            <nav>
-                <a href="{% url 'custom_logout' %}" class="text-white text-lg font-medium hover:underline">
-                    Logout
-                </a>
-            </nav>
-        </div>
-    </header>
+<!-- Header -->
+<header class="app-primary-bg text-white py-4" style="position: fixed; top: 0; width: 100%; z-index: 1000;">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <h1 class="font-bold">MyDraws</h1>
+        <a href="{% url 'custom_logout' %}" class="text-white hover:underline">
+            Sair
+        </a>
+    </div>
+</header>
 
-    <!-- Main Book Container -->
-    <main class="container mx-auto px-4 pb-8">
-        <div class="max-w-4xl mx-auto">
-            <div class="vintage-border book-shadow page-turn" style="background-color: #FFFEF7; min-height: 70vh;">
-                <div class="p-8">
-                    {% block content %}
-                    <!-- Content will be injected here -->
-                    {% endblock %}
-                </div>
-            </div>
+<!-- Main Layout -->
+<div style="margin-top: 55px;">
+    <main class="page-turn" style="background-color: #FFFEF7;">
+        <div class="p-8" style="min-height: 70vh;">
+            {% block content %}
+            {% endblock content %}
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="mt-12 py-6 text-center" style="color: var(--dark-brown);">
+    <footer class="py-6 text-center" style="color: var(--dark-brown);">
         <div class="container mx-auto px-4">
-            <p class="text-sm opacity-75">© 2025 Bobbies Creator - Criando memórias coloridas</p>
+            <p class="text-sm opacity-75">© 2025 MyDraws - Criando memórias para colorir</p>
         </div>
     </footer>
+</div>
+
+
 {% endblock body %}

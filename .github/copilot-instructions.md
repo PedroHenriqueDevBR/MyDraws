@@ -1,4 +1,4 @@
-# Copilot Instructions for Bobbies Creator
+# Copilot Instructions for MyDraws
 
 ## Project Overview
 Django web application that converts uploaded images into coloring book-style sketches using OpenCV. The main workflow is: upload image → apply edge detection & Gaussian blur → save both original and sketch versions to media directory.
