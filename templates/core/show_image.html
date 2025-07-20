@@ -97,12 +97,19 @@
                             </button>
                         </div>
                     </div>
+
+                    <a href="#variations"
+                    class="mt-8 w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                    style="border-color: var(--book-brown); color: var(--book-brown);"
+                    >
+                        🎨 Ver artes geradas
+                    </a>
                 </div>
             </div>
 
             <!-- Variations Display -->
             <div class="variations-section">
-                <h3 class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
+                <h3 id="variations" class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
                     🎨 Variações Criadas
                 </h3>
 
@@ -193,7 +200,7 @@
                         onclick="document.getElementById('simpleConvertModal').classList.add('hidden');">
                         Cancelar
                     </button>
-                    <button type="submit"
+                    <button type="submit" onclick="showLoading()"
                         class="px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                         style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
                         ✨ Converter
@@ -218,7 +225,7 @@
                     onclick="document.getElementById('simpleConvertModal').classList.add('hidden');">
                     Cancelar
                 </button>
-                <a href="{% url 'generate_by_ai' uploaded_image.id %}"
+                <a href="{% url 'generate_by_ai' uploaded_image.id %}" onclick="showLoading()"
                     class="px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                     style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
                     ✨ Converter
@@ -281,7 +288,17 @@
     </div>
 </div>
 
+<div class="loading hidden">
+    <div class="spinner"></div>
+</div>
+
 <script>
+
+    function showLoading() {
+        document.querySelector('.loading').classList.remove('hidden');
+        document.querySelector('.loading').classList.add('flex');
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         const modal = document.getElementById('simpleConvertModal');
         const openBtn = document.getElementById('simple-convert-btn');

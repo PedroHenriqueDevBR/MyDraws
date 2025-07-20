@@ -26,11 +26,21 @@ class DesignByAI:
             "object, animal, or landscape — using only clean and "
             "sharp outlines, with no shading or color fill. The "
             "result should clearly reflect the identity and "
-            "structure of the image's main elements, in a simple "
-            "style suitable for printing and hand coloring with "
-            "pencils or markers. Keep the background blank or "
-            "minimally outlined to emphasize the main subjects."
+            "structure of the image, in a style suitable for "
+            "printing and hand coloring with pencils or markers. "
+            "Design the background to be minimalistic - "
+            "Don't forget the hair or beard design when it's a person"
         )
+        # self.text_input = (
+        #     "Convert this image into a black and white line drawing"
+        #     "in coloring book style. — whether it's a person, "
+        #     "object, animal, or landscape — using only clean and "
+        #     "sharp outlines, with no shading or color fill. The "
+        #     "result should cartoonishly reflect the identity and "
+        #     "structure of the image's main elements, in a simple "
+        #     "style suitable for printing and hand coloring with "
+        #     "pencils or markers. Design the background to be minimalistic too."
+        # )
         self.model = model_name
 
     def generate_from_model(
