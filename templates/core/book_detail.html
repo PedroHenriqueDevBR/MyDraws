@@ -43,9 +43,9 @@
         </a>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+    <div class="flex flex-wrap justify-center gap-8 mb-12">
         {% for image in book.uploaded_images.all %}
-        <div class="book-page-item group cursor-pointer transform transition-all duration-300 hover:scale-105">
+        <div class="w-64 book-page-item group cursor-pointer transform transition-all duration-300 hover:scale-105">
             <div style="background-color: #FFFEF7;">
                 <!-- Page Number -->
                 <div class="text-right mb-2" style="position: relative; top: 40px; right: 10px; z-index: 10;">
@@ -121,7 +121,7 @@
 </div>
 
 <!-- Image Viewer Modal -->
-<div id="imageViewerModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 hidden">
+<div id="imageViewerModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="relative max-w-7xl max-h-screen p-4 w-full h-full flex items-center justify-center">
         <!-- Close Button -->
         <button onclick="closeImageModal()"
@@ -156,7 +156,7 @@
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
-                    📥 Baixar Imagem
+                    Baixar
                 </a>
 
                 <button onclick="closeImageModal()"

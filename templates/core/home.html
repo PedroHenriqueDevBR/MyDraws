@@ -18,28 +18,35 @@
     <!-- Images Gallery with Book Pages Layout -->
     {% if books %}
     <div class="flex flex-wrap justify-center gap-8">
-        {% for book in books %}
-        <div class="flex justify-center items-center" href="{% url 'book_detail' book.id %}">
+        <div onclick="openFormModal('formBookModal')" class="flex justify-center items-center">
             <div class="relative w-64 h-96 rounded-lg shadow-lg border-4 border-violet-600">
-            <!-- Spine -->
-            <div class="absolute inset-y-0 left-0 w-8 bg-violet-800  shadow-inner"></div>
-            <!-- Book Cover -->
-            <div class="absolute inset-0 flex flex-col justify-center items-center px-4 text-center">
-                <h2 class="text-lg font-bold mb-2 text-violet-900">
-                {{ book.title }}
-                </h2>
-                <p class="text-sm text-violet-800">
-                📅 {{ book.created_at|date:"d/m/Y à\s H:i" }}
-                </p>
-            </div>
-            <!-- Open Book Button -->
-            <a href="{% url 'book_detail' book.id %}" 
-                class="absolute w-full bottom-4 left-1/2 transform -translate-x-1/2 px-4 py-2 text-white font-semibold rounded shadow-md bg-violet-700 hover:bg-violet-800 transition-all"
-                style="bottom: 0.5px;">
-                📖 Abrir Livro
-            </a>
+                <!-- Spine -->
+                <div class="absolute inset-y-0 left-0 w-8 bg-violet-800  shadow-inner"></div>
+                <!-- Book Cover -->
+                <div class="absolute inset-0 flex flex-col justify-center items-center px-4 text-center">
+                    <h2 class="text-lg font-bold mb-2 text-violet-900">
+                        ✨ Criar novo livro
+                    </h2>
+                </div>
+
             </div>
         </div>
+        {% for book in books %}
+        <a class="flex justify-center items-center" href="{% url 'book_detail' book.id %}">
+            <div class="relative w-64 h-96 rounded-lg shadow-lg border-4 border-violet-600">
+                <!-- Spine -->
+                <div class="absolute inset-y-0 left-0 w-8 bg-violet-800  shadow-inner"></div>
+                <!-- Book Cover -->
+                <div class="absolute inset-0 flex flex-col justify-center items-center px-4 text-center">
+                    <h2 class="text-lg font-bold mb-2 text-violet-900">
+                        {{ book.title }}
+                    </h2>
+                    <p class="text-sm text-violet-800">
+                        📅 {{ book.created_at|date:"d/m/Y à\s H:i" }}
+                    </p>
+                </div>
+            </div>
+        </a>
         {% endfor %}
     </div>
 
@@ -62,7 +69,8 @@
 </div>
 
 <!-- Form Modal -->
-<div id="formBookModal" class="modal fixed inset-0 z-50 flex items-center bg-black bg-opacity-50 justify-center px-8 hidden">
+<div id="formBookModal"
+    class="modal fixed inset-0 z-50 flex items-center bg-black bg-opacity-50 justify-center px-8 hidden">
     <div class="relative bg-white rounded-lg shadow-lg max-w-md w-full p-6">
         <!-- Modal Header -->
         <div class="flex justify-between items-center border-b pb-4">
@@ -71,7 +79,8 @@
             </h3>
             <button onclick="closeFormModal('formBookModal')" class="text-gray-500 hover:text-gray-700 transition-all">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
                 </svg>
             </button>
         </div>
@@ -112,7 +121,8 @@
 </div>
 
 <!-- Image Viewer Modal -->
-<div id="imageViewerModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 hidden">
+<div id="imageViewerModal"
+    class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="relative max-w-7xl max-h-screen p-4 w-full h-full flex items-center justify-center">
         <!-- Close Button -->
         <button onclick="closeImageModal()"
@@ -126,8 +136,7 @@
         <div class="relative bg-white rounded-lg book-shadow overflow-hidden max-w-full max-h-full">
             <!-- Image Header -->
             <div class="px-6 py-4 border-b" style="background-color: var(--parchment);">
-                <h3 id="modalImageTitle" class="text-xl font-bold text-center"
-                    style="color: var(--dark-brown);">
+                <h3 id="modalImageTitle" class="text-xl font-bold text-center" style="color: var(--dark-brown);">
                     Visualizar Imagem
                 </h3>
             </div>
@@ -148,7 +157,7 @@
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
-                    📥 Baixar Imagem
+                    Baixar
                 </a>
 
                 <button onclick="closeImageModal()"
