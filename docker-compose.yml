@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_NAME=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_HOST=${DB_HOST}
+      - POSTGRES_PORT=${DB_PORT}
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/python/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "${APP_PORT}:8000"
+    volumes:
+      - .:/code
+    links:
+      - db
+    depends_on:
+      - db
+
+volumes:
+  static_volume:
+  media_volume:
