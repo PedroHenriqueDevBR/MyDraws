@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Pagamento Realizado com Sucesso{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white text-center">
+                    <h4><i class="fas fa-check-circle"></i> Pagamento Realizado!</h4>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-coins fa-3x text-success mb-3"></i>
+                        <h5>Seus créditos foram adicionados à sua conta!</h5>
+                    </div>
+                    
+                    {% if payment_id %}
+                    <div class="mb-3">
+                        <small class="text-muted">ID do Pagamento: {{ payment_id }}</small>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="alert alert-info">
+                        <strong>Saldo atual:</strong> {{ user_credits }} créditos
+                    </div>
+                    
+                    {% if external_reference %}
+                    <div class="mb-3">
+                        <small class="text-muted">Referência: {{ external_reference }}</small>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'home' %}" class="btn btn-primary">
+                            <i class="fas fa-home"></i> Voltar ao Início
+                        </a>
+                        <a href="#" class="btn btn-outline-secondary" onclick="history.back()">
+                            <i class="fas fa-arrow-left"></i> Voltar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Opcional: verificar status do pagamento periodicamente
+{% if payment_id %}
+const paymentId = '{{ payment_id }}';
+if (paymentId && '{{ status }}' === 'pending') {
+    // Verifica status a cada 10 segundos para pagamentos pendentes
+    const checkStatus = setInterval(async () => {
+        try {
+            const response = await fetch(`/payment/status/${paymentId}/`);
+            const data = await response.json();
+            
+            if (data.success && data.payment.status === 'approved') {
+                location.reload(); // Recarrega a página se aprovado
+                clearInterval(checkStatus);
+            }
+        } catch (error) {
+            console.error('Erro ao verificar status:', error);
+        }
+    }, 10000);
+    
+    // Para de verificar após 5 minutos
+    setTimeout(() => clearInterval(checkStatus), 300000);
+}
+{% endif %}
+</script>
+{% endblock %}

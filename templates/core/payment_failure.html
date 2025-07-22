@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Erro no Pagamento{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-danger">
+                <div class="card-header bg-danger text-white text-center">
+                    <h4><i class="fas fa-times-circle"></i> Erro no Pagamento</h4>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                        <h5>O pagamento não foi concluído</h5>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <p class="mb-1">Não se preocupe, nenhum valor foi cobrado.</p>
+                        <p class="mb-0">Você pode tentar novamente ou escolher outro método de pagamento.</p>
+                    </div>
+                    
+                    {% if payment_id %}
+                    <div class="mb-3">
+                        <small class="text-muted">ID do Pagamento: {{ payment_id }}</small>
+                    </div>
+                    {% endif %}
+                    
+                    {% if status %}
+                    <div class="mb-3">
+                        <small class="text-muted">Status: {{ status }}</small>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="tryPaymentAgain()">
+                            <i class="fas fa-redo"></i> Tentar Novamente
+                        </button>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-home"></i> Voltar ao Início
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function tryPaymentAgain() {
+    // Redireciona para a página de compra de créditos
+    // ou abre modal de pagamento novamente
+    history.back();
+}
+</script>
+{% endblock %}
