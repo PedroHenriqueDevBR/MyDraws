@@ -37,4 +37,9 @@ urlpatterns = [
         views.generate_by_ai,
         name="generate_by_ai",
     ),
+    path(
+        "route/webhook/",
+        views.webhook,
+        name="webhook",
+    ),
 ]

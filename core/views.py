@@ -2,6 +2,7 @@ from pathlib import Path
 
 from django.core.files import File
 from django.http.request import HttpRequest
+from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -249,3 +250,13 @@ def generate_by_ai(request: HttpRequest, image_id: int):
     )
 
     return redirect("show_uploaded_image", image_id=uploaded_image.id)
+
+
+def webhook(request: HttpRequest):
+    if request.method == "POST":
+        print("Webhook received POST:", request.POST)
+        print("Webhook received GET:", request.GET)
+        return HttpResponse(status=200)
+    else:
+        print("Webhook received GET:", request.GET)
+        return HttpResponse(status=200)
