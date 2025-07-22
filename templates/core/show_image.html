@@ -41,7 +41,7 @@
                 </h1>
                 <div class="w-24 h-1 mx-auto mb-4" style="background-color: var(--book-brown);"></div>
                 <p class="text-sm" style="color: var(--leather);">
-                    📅 Criado em {{ uploaded_image.created_at|date:"d/m/Y às H:i" }}
+                    📅 Criado em {{ uploaded_image.created_at|date:"d/m/Y à\s H:i" }}
                 </p>
             </div>
 
@@ -71,6 +71,7 @@
                     </div>
                 </div>
 
+                {% if credit_amount > 0 %}
                 <div class="conversion-panel">
                     <div class="vintage-border p-6" style="background-color: #FFFEF7;">
                         <h3 class="text-lg font-bold mb-6 text-center" style="color: var(--dark-brown);">
@@ -78,6 +79,7 @@
                         </h3>
 
                         <div class="space-y-4">
+                            {% if request.user.is_superuser %}
                             <button id="simple-convert-btn"
                                 class="w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                                 style="border-color: var(--book-brown); color: var(--book-brown);">
@@ -88,6 +90,7 @@
                                 </svg>
                                 Conversão Simples
                             </button>
+                            {% endif %}
 
                             <button id="ia-convert-btn"
                                 class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
@@ -99,13 +102,44 @@
                     </div>
 
                     <a href="#variations"
-                    class="mt-8 w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
-                    style="border-color: var(--book-brown); color: var(--book-brown);"
-                    >
+                        class="mt-8 w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                        style="border-color: var(--book-brown); color: var(--book-brown);">
                         🎨 Ver artes geradas
                     </a>
                 </div>
+
+                {% else %}
+
+                <div class="conversion-panel">
+                    <div class="vintage-border p-6" style="background-color: #FFFEF7;">
+                        <h3 class="text-lg font-bold mb-6 text-center" style="color: var(--dark-brown);">
+                            🎨 Opções de Conversão
+                        </h3>
+
+                        <p class="text-center mb-4" style="color: var(--leather);">
+                            Você não possui créditos suficientes para converter esta imagem.
+                        </p>
+
+                        <div class="space-y-4">
+                            <button id="ia-convert-btn"
+                                class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+                                style="background: linear-gradient(135deg, var(--book-brown), var(--leather));"
+                                data-bs-toggle="modal" data-bs-target="#iaConvertModal">
+                                Adicionar créditos
+                            </button>
+                        </div>
+                    </div>
+
+                    <a href="#variations"
+                        class="mt-8 w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                        style="border-color: var(--book-brown); color: var(--book-brown);">
+                        🎨 Ver artes geradas
+                    </a>
+                </div>
+                {% endif %}
             </div>
+
+
 
             <!-- Variations Display -->
             <div class="variations-section">
@@ -170,7 +204,8 @@
 </div>
 
 <!-- Simple Convert Modal -->
-<div id="simpleConvertModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+<div id="simpleConvertModal"
+    class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="vintage-border book-shadow m-4 max-w-md w-full" style="background-color: #FFFEF7;">
         <div class="p-8">
             <h2 class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
@@ -211,7 +246,8 @@
 </div>
 
 <!-- IA Convert Modal -->
-<div id="iaConvertModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+<div id="iaConvertModal"
+    class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="vintage-border book-shadow m-4 max-w-md w-full" style="background-color: #FFFEF7;">
         <div class="p-8">
             <h2 class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
@@ -236,7 +272,8 @@
 </div>
 
 <!-- Image Viewer Modal -->
-<div id="imageViewerModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+<div id="imageViewerModal"
+    class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="relative max-w-7xl max-h-screen p-4 w-full h-full flex items-center justify-center">
         <!-- Close Button -->
         <button onclick="closeImageModal()" type="button"

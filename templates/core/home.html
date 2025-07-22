@@ -5,7 +5,7 @@
 {% block content %}
 <div class="book-page">
     <!-- Book Title Page -->
-    <div class="text-center mb-12">
+    <div class="text-center my-12">
         <h1 class="text-2xl font-bold mb-4" style="color: var(--dark-brown);">
             📚 Minha Biblioteca
         </h1>
@@ -69,9 +69,9 @@
 </div>
 
 <!-- Form Modal -->
-<div id="formBookModal"
+<div id="formBookModal" onclick="closeFormModal('formBookModal')"
     class="modal fixed inset-0 z-50 flex items-center bg-black bg-opacity-50 justify-center px-8 hidden">
-    <div class="relative bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+    <div class="relative bg-white rounded-lg shadow-lg max-w-md w-full p-6" onclick="event.stopPropagation()">
         <!-- Modal Header -->
         <div class="flex justify-between items-center border-b pb-4">
             <h3 class="text-xl font-bold" style="color: var(--dark-brown);">

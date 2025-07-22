@@ -5,6 +5,7 @@ from django.http.request import HttpRequest
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib import messages
 
 from core.services.design_by_ai import DesignByAI
 
@@ -27,13 +28,24 @@ def home(request: HttpRequest):
 
 @login_required
 def book_detail(request: HttpRequest, book_id: int):
+    user = request.user
     book = Book.objects.filter(id=book_id, author=request.user).first()
+
     if not book:
-        return render(
+        messages.add_message(
             request,
-            "error.html",
-            {"message": "Book not found or you do not have permission to view it."},
+            messages.ERROR,
+            "You do not have permission to view this book.",
         )
+        return redirect("home")
+
+    if book.author != user:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "You do not have permission to view this book.",
+        )
+        return redirect("home")
 
     uploaded_images = book.uploaded_images.all().order_by("-created_at")
     return render(
@@ -60,15 +72,24 @@ def book_create(request: HttpRequest):
 
 @login_required
 def upload_image(request: HttpRequest, book_id: int):
+    user = request.user
     book = Book.objects.filter(id=book_id, author=request.user).first()
+
     if not book:
-        return render(
+        messages.add_message(
             request,
-            "error.html",
-            {
-                "message": "Book not found or you do not have permission to upload images."
-            },
+            messages.ERROR,
+            "You do not have permission to view this book.",
         )
+        return redirect("home")
+
+    if book.author != user:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "You do not have permission to view this book.",
+        )
+        return redirect("home")
 
     if request.method == "POST":
         image_file = request.FILES["image"]
@@ -87,28 +108,56 @@ def upload_image(request: HttpRequest, book_id: int):
 
 @login_required
 def show_uploaded_image(request: HttpRequest, image_id: int):
-    # TODO: verification if the image belongs to the user
+    user = request.user
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
+
     if not uploaded_image:
-        return render(
+        messages.add_message(
             request,
-            "error.html",
-            {"message": "Image not found."},
+            messages.ERROR,
+            "You do not have permission to convert this image.",
         )
+        return redirect("home")
+
+    if uploaded_image and uploaded_image.profile != user:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "You do not have permission to convert this image.",
+        )
+        return redirect("home")
 
     return render(request, "core/show_image.html", {"uploaded_image": uploaded_image})
 
 
 @login_required
 def simple_convert(request: HttpRequest, image_id: int):
-    # TODO: verification if the image belongs to the user
+    user = request.user
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
+
     if not uploaded_image:
-        return render(
+        messages.add_message(
             request,
-            "error.html",
-            {"message": "Image not found."},
+            messages.ERROR,
+            "You do not have permission to convert this image.",
         )
+        return redirect("home")
+
+    if uploaded_image and uploaded_image.profile != user:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "You do not have permission to convert this image.",
+        )
+        return redirect("home")
+
+    if not user.credit_amount or user.credit_amount <= 0:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "You do not have enough credits to perform this action. Please purchase more credits.",
+        )
+        return redirect("home")
 
     detail_level = int(request.POST.get("detail_level", 21))
     converted_image_path = local_converter.converter(
@@ -133,14 +182,32 @@ def simple_convert(request: HttpRequest, image_id: int):
 
 @login_required
 def generate_by_ai(request: HttpRequest, image_id: int):
-    # TODO: verification if the image belongs to the user
+    user = request.user
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
+
     if not uploaded_image:
-        return render(
+        messages.add_message(
             request,
-            "error.html",
-            {"message": "Image not found."},
+            messages.ERROR,
+            "You do not have permission to convert this image.",
         )
+        return redirect("home")
+
+    if uploaded_image and uploaded_image.profile != user:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "You do not have permission to convert this image.",
+        )
+        return redirect("home")
+
+    if not user.credit_amount or user.credit_amount <= 0:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "You do not have enough credits to perform this action. Please purchase more credits.",
+        )
+        return redirect("home")
 
     designer = DesignByAI(image_path=uploaded_image.image.path)
     converted_image_path, _ = designer.generate_from_gemini()
