@@ -1,6 +1,5 @@
 import os
 from io import BytesIO
-from typing import Optional
 from PIL import Image
 from decouple import config
 import subprocess

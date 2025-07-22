@@ -7,16 +7,18 @@
     <!-- Chapter Title -->
     <div class="text-center mb-12">
         <h1 class="text-4xl font-bold mb-4" style="color: var(--dark-brown);">
-            ✨ Criar Nova Página para Colorir
+            ✨ Criar Nova Página Para Colorir
         </h1>
         <div class="w-32 h-1 mx-auto mb-6" style="background-color: var(--book-brown);"></div>
         <p class="text-lg" style="color: var(--leather);">
-            Transforme sua imagem em uma obra de arte para colorir
+            Transforme sua imagem em uma arte para colorir
         </p>
     </div>
 
     <!-- Upload Form -->
-    <div class="mx-auto">
+    <div class="mx-auto container max-w-2xl p-8 bg-white rounded-lg "
+         style="background-color: #FFFEF7;">
+        
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 

@@ -110,5 +110,23 @@
     {% block body %}
     {% endblock body %}
 
+    <!-- Django Messages -->
+    <div class="fixed top-24 right-6 z-50">
+        {% if messages %}
+            <div class="space-y-4">
+                {% for message in messages %}
+                    <div class="p-4 rounded-lg shadow-md flex items-center justify-between 
+                        {% if message.tags == 'success' %}bg-green-100 text-green-800{% elif message.tags == 'error' %}bg-red-100 text-red-800{% elif message.tags == 'info' %}bg-blue-100 text-blue-800{% else %}bg-gray-100 text-gray-800{% endif %}"
+                        style="max-width: 80vw;">
+                        <span>{{ message }}</span>
+                        <button class="ml-4 text-lg font-bold text-gray-600 hover:text-gray-800" onclick="this.parentElement.remove();">
+                            &times;
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
 </body>
 </html>

@@ -18,6 +18,7 @@ build/
 *.sqlite3
 db.sqlite3
 media/
+mediafiles/
 staticfiles/
 *.pot
 *.py[co]

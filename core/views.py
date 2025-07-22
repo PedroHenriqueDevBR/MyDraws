@@ -9,9 +9,9 @@ from django.contrib import messages
 
 from core.services.design_by_ai import DesignByAI
 
-from .forms import ImageUploadForm
-from .models import UploadedImage, Book
-from .services import local_converter
+from core.forms import ImageUploadForm
+from core.models import UploadedImage, Book
+from core.services import local_converter
 
 
 def custom_logout(request: HttpRequest):
@@ -35,7 +35,7 @@ def book_detail(request: HttpRequest, book_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to view this book.",
+            "Você não possui permissão para ver este livro.",
         )
         return redirect("home")
 
@@ -43,7 +43,7 @@ def book_detail(request: HttpRequest, book_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to view this book.",
+            "Você não possui permissão para ver este livro.",
         )
         return redirect("home")
 
@@ -65,6 +65,16 @@ def book_create(request: HttpRequest):
             description=description,
             author=request.user,
         )
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            f"Livro '{book.title}' criado com sucesso.",
+        )
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            "Você pode começar a adicionar páginas a este livro.",
+        )
         return redirect("book_detail", book_id=book.id)
     else:
         return redirect("home")
@@ -79,7 +89,7 @@ def upload_image(request: HttpRequest, book_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to view this book.",
+            "Você não possui permissão para ver este livro.",
         )
         return redirect("home")
 
@@ -87,7 +97,7 @@ def upload_image(request: HttpRequest, book_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to view this book.",
+            "Você não possui permissão para ver este livro.",
         )
         return redirect("home")
 
@@ -99,7 +109,11 @@ def upload_image(request: HttpRequest, book_id: int):
             profile=request.user,
             book=book,
         )
-
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            f"Página mágica carregada com sucesso, hora da diversão! 🎉",
+        )
         return redirect("show_uploaded_image", image_id=uploaded_image.id)
     else:
         form = ImageUploadForm()
@@ -115,7 +129,7 @@ def show_uploaded_image(request: HttpRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to convert this image.",
+            "Você não possui permissão para ver esta imagem.",
         )
         return redirect("home")
 
@@ -123,7 +137,7 @@ def show_uploaded_image(request: HttpRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to convert this image.",
+            "Você não possui permissão para ver esta imagem.",
         )
         return redirect("home")
 
@@ -139,7 +153,7 @@ def simple_convert(request: HttpRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to convert this image.",
+            "Você não possui permissão para ver esta imagem.",
         )
         return redirect("home")
 
@@ -147,7 +161,7 @@ def simple_convert(request: HttpRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to convert this image.",
+            "Você não possui permissão para ver esta imagem.",
         )
         return redirect("home")
 
@@ -155,9 +169,9 @@ def simple_convert(request: HttpRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have enough credits to perform this action. Please purchase more credits.",
+            "Você não possui créditos suficientes para executar essa ação, compre alguns créditos.",
         )
-        return redirect("home")
+        return redirect("show_uploaded_image", image_id=image_id)
 
     detail_level = int(request.POST.get("detail_level", 21))
     converted_image_path = local_converter.converter(
@@ -177,6 +191,12 @@ def simple_convert(request: HttpRequest, image_id: int):
 
     Path(converted_image_path).unlink()
 
+    messages.add_message(
+        request,
+        messages.SUCCESS,
+        f"Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
+    )
+
     return redirect("show_uploaded_image", image_id=uploaded_image.id)
 
 
@@ -189,7 +209,7 @@ def generate_by_ai(request: HttpRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to convert this image.",
+            "Você não possui permissão para ver esta imagem.",
         )
         return redirect("home")
 
@@ -197,7 +217,7 @@ def generate_by_ai(request: HttpRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have permission to convert this image.",
+            "Você não possui permissão para ver esta imagem.",
         )
         return redirect("home")
 
@@ -205,9 +225,9 @@ def generate_by_ai(request: HttpRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "You do not have enough credits to perform this action. Please purchase more credits.",
+            "Você não possui créditos suficientes para executar essa ação, compre alguns créditos.",
         )
-        return redirect("home")
+        return redirect("show_uploaded_image", image_id=image_id)
 
     designer = DesignByAI(image_path=uploaded_image.image.path)
     converted_image_path, _ = designer.generate_from_gemini()
@@ -221,5 +241,11 @@ def generate_by_ai(request: HttpRequest, image_id: int):
     )
 
     Path(converted_image_path).unlink()
+
+    messages.add_message(
+        request,
+        messages.SUCCESS,
+        f"Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
+    )
 
     return redirect("show_uploaded_image", image_id=uploaded_image.id)

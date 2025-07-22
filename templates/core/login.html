@@ -17,6 +17,19 @@
             </p>
         </div>
 
+        {% if form.errors %}
+        <div class="error-messages bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+            <strong class="font-bold">Erro:</strong>
+            <ul class="mt-2">
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
         <!-- Login Form -->
         <form method="post" class="space-y-6">
             {% csrf_token %}
