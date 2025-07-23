@@ -1,43 +1,43 @@
-{% extends "base.html" %}
+{% extends "base_site.html" %}
 
 {% block title %}Erro no Pagamento{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card border-danger">
-                <div class="card-header bg-danger text-white text-center">
-                    <h4><i class="fas fa-times-circle"></i> Erro no Pagamento</h4>
+<div class="container mx-auto mt-10 px-4">
+    <div class="flex justify-center">
+        <div class="w-full max-w-md">
+            <div class="border border-red-500 rounded-lg shadow-lg">
+                <div class="bg-red-500 text-white text-center py-4 rounded-t-lg">
+                    <h4 class="text-lg font-semibold"><i class="fas fa-times-circle"></i> Erro no Pagamento</h4>
                 </div>
-                <div class="card-body text-center">
-                    <div class="mb-4">
-                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
-                        <h5>O pagamento não foi concluído</h5>
+                <div class="bg-white p-6 text-center rounded-b-lg">
+                    <div class="mb-6">
+                        <i class="fas fa-exclamation-triangle text-red-500 text-4xl mb-4"></i>
+                        <h5 class="text-lg font-medium">O pagamento não foi concluído</h5>
                     </div>
                     
-                    <div class="alert alert-warning">
-                        <p class="mb-1">Não se preocupe, nenhum valor foi cobrado.</p>
-                        <p class="mb-0">Você pode tentar novamente ou escolher outro método de pagamento.</p>
+                    <div class="bg-yellow-50 border border-yellow-400 text-yellow-800 rounded-lg p-4 mb-6">
+                        <p class="mb-2">Não se preocupe, nenhum valor foi cobrado.</p>
+                        <p>Você pode tentar novamente ou escolher outro método de pagamento.</p>
                     </div>
                     
                     {% if payment_id %}
-                    <div class="mb-3">
-                        <small class="text-muted">ID do Pagamento: {{ payment_id }}</small>
+                    <div class="mb-4">
+                        <small class="text-gray-500">ID do Pagamento: {{ payment_id }}</small>
                     </div>
                     {% endif %}
                     
                     {% if status %}
-                    <div class="mb-3">
-                        <small class="text-muted">Status: {{ status }}</small>
+                    <div class="mb-4">
+                        <small class="text-gray-500">Status: {{ status }}</small>
                     </div>
                     {% endif %}
                     
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary" onclick="tryPaymentAgain()">
+                    <div class="space-y-4">
+                        <a href="{% url 'buy_credits' %}" class="w-full block bg-violet-500 text-white py-2 px-4 rounded-lg hover:bg-violet-600 transition">
                             <i class="fas fa-redo"></i> Tentar Novamente
-                        </button>
-                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                        </a>
+                        <a href="{% url 'home' %}" class="w-full block text-center border border-gray-300 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-100 transition">
                             <i class="fas fa-home"></i> Voltar ao Início
                         </a>
                     </div>
@@ -47,11 +47,4 @@
     </div>
 </div>
 
-<script>
-function tryPaymentAgain() {
-    // Redireciona para a página de compra de créditos
-    // ou abre modal de pagamento novamente
-    history.back();
-}
-</script>
 {% endblock %}

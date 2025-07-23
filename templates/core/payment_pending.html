@@ -1,44 +1,42 @@
-{% extends "base.html" %}
+{% extends "base_site.html" %}
 
 {% block title %}Pagamento Pendente{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card border-warning">
-                <div class="card-header bg-warning text-dark text-center">
-                    <h4><i class="fas fa-clock"></i> Pagamento em Processamento</h4>
+<div class="container mx-auto mt-10">
+    <div class="flex justify-center">
+        <div class="w-full max-w-md">
+            <div class="border border-yellow-500 rounded-lg shadow-lg">
+                <div class="bg-yellow-500 text-black text-center py-4 rounded-t-lg">
+                    <h4 class="text-lg font-semibold"><i class="fas fa-clock"></i> Pagamento em Processamento</h4>
                 </div>
-                <div class="card-body text-center">
-                    <div class="mb-4">
-                        <i class="fas fa-hourglass-half fa-3x text-warning mb-3"></i>
-                        <h5>Seu pagamento está sendo processado</h5>
+                <div class="bg-white p-6 text-center rounded-b-lg">
+                    <div class="mb-6">
+                        <i class="fas fa-hourglass-half text-yellow-500 text-4xl mb-4"></i>
+                        <h5 class="text-lg font-medium">Seu pagamento está sendo processado</h5>
                     </div>
                     
-                    <div class="alert alert-info">
-                        <p class="mb-1">Aguarde alguns instantes...</p>
-                        <p class="mb-0">Você receberá uma confirmação assim que o pagamento for aprovado.</p>
+                    <div class="bg-violet-100 text-violet-800 p-4 rounded-lg mb-6">
+                        <p class="mb-2">Aguarde alguns instantes...</p>
+                        <p>Você receberá uma confirmação assim que o pagamento for aprovado.</p>
                     </div>
                     
                     {% if payment_id %}
-                    <div class="mb-3">
-                        <small class="text-muted">ID do Pagamento: {{ payment_id }}</small>
+                    <div class="mb-4">
+                        <small class="text-gray-500">ID do Pagamento: {{ payment_id }}</small>
                     </div>
                     {% endif %}
                     
-                    <div class="mb-3">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Verificando...</span>
-                        </div>
-                        <p class="mt-2 text-muted">Verificando status do pagamento...</p>
+                    <div class="mb-6">
+                        <div class="animate-spin h-8 w-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto"></div>
+                        <p class="mt-4 text-gray-500">Verificando status do pagamento...</p>
                     </div>
                     
-                    <div class="d-grid gap-2">
-                        <button class="btn btn-primary" onclick="checkPaymentStatus()" id="checkBtn">
+                    <div class="space-y-4">
+                        <button class="w-full bg-violet-500 text-white py-2 px-4 rounded-lg hover:bg-violet-600 transition" onclick="checkPaymentStatus()" id="checkBtn">
                             <i class="fas fa-sync"></i> Verificar Status
                         </button>
-                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                        <a href="{% url 'home' %}" class="w-full block bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition">
                             <i class="fas fa-home"></i> Voltar ao Início
                         </a>
                     </div>
