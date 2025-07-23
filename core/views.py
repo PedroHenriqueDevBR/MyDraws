@@ -256,7 +256,7 @@ def generate_by_ai(request: HttpRequest, image_id: int):
         f"Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
     )
 
-    use_credit_amount(user, 1, "AI_GENERATION")  # type: ignore
+    use_credit_amount(user, 3, "AI_GENERATION")  # type: ignore
 
     return redirect("show_uploaded_image", image_id=uploaded_image.id)
 
