@@ -16,7 +16,7 @@ from core.services.design_by_ai import DesignByAI
 from core.services.mercado_pago import get_mercado_pago_service
 
 from core.forms import ImageUploadForm
-from core.models import UploadedImage, Book
+from core.models import CreditTransaction, Profile, UploadedImage, Book
 from core.services import local_converter
 
 
@@ -203,6 +203,8 @@ def simple_convert(request: HttpRequest, image_id: int):
         f"Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
     )
 
+    use_credit_amount(user, 1)  # type: ignore
+
     return redirect("show_uploaded_image", image_id=uploaded_image.id)
 
 
@@ -254,7 +256,23 @@ def generate_by_ai(request: HttpRequest, image_id: int):
         f"Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
     )
 
+    use_credit_amount(user, 1, "AI_GENERATION")  # type: ignore
+
     return redirect("show_uploaded_image", image_id=uploaded_image.id)
+
+
+def use_credit_amount(profile: Profile, amount: int, origin: str = "LOCAL"):
+    profile.credit_amount -= amount
+    if profile.credit_amount < 0:
+        profile.credit_amount = 0
+    profile.save()
+
+    CreditTransaction.objects.create(
+        profile=profile,
+        amount=-amount,
+        transaction_type=f"CREDIT_USE_{origin}",
+    )
+    return True
 
 
 @csrf_exempt
@@ -355,16 +373,15 @@ def mercado_pago_webhook(request: HttpRequest):
 
         data = json.loads(request.body)
 
-        action = data.get("action")
+        action = data.get("topic")
         api_version = data.get("api_version")
-        data_info = data.get("data", {})
-        payment_id = data_info.get("id")
+        payment_id = data.get("resource")
 
         print(
             f"Webhook - Action: {action}, API Version: {api_version}, Payment ID: {payment_id}"
         )
 
-        if action == "payment.updated" and payment_id:
+        if action == "payment" and payment_id:
             mp_service = get_mercado_pago_service()
             success, message = mp_service.process_payment_notification(str(payment_id))
 
@@ -398,9 +415,6 @@ def mercado_pago_webhook(request: HttpRequest):
 
 @login_required
 def payment_success(request: HttpRequest):
-    """
-    Página de sucesso após pagamento aprovado
-    """
     payment_id = request.GET.get("payment_id")
     status = request.GET.get("status")
     external_reference = request.GET.get("external_reference")
@@ -413,6 +427,13 @@ def payment_success(request: HttpRequest):
     }
 
     if status == "approved":
+        mp_service = get_mercado_pago_service()
+        success, message = mp_service.process_payment_notification(str(payment_id))
+
+        print(
+            f"Webhook - Processamento: {'Sucesso' if success else 'Falha'} - {message}"
+        )
+
         messages.success(
             request, "Pagamento aprovado! Seus créditos foram adicionados à sua conta."
         )
@@ -426,9 +447,6 @@ def payment_success(request: HttpRequest):
 
 @login_required
 def payment_failure(request: HttpRequest):
-    """
-    Página de falha/cancelamento do pagamento
-    """
     payment_id = request.GET.get("payment_id")
     status = request.GET.get("status")
 
@@ -444,9 +462,6 @@ def payment_failure(request: HttpRequest):
 
 @login_required
 def payment_pending(request: HttpRequest):
-    """
-    Página para pagamentos pendentes
-    """
     payment_id = request.GET.get("payment_id")
     status = request.GET.get("status")
 

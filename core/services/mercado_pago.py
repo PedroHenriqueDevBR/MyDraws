@@ -165,7 +165,10 @@ class MercadoPagoService:
 
     @transaction.atomic
     def _add_credits_to_user(
-        self, user_id: int, credit_amount: int, payment_id: str
+        self,
+        user_id: int,
+        credit_amount: int,
+        payment_id: str,
     ) -> Tuple[bool, str]:
         try:
             profile = Profile.objects.get(id=user_id)
