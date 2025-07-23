@@ -42,4 +42,45 @@ urlpatterns = [
         views.webhook,
         name="webhook",
     ),
+    # URLs do Mercado Pago
+    path(
+        "payment/create/",
+        views.create_payment_preference,
+        name="create_payment_preference",
+    ),
+    path(
+        "webhook/mercadopago/",
+        views.mercado_pago_webhook,
+        name="mercado_pago_webhook",
+    ),
+    path(
+        "payment/success/",
+        views.payment_success,
+        name="payment_success",
+    ),
+    path(
+        "payment/failure/",
+        views.payment_failure,
+        name="payment_failure",
+    ),
+    path(
+        "payment/pending/",
+        views.payment_pending,
+        name="payment_pending",
+    ),
+    path(
+        "payment/status/<str:payment_id>/",
+        views.check_payment_status,
+        name="check_payment_status",
+    ),
+    path(
+        "payment/methods/",
+        views.get_available_payment_methods,
+        name="get_payment_methods",
+    ),
+    path(
+        "buy-credits/",
+        views.buy_credits,
+        name="buy_credits",
+    ),
 ]

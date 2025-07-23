@@ -1,0 +1,117 @@
+{% extends "base_site.html" %}
+
+{% block title %}Pagamento Pendente{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-10">
+    <div class="flex justify-center">
+        <div class="w-full max-w-md">
+            <div class="border border-yellow-500 rounded-lg shadow-lg">
+                <div class="bg-yellow-500 text-black text-center py-4 rounded-t-lg">
+                    <h4 class="text-lg font-semibold"><i class="fas fa-clock"></i> Pagamento em Processamento</h4>
+                </div>
+                <div class="bg-white p-6 text-center rounded-b-lg">
+                    <div class="mb-6">
+                        <i class="fas fa-hourglass-half text-yellow-500 text-4xl mb-4"></i>
+                        <h5 class="text-lg font-medium">Seu pagamento está sendo processado</h5>
+                    </div>
+                    
+                    <div class="bg-violet-100 text-violet-800 p-4 rounded-lg mb-6">
+                        <p class="mb-2">Aguarde alguns instantes...</p>
+                        <p>Você receberá uma confirmação assim que o pagamento for aprovado.</p>
+                    </div>
+                    
+                    {% if payment_id %}
+                    <div class="mb-4">
+                        <small class="text-gray-500">ID do Pagamento: {{ payment_id }}</small>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mb-6">
+                        <div class="animate-spin h-8 w-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto"></div>
+                        <p class="mt-4 text-gray-500">Verificando status do pagamento...</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <button class="w-full bg-violet-500 text-white py-2 px-4 rounded-lg hover:bg-violet-600 transition" onclick="checkPaymentStatus()" id="checkBtn">
+                            <i class="fas fa-sync"></i> Verificar Status
+                        </button>
+                        <a href="{% url 'home' %}" class="w-full block bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition">
+                            <i class="fas fa-home"></i> Voltar ao Início
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const paymentId = '{{ payment_id }}';
+
+async function checkPaymentStatus() {
+    if (!paymentId) return;
+    
+    const checkBtn = document.getElementById('checkBtn');
+    const originalText = checkBtn.innerHTML;
+    
+    try {
+        checkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+        checkBtn.disabled = true;
+        
+        const response = await fetch(`/payment/status/${paymentId}/`);
+        const data = await response.json();
+        
+        if (data.success) {
+            const status = data.payment.status;
+            
+            if (status === 'approved') {
+                // Pagamento aprovado - redireciona para página de sucesso
+                window.location.href = `/payment/success/?payment_id=${paymentId}&status=approved`;
+            } else if (status === 'rejected' || status === 'cancelled') {
+                // Pagamento rejeitado - redireciona para página de erro
+                window.location.href = `/payment/failure/?payment_id=${paymentId}&status=${status}`;
+            } else {
+                // Ainda pendente
+                alert('Pagamento ainda em processamento. Aguarde mais um pouco.');
+            }
+        } else {
+            alert('Erro ao verificar status do pagamento.');
+        }
+    } catch (error) {
+        console.error('Erro:', error);
+        alert('Erro ao verificar status do pagamento.');
+    } finally {
+        checkBtn.innerHTML = originalText;
+        checkBtn.disabled = false;
+    }
+}
+
+// Verifica automaticamente a cada 15 segundos
+if (paymentId) {
+    const autoCheck = setInterval(async () => {
+        try {
+            const response = await fetch(`/payment/status/${paymentId}/`);
+            const data = await response.json();
+            
+            if (data.success) {
+                const status = data.payment.status;
+                
+                if (status === 'approved') {
+                    clearInterval(autoCheck);
+                    window.location.href = `/payment/success/?payment_id=${paymentId}&status=approved`;
+                } else if (status === 'rejected' || status === 'cancelled') {
+                    clearInterval(autoCheck);
+                    window.location.href = `/payment/failure/?payment_id=${paymentId}&status=${status}`;
+                }
+            }
+        } catch (error) {
+            console.error('Erro na verificação automática:', error);
+        }
+    }, 15000);
+    
+    // Para a verificação automática após 10 minutos
+    setTimeout(() => clearInterval(autoCheck), 600000);
+}
+</script>
+{% endblock %}
