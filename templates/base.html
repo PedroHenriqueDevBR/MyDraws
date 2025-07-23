@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -5,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'images/logo-transparent.png' %}" type="image/x-icon">
     <title>{% block title %}MyDraws - Livro de Colorir{% endblock %}</title>
     <style>
         :root {

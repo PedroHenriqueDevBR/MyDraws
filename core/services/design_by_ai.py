@@ -19,16 +19,16 @@ class DesignByAI:
         self.image = Image.open(image_path)
         self.client = genai.Client(api_key=config("GENAI_API_KEY"))  # type: ignore
         self.text_input = (
-            "Convert this image into a black and white line drawing"
+            "Convert this image into a black and white line drawing" 
             "in coloring book style. Preserve the key shapes and "
             "features of the original image — whether it's a person, "
             "object, animal, or landscape — using only clean and "
             "sharp outlines, with no shading or color fill. The "
             "result should clearly reflect the identity and "
-            "structure of the image, in a style suitable for "
-            "printing and hand coloring with pencils or markers. "
-            "Design the background to be minimalistic - "
-            "Don't forget the hair or beard design when it's a person"
+            "structure of the image's main elements, in a simple "
+            "style suitable for printing and hand coloring with "
+            "pencils or markers. Keep the background blank or "
+            "minimally outlined to emphasize the main subjects."
         )
         # self.text_input = (
         #     "Convert this image into a black and white line drawing"
