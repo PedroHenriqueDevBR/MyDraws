@@ -1,149 +1,159 @@
-{% extends "base.html" %}
+{% extends "base_site.html" %}
 
 {% block title %}Comprar Créditos{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4><i class="fas fa-coins"></i> Comprar Créditos</h4>
-                    <p class="mb-0 text-muted">Adicione créditos à sua conta para usar recursos premium</p>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <h6>Saldo Atual</h6>
-                                <div class="alert alert-info">
-                                    <i class="fas fa-wallet"></i> 
-                                    <strong>{{ user.credit_amount }} créditos</strong>
+
+
+<style>
+    .credit-package {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .credit-package:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .credit-package.selected {
+        border-color: #007bff !important;
+        background-color: #f8f9fa;
+    }
+</style>
+
+<div class="container mx-auto mt-10">
+    <div>
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h1 class="text-2xl font-bold text-gray-800 flex items-center">
+                <i class="fas fa-coins mr-2"></i> Comprar Créditos
+            </h1>
+            <p class="text-sm text-gray-500">Adicione créditos à sua conta para usar recursos premium</p>
+        </div>
+
+        <div class="px-6 py-4 mt-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <div class="mb-6">
+                        <h6 class="text-lg font-semibold text-gray-800">Saldo Atual</h6>
+                        <div class="bg-blue-100 text-blue-800 p-4 rounded-lg flex items-center">
+                            <i class="fas fa-wallet mr-2"></i>
+                            <strong>{{ user.credit_amount }} créditos</strong>
+                        </div>
+                    </div>
+
+                    <h2 class="text-xl font-semibold text-gray-800">Pacotes Disponíveis</h2>
+
+                    <div class="space-y-4">
+                        <!-- Pacote Básico -->
+                        <div class="border rounded-lg p-4 cursor-pointer transition-transform transform hover:-translate-y-1 hover:shadow-lg credit-package"
+                            data-credits="50" data-price="25.00">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h6 class="text-lg font-semibold text-gray-800">Pacote Básico</h6>
+                                    <p class="text-sm text-gray-500">50 créditos</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xl font-bold text-gray-800">R$ 25,00</span>
+                                    <br>
+                                    <small class="text-gray-500">R$ 0,50 por crédito</small>
                                 </div>
                             </div>
-                            
-                            <h6>Pacotes Disponíveis</h6>
-                            <div class="credit-packages">
-                                <!-- Pacote Básico -->
-                                <div class="card credit-package mb-3" data-credits="50" data-price="25.00">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h6 class="card-title mb-1">Pacote Básico</h6>
-                                                <p class="card-text text-muted mb-0">50 créditos</p>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="h5 mb-0">R$ 25,00</span>
-                                                <br>
-                                                <small class="text-muted">R$ 0,50 por crédito</small>
-                                            </div>
-                                        </div>
-                                    </div>
+                        </div>
+
+                        <!-- Pacote Popular -->
+                        <div class="border border-blue-500 rounded-lg p-4 cursor-pointer transition-transform transform hover:-translate-y-1 hover:shadow-lg credit-package"
+                            data-credits="120" data-price="50.00">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h6 class="text-lg font-semibold text-gray-800">
+                                        Pacote Popular
+                                        <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded">Mais vendido</span>
+                                    </h6>
+                                    <p class="text-sm text-gray-500">120 créditos</p>
                                 </div>
-                                
-                                <!-- Pacote Popular -->
-                                <div class="card credit-package mb-3 border-primary" data-credits="120" data-price="50.00">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h6 class="card-title mb-1">
-                                                    Pacote Popular 
-                                                    <span class="badge bg-primary">Mais vendido</span>
-                                                </h6>
-                                                <p class="card-text text-muted mb-0">120 créditos</p>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="h5 mb-0">R$ 50,00</span>
-                                                <br>
-                                                <small class="text-success">R$ 0,42 por crédito</small>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="text-right">
+                                    <span class="text-xl font-bold text-gray-800">R$ 50,00</span>
+                                    <br>
+                                    <small class="text-green-500">R$ 0,42 por crédito</small>
                                 </div>
-                                
-                                <!-- Pacote Premium -->
-                                <div class="card credit-package mb-3 border-warning" data-credits="300" data-price="120.00">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <h6 class="card-title mb-1">
-                                                    Pacote Premium 
-                                                    <span class="badge bg-warning text-dark">Melhor valor</span>
-                                                </h6>
-                                                <p class="card-text text-muted mb-0">300 créditos</p>
-                                            </div>
-                                            <div class="text-end">
-                                                <span class="h5 mb-0">R$ 120,00</span>
-                                                <br>
-                                                <small class="text-success">R$ 0,40 por crédito</small>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+
+                        <!-- Pacote Premium -->
+                        <div class="border border-yellow-500 rounded-lg p-4 cursor-pointer transition-transform transform hover:-translate-y-1 hover:shadow-lg credit-package"
+                            data-credits="300" data-price="120.00">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h6 class="text-lg font-semibold text-gray-800">
+                                        Pacote Premium
+                                        <span class="bg-yellow-500 text-gray-800 text-xs px-2 py-1 rounded">Melhor valor</span>
+                                    </h6>
+                                    <p class="text-sm text-gray-500">300 créditos</p>
                                 </div>
-                                
-                                <!-- Pacote Customizado -->
-                                <div class="card credit-package mb-3" data-credits="custom" data-price="custom">
-                                    <div class="card-body">
-                                        <h6 class="card-title mb-3">Pacote Personalizado</h6>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <label for="customCredits" class="form-label">Créditos</label>
-                                                <input type="number" class="form-control" id="customCredits" 
-                                                       min="10" max="1000" value="100" 
-                                                       onchange="updateCustomPrice()">
-                                            </div>
-                                            <div class="col-6">
-                                                <label class="form-label">Total</label>
-                                                <div class="form-control-plaintext">
-                                                    <strong id="customTotal">R$ 50,00</strong>
-                                                    <br>
-                                                    <small class="text-muted" id="customUnitPrice">R$ 0,50 por crédito</small>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="text-right">
+                                    <span class="text-xl font-bold text-gray-800">R$ 120,00</span>
+                                    <br>
+                                    <small class="text-green-500">R$ 0,40 por crédito</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pacote Customizado -->
+                        <div class="border rounded-lg p-4 cursor-pointer transition-transform transform hover:-translate-y-1 hover:shadow-lg credit-package"
+                            data-credits="custom" data-price="custom">
+                            <h6 class="text-lg font-semibold text-gray-800 mb-4">Pacote Personalizado</h6>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="customCredits" class="block text-sm font-medium text-gray-700">Créditos</label>
+                                    <input type="number" id="customCredits" class="mt-1 block w-full border-gray-500 px-2 py-2 focus:ring-blue-500 focus:border-blue-500"
+                                        min="10" max="1000" value="100" onchange="updateCustomPrice()">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Total</label>
+                                    <div class="mt-1">
+                                        <strong id="customTotal" class="text-lg text-gray-800">R$ 50,00</strong>
+                                        <br>
+                                        <small id="customUnitPrice" class="text-gray-500">R$ 0,50 por crédito</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="col-md-6">
-                            <div class="payment-summary">
-                                <h6>Resumo da Compra</h6>
-                                <div class="card bg-light">
-                                    <div class="card-body">
-                                        <div id="selectedPackage" class="mb-3">
-                                            <p class="text-muted">Selecione um pacote ao lado</p>
-                                        </div>
-                                        
-                                        <div id="paymentDetails" style="display: none;">
-                                            <div class="d-flex justify-content-between mb-2">
-                                                <span>Créditos:</span>
-                                                <strong id="summaryCredits">-</strong>
-                                            </div>
-                                            <div class="d-flex justify-content-between mb-2">
-                                                <span>Preço unitário:</span>
-                                                <span id="summaryUnitPrice">-</span>
-                                            </div>
-                                            <hr>
-                                            <div class="d-flex justify-content-between mb-3">
-                                                <strong>Total:</strong>
-                                                <strong id="summaryTotal" class="text-primary">-</strong>
-                                            </div>
-                                            
-                                            <button class="btn btn-primary w-100" onclick="processPayment()">
-                                                <i class="fas fa-credit-card"></i> Pagar com Mercado Pago
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-3">
-                                    <small class="text-muted">
-                                        <i class="fas fa-shield-alt"></i>
-                                        Pagamento seguro processado pelo Mercado Pago
-                                    </small>
-                                </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="p-4 rounded-lg">
+                        <h6 class="text-lg font-semibold text-gray-800">Resumo da Compra</h6>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <div id="selectedPackage" class="mb-4">
+                                <p class="text-sm text-gray-500">Selecione um pacote ao lado</p>
                             </div>
+
+                            <div id="paymentDetails" class="hidden">
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm text-gray-800">Créditos:</span>
+                                    <strong id="summaryCredits" class="text-sm text-gray-800">-</strong>
+                                </div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-sm text-gray-800">Preço unitário:</span>
+                                    <span id="summaryUnitPrice" class="text-sm text-gray-800">-</span>
+                                </div>
+                                <hr class="my-2">
+                                <div class="flex justify-between mb-4">
+                                    <strong class="text-lg text-gray-800">Total:</strong>
+                                    <strong id="summaryTotal" class="text-lg text-blue-500">-</strong>
+                                </div>
+
+                                <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition" onclick="processPayment()">
+                                    <i class="fas fa-credit-card mr-2"></i> Pagar com Mercado Pago
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-sm text-gray-500 flex items-center">
+                            <i class="fas fa-shield-alt mr-2"></i>
+                            Pagamento seguro processado pelo Mercado Pago
                         </div>
                     </div>
                 </div>
@@ -152,114 +162,97 @@
     </div>
 </div>
 
-<style>
-.credit-package {
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.credit-package:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.credit-package.selected {
-    border-color: #007bff !important;
-    background-color: #f8f9fa;
-}
-</style>
-
 <script>
-let selectedCredits = 0;
-let selectedPrice = 0;
+    let selectedCredits = 0;
+    let selectedPrice = 0;
 
-// Selecionar pacote de créditos
-document.querySelectorAll('.credit-package').forEach(package => {
-    package.addEventListener('click', function() {
-        // Remove seleção anterior
-        document.querySelectorAll('.credit-package').forEach(p => p.classList.remove('selected'));
-        
-        // Adiciona seleção atual
-        this.classList.add('selected');
-        
-        const credits = this.dataset.credits;
-        const price = this.dataset.price;
-        
-        if (credits === 'custom') {
-            selectedCredits = parseInt(document.getElementById('customCredits').value);
-            selectedPrice = parseFloat(document.getElementById('customCredits').value) * 0.5;
-        } else {
-            selectedCredits = parseInt(credits);
-            selectedPrice = parseFloat(price);
-        }
-        
-        updatePaymentSummary();
-    });
-});
+    // Selecionar pacote de créditos
+    document.querySelectorAll('.credit-package').forEach(package => {
+        package.addEventListener('click', function () {
+            // Remove seleção anterior
+            document.querySelectorAll('.credit-package').forEach(p => p.classList.remove('selected'));
 
-function updateCustomPrice() {
-    const credits = parseInt(document.getElementById('customCredits').value);
-    const unitPrice = 0.5; // R$ 0,50 por crédito
-    const total = credits * unitPrice;
-    
-    document.getElementById('customTotal').textContent = `R$ ${total.toFixed(2)}`;
-    document.getElementById('customUnitPrice').textContent = `R$ ${unitPrice.toFixed(2)} por crédito`;
-    
-    // Se o pacote personalizado estiver selecionado, atualiza o resumo
-    if (document.querySelector('.credit-package[data-credits="custom"]').classList.contains('selected')) {
-        selectedCredits = credits;
-        selectedPrice = total;
-        updatePaymentSummary();
-    }
-}
+            // Adiciona seleção atual
+            this.classList.add('selected');
 
-function updatePaymentSummary() {
-    if (selectedCredits > 0) {
-        document.getElementById('selectedPackage').style.display = 'none';
-        document.getElementById('paymentDetails').style.display = 'block';
-        
-        document.getElementById('summaryCredits').textContent = `${selectedCredits} créditos`;
-        document.getElementById('summaryUnitPrice').textContent = `R$ ${(selectedPrice / selectedCredits).toFixed(2)}`;
-        document.getElementById('summaryTotal').textContent = `R$ ${selectedPrice.toFixed(2)}`;
-    }
-}
+            const credits = this.dataset.credits;
+            const price = this.dataset.price;
 
-async function processPayment() {
-    if (selectedCredits <= 0) {
-        alert('Selecione um pacote de créditos primeiro.');
-        return;
-    }
-    
-    try {
-        const response = await fetch('/payment/create/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-            },
-            body: JSON.stringify({
-                credit_amount: selectedCredits,
-                unit_price: (selectedPrice / selectedCredits).toFixed(2),
-                description: `Compra de ${selectedCredits} créditos - MyDraws`
-            })
+            if (credits === 'custom') {
+                selectedCredits = parseInt(document.getElementById('customCredits').value);
+                selectedPrice = parseFloat(document.getElementById('customCredits').value) * 0.5;
+            } else {
+                selectedCredits = parseInt(credits);
+                selectedPrice = parseFloat(price);
+            }
+
+            updatePaymentSummary();
         });
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            // Redireciona para o Mercado Pago
-            window.location.href = data.init_point;
-        } else {
-            alert(`Erro ao criar pagamento: ${data.error}`);
-        }
-    } catch (error) {
-        console.error('Erro:', error);
-        alert('Erro interno. Tente novamente.');
-    }
-}
+    });
 
-// Inicializa com pacote popular selecionado
-document.querySelector('.credit-package[data-credits="120"]').click();
+    function updateCustomPrice() {
+        const credits = parseInt(document.getElementById('customCredits').value);
+        const unitPrice = 0.5; // R$ 0,50 por crédito
+        const total = credits * unitPrice;
+
+        document.getElementById('customTotal').textContent = `R$ ${total.toFixed(2)}`;
+        document.getElementById('customUnitPrice').textContent = `R$ ${unitPrice.toFixed(2)} por crédito`;
+
+        // Se o pacote personalizado estiver selecionado, atualiza o resumo
+        if (document.querySelector('.credit-package[data-credits="custom"]').classList.contains('selected')) {
+            selectedCredits = credits;
+            selectedPrice = total;
+            updatePaymentSummary();
+        }
+    }
+
+    function updatePaymentSummary() {
+        if (selectedCredits > 0) {
+            document.getElementById('selectedPackage').style.display = 'none';
+            document.getElementById('paymentDetails').style.display = 'block';
+
+            document.getElementById('summaryCredits').textContent = `${selectedCredits} créditos`;
+            document.getElementById('summaryUnitPrice').textContent = `R$ ${(selectedPrice / selectedCredits).toFixed(2)}`;
+            document.getElementById('summaryTotal').textContent = `R$ ${selectedPrice.toFixed(2)}`;
+        }
+    }
+
+    async function processPayment() {
+        if (selectedCredits <= 0) {
+            alert('Selecione um pacote de créditos primeiro.');
+            return;
+        }
+
+        try {
+            const response = await fetch('/payment/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    credit_amount: selectedCredits,
+                    unit_price: (selectedPrice / selectedCredits).toFixed(2),
+                    description: `Compra de ${selectedCredits} créditos - MyDraws`
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Redireciona para o Mercado Pago
+                window.location.href = data.init_point;
+            } else {
+                alert(`Erro ao criar pagamento: ${data.error}`);
+            }
+        } catch (error) {
+            console.error('Erro:', error);
+            alert('Erro interno. Tente novamente.');
+        }
+    }
+
+    // Inicializa com pacote popular selecionado
+    document.querySelector('.credit-package[data-credits="120"]').click();
 </script>
 
 {% csrf_token %}

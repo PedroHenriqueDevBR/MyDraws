@@ -27,7 +27,7 @@
 
     <!-- Floating Action Button -->
     <div class="fixed bottom-6 right-6 " style="z-index: 1000;">
-        <a href="#" class="bg-violet-800 text-white rounded-full p-4 shadow-lg hover:bg-violet-900 transition">
+        <a href="{% url 'buy_credits' %}" class="bg-violet-800 text-white rounded-full p-4 shadow-lg hover:bg-violet-900 transition">
             {% if credit_amount > 0 %}
             Créditos: <b>{{ credit_amount }}</b>
             {% else %}

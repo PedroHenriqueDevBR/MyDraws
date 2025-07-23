@@ -78,4 +78,9 @@ urlpatterns = [
         views.get_available_payment_methods,
         name="get_payment_methods",
     ),
+    path(
+        "buy-credits/",
+        views.buy_credits,
+        name="buy_credits",
+    ),
 ]
