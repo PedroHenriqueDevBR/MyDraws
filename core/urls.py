@@ -8,6 +8,11 @@ urlpatterns = [
         name="home",
     ),
     path(
+        "mydraws/",
+        views.landing,
+        name="mydraws",
+    ),
+    path(
         "upload/<int:book_id>/",
         views.upload_image,
         name="upload_image",

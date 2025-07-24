@@ -20,6 +20,10 @@ from core.models import CreditTransaction, Profile, UploadedImage, Book
 from core.services import local_converter
 
 
+def landing(request: HttpRequest):
+    return render(request, "core/landing.html")
+
+
 def custom_logout(request: HttpRequest):
     logout(request)
     request.session.flush()

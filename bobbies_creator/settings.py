@@ -86,7 +86,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 WSGI_APPLICATION = "bobbies_creator.wsgi.application"
 LOGIN_REDIRECT_URL = "/"
-LOGIN_URL = "/login/"
+LOGIN_URL = "/mydraws/"
 
 DEVELOPMENT_DB = config("DEVELOPMENT_DB", default=False, cast=bool)
 
@@ -128,10 +128,10 @@ USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = "/static/"
+STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-MEDIA_URL = "/media/"
+MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "mediafiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
