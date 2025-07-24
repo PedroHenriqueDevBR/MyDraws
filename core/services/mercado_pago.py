@@ -84,10 +84,7 @@ class MercadoPagoService:
             }
 
             preference_response = self.sdk.preference().create(preference_data)
-            ###################################
-            import pdb
-            pdb.set_trace()
-            ###################################
+            
             if preference_response["status"] == 201:
                 logger.info(
                     "Preferência criada com sucesso para usuário %s. ID: %s",
@@ -96,6 +93,7 @@ class MercadoPagoService:
                 )
                 return preference_response["response"]
             else:
+                print("Erro ao criar preferência:", preference_response)
                 logger.error(
                     "Erro ao criar preferência: %s",
                     preference_response.get("message", "Erro desconhecido"),
