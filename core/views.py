@@ -1,6 +1,7 @@
-from pathlib import Path
 import json
-from decimal import Decimal
+from pathlib import Path
+import math
+from decouple import config
 
 from django.core.files import File
 from django.http.request import HttpRequest
@@ -299,38 +300,30 @@ def webhook(request: HttpRequest):
 @login_required
 @require_http_methods(["POST"])
 def create_payment_preference(request: HttpRequest):
+    profile = request.user
     try:
         data = json.loads(request.body)
         credit_amount = data.get("credit_amount")
-        unit_price_str = data.get("unit_price")
-        description = data.get("description", "Compra de créditos para MyDraws")
 
-        if not credit_amount or credit_amount <= 0:
+        if not credit_amount or credit_amount < 5:
             return JsonResponse(
                 {
                     "success": False,
-                    "error": "Quantidade de créditos deve ser maior que zero",
+                    "error": "Quantidade de créditos deve ser maior ou igual a 5 (cinco)",
                 },
                 status=400,
             )
+            
+        unit_price = config("UNIT_PRICE", default="0.75", cast=float)
+        description = f"Compra de {credit_amount} créditos por { profile } - MyDraws"
 
-        if not unit_price_str:
-            return JsonResponse(
-                {"success": False, "error": "Preço unitário é obrigatório"}, status=400
-            )
+        if credit_amount >= 120:
+            unit_price = unit_price * 0.9
+            unit_price = math.floor(unit_price * 100) / 100
 
-        try:
-            unit_price = Decimal(unit_price_str)
-            if unit_price <= 0:
-                raise ValueError()
-        except (ValueError, TypeError):
-            return JsonResponse(
-                {
-                    "success": False,
-                    "error": "Preço unitário deve ser um número positivo",
-                },
-                status=400,
-            )
+        if credit_amount >= 300:
+            unit_price = unit_price * 0.8
+            unit_price = math.floor(unit_price * 100) / 100
 
         mp_service = get_mercado_pago_service()
         preference = mp_service.create_payment_preference(
@@ -544,4 +537,17 @@ def get_available_payment_methods(request: HttpRequest):
 
 @login_required
 def buy_credits(request: HttpRequest):
-    return render(request, "core/buy_credits.html")
+    unit_price = config("UNIT_PRICE", default="0.75", cast=float)
+    unit_price_str = config("UNIT_PRICE")
+    medium_price = unit_price * 0.9
+    premium_price = unit_price * 0.8
+    return render(
+        request,
+        "core/buy_credits.html",
+        {
+            "unit_price": unit_price,
+            "medium_price": medium_price,
+            "premium_price": premium_price,
+            "unit_price_str": unit_price_str,
+        },
+    )
