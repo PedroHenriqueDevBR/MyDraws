@@ -1,62 +1,67 @@
 {% extends "base_site.html" %}
+{% load i18n %}
 
-{% block title %}Nova Página - MyDraws{% endblock %}
+{% block title %}{% trans "New Page" %} - MyDraws{% endblock %}
 
 {% block content %}
 <div class="book-upload-page">
     <!-- Chapter Title -->
     <div class="text-center mb-12">
         <h1 class="text-4xl font-bold mb-4" style="color: var(--dark-brown);">
-            ✨ Criar Nova Página Para Colorir
+            ✨ {% trans "Create New Coloring Page" %}
         </h1>
         <div class="w-32 h-1 mx-auto mb-6" style="background-color: var(--book-brown);"></div>
         <p class="text-lg" style="color: var(--leather);">
-            Transforme sua imagem em uma arte para colorir
+            {% trans "Transform your image into coloring art" %}
         </p>
     </div>
 
     <!-- Upload Form -->
-    <div class="mx-auto container max-w-2xl p-8 bg-white rounded-lg "
-         style="background-color: #FFFEF7;">
-        
+    <div class="mx-auto container max-w-2xl p-8 bg-white rounded-lg " style="background-color: #FFFEF7;">
+
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
             <!-- Title Input -->
             <div class="mb-8">
-                <label for="title" class="block text-lg font-semibold mb-4" 
-                       style="color: var(--dark-brown);">
-                    📝 Detalhes da foto
+                <label for="title" class="block text-lg font-semibold mb-4" style="color: var(--dark-brown);">
+                    📝 {% trans "Photo Details" %}
                 </label>
                 <input type="text" id="title" name="title" required
-                       placeholder="Digite um título para sua página..."
-                       class="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
-                       style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);">
-            </div>
-            
-            <!-- Upload Area -->
-            <div class="mb-8">
-                <label for="image" class="block text-lg font-semibold mb-4" 
-                       style="color: var(--dark-brown);">
-                    📷 Escolha sua Imagem
-                </label>
-                <input type="file" id="image" name="image" required
-                       class="block w-full px-4 py-6 border-3 border-dashed rounded-lg text-center transition-all duration-300 hover:border-solid focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
-                       style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);">
-                <label for="image" class="mt-2 text-sm block text-center" style="color: var(--leather);">
-                    Arraste e solte ou clique para selecionar uma imagem
-                </label>
+                    placeholder="{% trans 'Enter a title for your page...' %}"
+                    class="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
+                    style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);">
             </div>
 
+            <!-- Upload Area -->
+            <div class="mb-8">
+                <label for="image" class="block text-lg font-semibold mb-4" style="color: var(--dark-brown);">
+                    📷 {% trans "Choose your Image" %}
+                </label>
+                <input type="file" id="image" name="image" required accept="image/*"
+                    class="block w-full px-4 py-6 border-3 border-dashed rounded-lg text-center transition-all duration-300 hover:border-solid focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
+                    style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);"
+                    onchange="previewImage(event)">
+                <label for="image" class="mt-2 text-sm block text-center" style="color: var(--leather);">
+                    {% trans "Drag and drop or click to select an image" %}
+                </label>
+                <!-- Preview Area -->
+                <div id="imagePreviewContainer" class="mt-4 flex justify-center">
+                    <img id="imagePreview" src="#" alt="{% trans 'Image preview' %}"
+                        class="hidden max-h-64 rounded-lg shadow-md border" style="border-color: var(--light-brown);" />
+                </div>
+            </div>
             <!-- Submit Button -->
             <div>
-                <button type="submit" 
-                        class="inline-flex items-center px-8 py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
-                        style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); ">
+                <button type="submit"
+                    class="inline-flex items-center px-8 py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
+                    style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); ">
                     <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                        </path>
                     </svg>
-                    ✨ Criar Página Mágica
+                    ✨ {% trans "Create Magic Page" %}
                 </button>
             </div>
         </form>
@@ -64,153 +69,174 @@
 
     <!-- Results Display -->
     {% if original_image_url or sketch_image_url %}
-        <div class="border-t-4 pt-12" style="border-color: var(--book-brown);">
-            <h2 class="text-3xl font-bold text-center mb-8" 
-                style="color: var(--dark-brown);">
-                🎨 Sua Obra de Arte Foi Criada!
-            </h2>
-            
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {% if original_image_url %}
-                    <div class="page-container">
-                        <div class="vintage-border book-shadow p-6" style="background-color: #FFFEF7;">
-                            <div class="text-center mb-4">
-                                <h3 class="text-xl font-bold flex items-center justify-center" 
-                                    style="color: var(--dark-brown);">
-                                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
-                                    </svg>
-                                    Imagem Original
-                                </h3>
-                            </div>
-                            <div class="relative overflow-hidden rounded-lg cursor-pointer" onclick="openImageModal('{{ original_image_url }}', 'Imagem Original')">
-                                <img src="{{ original_image_url }}" alt="Imagem Original" 
-                                     class="w-full h-auto rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
-                                <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                                    <svg class="w-8 h-8 text-white opacity-0 hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
-                                </div>
-                            </div>
+    <div class="border-t-4 pt-12" style="border-color: var(--book-brown);">
+        <h2 class="text-3xl font-bold text-center mb-8" style="color: var(--dark-brown);">
+            🎨 {% trans "Your Artwork Has Been Created!" %}
+        </h2>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {% if original_image_url %}
+            <div class="page-container">
+                <div class="vintage-border book-shadow p-6" style="background-color: #FFFEF7;">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-bold flex items-center justify-center"
+                            style="color: var(--dark-brown);">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            {% trans "Original Image" %}
+                        </h3>
+                    </div>
+                    <div class="relative overflow-hidden rounded-lg cursor-pointer"
+                        onclick="openImageModal('{{ original_image_url }}', '{% trans " Original Image" %}')">>
+                        <img src="{{ original_image_url }}" alt="Imagem Original"
+                            class="w-full h-auto rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+                        <div
+                            class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white opacity-0 hover:opacity-100 transition-opacity duration-300"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                </path>
+                            </svg>
                         </div>
                     </div>
-                {% endif %}
+                </div>
+            </div>
+            {% endif %}
 
-                {% if sketch_image_url %}
-                    <div class="page-container">
-                        <div class="vintage-border book-shadow p-6" style="background-color: #FFFEF7;">
-                            <div class="text-center mb-4">
-                                <h3 class="text-xl font-bold flex items-center justify-center" 
-                                    style="color: var(--dark-brown);">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                                    </svg>
-                                    Página para Colorir
-                                </h3>
-                            </div>
-                            <div class="relative overflow-hidden rounded-lg mb-4 cursor-pointer" onclick="openImageModal('{{ sketch_image_url }}', 'Página para Colorir')">
-                                <img src="{{ sketch_image_url }}" alt="Página para Colorir" 
-                                     class="w-full h-auto rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
-                                <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                                    <svg class="w-8 h-8 text-white opacity-0 hover:opacity-100 transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="text-center">
-                                <a href="{{ sketch_image_url }}" download 
-                                   class="inline-flex items-center px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-                                   style="background: linear-gradient(135deg, #10B981, #047857);">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                    </svg>
-                                    Baixar
-                                </a>
-                            </div>
+            {% if sketch_image_url %}
+            <div class="page-container">
+                <div class="vintage-border book-shadow p-6" style="background-color: #FFFEF7;">
+                    <div class="text-center mb-4">
+                        <h3 class="text-xl font-bold flex items-center justify-center"
+                            style="color: var(--dark-brown);">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
+                                </path>
+                            </svg>
+                            {% trans "Coloring Page" %}
+                        </h3>
+                    </div>
+                    <div class="relative overflow-hidden rounded-lg mb-4 cursor-pointer"
+                        onclick="openImageModal('{{ sketch_image_url }}', '{% trans " Coloring Page" %}')">>
+                        <img src="{{ sketch_image_url }}" alt="Página para Colorir"
+                            class="w-full h-auto rounded-lg shadow-md hover:scale-105 transition-transform duration-300">
+                        <div
+                            class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white opacity-0 hover:opacity-100 transition-opacity duration-300"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                </path>
+                            </svg>
                         </div>
                     </div>
-                {% endif %}
+                    <div class="text-center">
+                        <a href="{{ sketch_image_url }}" download
+                            class="inline-flex items-center px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
+                            style="background: linear-gradient(135deg, #10B981, #047857);">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                            Baixar
+                        </a>
+                    </div>
+                </div>
             </div>
-
-            <!-- Navigation -->
-            <div class="text-center mt-12">
-                <a href="{% url 'home' %}" 
-                   class="inline-flex items-center px-6 py-3 border-2 rounded-lg font-semibold transition-all duration-300 hover:shadow-md"
-                   style="border-color: var(--book-brown); color: var(--book-brown);">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                    📚 Voltar à Biblioteca
-                </a>
-            </div>
+            {% endif %}
         </div>
+
+        <!-- Navigation -->
+        <div class="text-center mt-12">
+            <a href="{% url 'home' %}"
+                class="inline-flex items-center px-6 py-3 border-2 rounded-lg font-semibold transition-all duration-300 hover:shadow-md"
+                style="border-color: var(--book-brown); color: var(--book-brown);">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                📚 {% trans "Back to Library" %}
+            </a>
+        </div>
+    </div>
     {% endif %}
 </div>
 
 <style>
     .page-container:hover .vintage-border {
         transform: translateY(-2px);
-        box-shadow: 
+        box-shadow:
             0 12px 20px rgba(139, 69, 19, 0.3),
             0 16px 32px rgba(139, 69, 19, 0.15);
     }
-    
+
     .page-container {
         transition: all 0.3s ease;
     }
-    
+
     input[type="file"]:focus {
         outline: none;
     }
 </style>
 
 <!-- Image Viewer Modal -->
-<div id="imageViewerModal" class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+<div id="imageViewerModal"
+    class="modal fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="relative max-w-7xl max-h-screen p-4 w-full h-full flex items-center justify-center">
         <!-- Close Button -->
-        <button onclick="closeImageModal()" 
-                class="absolute top-4 right-4 z-10 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300">
+        <button onclick="closeImageModal()"
+            class="absolute top-4 right-4 z-10 w-12 h-12 bg-black bg-opacity-50 hover:bg-opacity-70 text-white rounded-full flex items-center justify-center transition-all duration-300">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
         </button>
-        
+
         <!-- Image Container -->
         <div class="relative bg-white rounded-lg book-shadow overflow-hidden max-w-full max-h-full">
             <!-- Image Header -->
             <div class="px-6 py-4 border-b" style="background-color: var(--parchment);">
-                <h3 id="modalImageTitle" class="text-xl font-bold text-center" 
-                    style="color: var(--dark-brown);">
-                    Visualizar Imagem
+                <h3 id="modalImageTitle" class="text-xl font-bold text-center" style="color: var(--dark-brown);">
+                    {% trans "View Image" %}
                 </h3>
             </div>
-            
+
             <!-- Image Display -->
             <div class="p-4" style="background-color: #FFFEF7;">
-                <img id="modalImage" src="" alt="" 
-                     class="max-w-full max-h-[70vh] object-contain mx-auto rounded-lg shadow-md">
+                <img id="modalImage" src="" alt=""
+                    class="max-w-full max-h-[70vh] object-contain mx-auto rounded-lg shadow-md">
             </div>
-            
+
             <!-- Image Actions -->
             <div class="px-6 py-4 border-t flex justify-center space-x-4" style="background-color: var(--parchment);">
-                <a id="modalDownloadBtn" href="" download 
-                   class="inline-flex items-center px-4 py-2 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
-                   style="background: linear-gradient(135deg, #10B981, #047857);">
+                <a id="modalDownloadBtn" href="" download
+                    class="inline-flex items-center px-4 py-2 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
+                    style="background: linear-gradient(135deg, #10B981, #047857);">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
                     </svg>
-                    Baixar
+                    {% trans "Download" %}
                 </a>
-                
-                <button onclick="closeImageModal()" 
-                        class="inline-flex items-center px-4 py-2 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
-                        style="border-color: var(--book-brown); color: var(--book-brown);">
+
+                <button onclick="closeImageModal()"
+                    class="inline-flex items-center px-4 py-2 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
+                    style="border-color: var(--book-brown); color: var(--book-brown);">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
                     </svg>
-                    Fechar
+                    {% trans "Close" %}
                 </button>
             </div>
         </div>
@@ -224,13 +250,13 @@
         const modalImage = document.getElementById('modalImage');
         const modalTitle = document.getElementById('modalImageTitle');
         const downloadBtn = document.getElementById('modalDownloadBtn');
-        
+
         modalImage.src = imageSrc;
         modalImage.alt = imageTitle;
         modalTitle.textContent = `🖼️ ${imageTitle}`;
         downloadBtn.href = imageSrc;
         downloadBtn.download = imageTitle + '.jpg';
-        
+
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden'; // Prevent background scrolling
     }
@@ -241,15 +267,32 @@
         document.body.style.overflow = 'auto'; // Restore scrolling
     }
 
+    function previewImage(event) {
+        const input = event.target;
+        const preview = document.getElementById('imagePreview');
+        const container = document.getElementById('imagePreviewContainer');
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            preview.src = "#";
+            preview.classList.add('hidden');
+        }
+    }
+
     // Close modal when clicking outside the image
-    document.getElementById('imageViewerModal').addEventListener('click', function(event) {
+    document.getElementById('imageViewerModal').addEventListener('click', function (event) {
         if (event.target === this) {
             closeImageModal();
         }
     });
 
     // Close modal with Escape key
-    document.addEventListener('keydown', function(event) {
+    document.addEventListener('keydown', function (event) {
         if (event.key === 'Escape') {
             closeImageModal();
         }

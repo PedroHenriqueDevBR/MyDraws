@@ -1,7 +1,8 @@
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'images/logo-transparent.png' %}" type="image/x-icon">
     <link rel="icon" href="{% static 'images/logo-transparent.png' %}" type="image/png">
-    <title>{% block title %}MyDraws - Livro de Colorir{% endblock %}</title>
+    <title>{% block title %}MyDraws - {% trans "Coloring Book" %}{% endblock %}</title>
     <style>
         :root {
             --book-brown: #673AB7; /* Steel Blue */

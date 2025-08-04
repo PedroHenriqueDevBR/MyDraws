@@ -1,12 +1,13 @@
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="{{ LANGUAGE_CODE }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyDraws - Transforme suas fotos em desenhos para colorir</title>
+    <title>MyDraws - {% trans "Transform your photos into coloring drawings" %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -21,8 +22,34 @@
                     <h1 class="text-2xl font-bold text-gray-900 hidden sm:block">MyDraws</h1>
                 </div>
                 <nav class="md:flex space-x-2">
+                    <div class="relative group mr-4">
+                        <button class="flex items-center space-x-2 text-gray-600 hover:text-gray-800 px-3 py-1 rounded-md transition-all duration-200">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m0 0v8m0-8h3m-3 8l3-3m-3 3l-3-3m9 3h-8"></path>
+                            </svg>
+                            <span class="text-sm">
+                                {% get_current_language as LANGUAGE_CODE %}
+                                {% if LANGUAGE_CODE == 'pt-br' %}PT{% else %}EN{% endif %}
+                            </span>
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 hidden group-hover:block z-50">
+                            <form action="{% url 'set_language' %}" method="post" class="inline">
+                                {% csrf_token %}
+                                <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                <button type="submit" name="language" value="en" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {% if LANGUAGE_CODE == 'en' %}bg-gray-50 font-semibold{% endif %}">
+                                    🇺🇸 English
+                                </button>
+                                <button type="submit" name="language" value="pt-br" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {% if LANGUAGE_CODE == 'pt-br' %}bg-gray-50 font-semibold{% endif %}">
+                                    🇧🇷 Português
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                     <a href="{% url 'login' %}"
-                        class="bg-violet-100 text-violet-600 px-4 py-2 rounded-lg hover:bg-violet-200 transition">Entrar</a>
+                        class="bg-violet-100 text-violet-600 px-4 py-2 rounded-lg hover:bg-violet-200 transition">{% trans "Sign In" %}</a>
                     <a href="/accounts/google/login/"
                         class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition">
                         <i class="fab fa-google mr-2"></i>
@@ -37,13 +64,12 @@
     <section class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                Transforme suas
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-600">fotos</span>
-                em arte
+                {% trans "Transform your" %}
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-600">{% trans "photos" %}</span>
+                {% trans "into art" %}
             </h2>
             <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                Converta qualquer imagem em um desenho para colorir profissional usando nossa tecnologia avançada de
-                processamento de imagem.
+                {% trans "Convert any image into a professional coloring drawing using our advanced image processing technology." %}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#how-it-works"

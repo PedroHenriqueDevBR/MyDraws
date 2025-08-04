@@ -1,6 +1,7 @@
 {% extends 'base_site.html' %}
+{% load i18n %}
 
-{% block title %}Biblioteca de Imagens - MyDraws{% endblock %}
+{% block title %}{% trans "Image Library" %} - MyDraws{% endblock %}
 
 {% block content %}
 <div class="book-page">
@@ -15,7 +16,7 @@
                         d="M10 19l-7-7m0 0l7-7m-7 7h18">
                     </path>
                 </svg>
-                Biblioteca
+                {% trans "Library" %}
             </a>
         </div>
     </div>
@@ -36,7 +37,7 @@
         <a href="{% url 'upload_image' book.id %}"
             class="inline-flex items-center px-8 py-4 text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
             style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); ">
-            ✨ Adicionar Página
+            ✨ {% trans "Add Page" %}
         </a>
     </div>
 
@@ -48,7 +49,7 @@
                 <div class="text-right mb-2" style="position: relative; top: 40px; right: 10px; z-index: 10;">
                     <span class="text-sm font-semibold px-3 py-1 rounded-full"
                         style="background-color: var(--light-brown); color: var(--dark-brown);">
-                        Página {{ forloop.counter }}
+                        {% trans "Page" %} {{ forloop.counter }}
                     </span>
                 </div>
 
@@ -103,15 +104,15 @@
     <!-- Empty State -->
     <div class="text-center">
         <h3 class="text-1xl font-bold mb-4" style="color: var(--dark-brown);">
-            Hora de criar sua primeira página para colorir! 🎨
+            {% trans "Time to create your first coloring page!" %} 🎨
         </h3>
         <p class="text-sm mb-8" style="color: var(--leather);">
-            Comece fazendo o upload de uma imagem para transformar em uma página para colorir.
+            {% trans "Start by uploading an image to transform into a coloring page." %}
         </p>
         <a href="{% url 'upload_image' book.id %}"
             class="items-center px-8 py-4 text-white font-semibold rounded-lg shadow-lg"
             style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); margin-top: 16px;">
-            ✨ Criar primeira página
+            ✨ {% trans "Create first page" %}
         </a>
     </div>
     {% endif %}
@@ -135,7 +136,7 @@
             <!-- Image Header -->
             <div class="px-6 py-4 border-b" style="background-color: var(--parchment);">
                 <h3 id="modalImageTitle" class="text-xl font-bold text-center" style="color: var(--dark-brown);">
-                    Visualizar Imagem
+                    {% trans "View Image" %}
                 </h3>
             </div>
 
@@ -158,14 +159,17 @@
                     Baixar
                 </a>
 
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    </svg>
+                    {% trans "Download" %}
+                </a>
+
                 <button onclick="closeImageModal()"
                     class="inline-flex items-center px-4 py-2 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                     style="border-color: var(--book-brown); color: var(--book-brown);">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
                     </svg>
-                    Fechar
+                    {% trans "Close" %}
                 </button>
             </div>
         </div>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
 
 {% block body %}
 <!-- Header -->
@@ -11,12 +12,43 @@
                 MyDraws
             </h1></a>
             {% if credit_amount <= 0 %}
-            <p class="text-white mt-2   ">Você não possui créditos suficientes</p>
+            <p class="text-white mt-2">{% trans "You don't have enough credits" %}</p>
             {% endif %}
         </div>
-        <a href="{% url 'custom_logout' %}" class="text-white hover:underline">
-            Sair
-        </a>
+        <div class="flex items-center space-x-4">
+            {% comment %}
+            <!-- Language Selector
+            <div class="relative group">
+                <button class="flex items-center space-x-2 text-white hover:bg-white hover:bg-opacity-10 px-3 py-1 rounded-md transition-all duration-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m0 0v8m0-8h3m-3 8l3-3m-3 3l-3-3m9 3h-8"></path>
+                    </svg>
+                    <span class="text-sm">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% if LANGUAGE_CODE == 'pt-br' %}PT{% else %}EN{% endif %}
+                    </span>
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+                <div class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 hidden group-hover:block z-50">
+                    <form action="{% url 'set_language' %}" method="post" class="inline">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
+                        <button type="submit" name="language" value="en" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {% if LANGUAGE_CODE == 'en' %}bg-gray-50 font-semibold{% endif %}">
+                            🇺🇸 English
+                        </button>
+                        <button type="submit" name="language" value="pt-br" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 {% if LANGUAGE_CODE == 'pt-br' %}bg-gray-50 font-semibold{% endif %}">
+                            🇧🇷 Português
+                        </button>
+                    </form>
+                </div>
+            </div> -->
+            {% endcomment %}
+            <a href="{% url 'custom_logout' %}" class="text-white hover:underline">
+                {% trans "Sign Out" %}
+            </a>
+        </div>
     </div>
 </header>
 
@@ -33,9 +65,9 @@
     <div class="fixed bottom-6 right-6 " style="z-index: 1000;">
         <a href="{% url 'buy_credits' %}" class="bg-violet-800 text-white rounded-full p-4 shadow-lg hover:bg-violet-900 transition">
             {% if credit_amount > 0 %}
-            Créditos: <b>{{ credit_amount }}</b>
+            {% trans "Credits" %}: <b>{{ credit_amount }}</b>
             {% else %}
-            Adicionar créditos
+            {% trans "Add Credits" %}
             {% endif %}
         </a>
     </div>
@@ -43,7 +75,7 @@
     <!-- Footer -->
     <footer class="py-6 text-center" style="color: var(--dark-brown);">
         <div class="container mx-auto px-4">
-            <p class="text-sm opacity-75">© 2025 MyDraws - Criando memórias para colorir</p>
+            <p class="text-sm opacity-75">© 2025 {% trans "MyDraws - Creating memories to color" %}</p>
         </div>
     </footer>
 </div>
