@@ -12,8 +12,10 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.urls import reverse
 
 from core.services.design_by_ai import DesignByAI
+from core.services.design_by_openai import DesignByOpenAI
 from core.services.mercado_pago import get_mercado_pago_service
 
 from core.forms import ImageUploadForm
@@ -156,6 +158,42 @@ def show_uploaded_image(request: HttpRequest, image_id: int):
 
 
 @login_required
+def remove_uploaded_image(request: HttpRequest, image_id: int):
+    user = request.user
+    uploaded_image = UploadedImage.objects.filter(id=image_id).first()
+
+    if not uploaded_image:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "Você não possui permissão para ver esta imagem.",
+        )
+        return redirect("home")
+
+    if uploaded_image and uploaded_image.profile != user:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "Você não possui permissão para ver esta imagem.",
+        )
+        return redirect("home")
+
+    based_on = uploaded_image.based_on
+    if based_on:
+        book_id = based_on.book.id  # type: ignore
+    else:
+        book_id = uploaded_image.book.id  # type: ignore
+    uploaded_image.delete()
+
+    if based_on is not None:
+        redirect_url = reverse("show_uploaded_image", kwargs={"image_id": based_on.id})
+        return redirect(redirect_url)
+
+    redirect_url = reverse("book_detail", kwargs={"book_id": book_id})
+    return redirect(redirect_url)
+
+
+@login_required
 def simple_convert(request: HttpRequest, image_id: int):
     user = request.user
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
@@ -242,8 +280,8 @@ def generate_by_ai(request: HttpRequest, image_id: int):
         )
         return redirect("show_uploaded_image", image_id=image_id)
 
-    designer = DesignByAI(image_path=uploaded_image.image.path)
-    converted_image_path, _ = designer.generate_from_gemini()
+    designer = DesignByOpenAI(image_path=uploaded_image.image.path)
+    converted_image_path, _ = designer.generate()
     converted_image_file = File(open(converted_image_path, "rb"))
 
     UploadedImage.objects.create(
@@ -313,7 +351,7 @@ def create_payment_preference(request: HttpRequest):
                 },
                 status=400,
             )
-            
+
         unit_price = config("UNIT_PRICE", default="0.75", cast=float)
         description = f"Compra de {credit_amount} créditos por { profile } - MyDraws"
 

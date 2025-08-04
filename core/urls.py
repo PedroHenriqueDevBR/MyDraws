@@ -33,6 +33,11 @@ urlpatterns = [
         name="show_uploaded_image",
     ),
     path(
+        "image/<int:image_id>/remove",
+        views.remove_uploaded_image,
+        name="remove_uploaded_image",
+    ),
+    path(
         "image/<int:image_id>/simple_convert/",
         views.simple_convert,
         name="simple_convert",
