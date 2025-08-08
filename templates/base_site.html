@@ -3,17 +3,35 @@
 {% load i18n %}
 
 {% block body %}
+
+<style>
+    @keyframes spin-slow {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .animate-spin-slow {
+        animation: spin-slow 2s linear infinite;
+    }
+</style>
+
 <!-- Header -->
 <header class="app-primary-bg text-white py-4">
     <div class="container mx-auto px-4 flex justify-between items-center">
         <div>
-            <a href="{% url 'home' %}"><h1 class="font-bold">
-                <img src="{% static 'images/logo.png' %}" alt="logo" width="30" class="inline-block mr-2 rounded">
-                MyDraws
-            </h1></a>
-            {% if credit_amount <= 0 %}
-            <p class="text-white mt-2">{% trans "You don't have enough credits" %}</p>
-            {% endif %}
+            <a href="{% url 'home' %}">
+                <h1 class="font-bold">
+                    <img src="{% static 'images/logo.png' %}" alt="logo" width="30" class="inline-block mr-2 rounded">
+                    MyDraws
+                </h1>
+            </a>
+            {% if credit_amount <= 0 %} <p class="text-white mt-2">{% trans "You don't have enough credits" %}</p>
+                {% endif %}
         </div>
         <div class="flex items-center space-x-4">
             {% comment %}
@@ -53,7 +71,7 @@
 </header>
 
 <!-- Main Layout -->
-<div >
+<div>
     <main class="page-turn" style="background-color: #FFFEF7;">
         <div class="p-8" style="min-height: 84vh;">
             {% block content %}
@@ -62,15 +80,37 @@
     </main>
 
     <!-- Floating Action Button -->
-    <div class="fixed bottom-6 right-6 " style="z-index: 1000;">
-        <a href="{% url 'buy_credits' %}" class="bg-violet-800 text-white rounded-full p-4 shadow-lg hover:bg-violet-900 transition">
-            {% if credit_amount > 0 %}
-            {% trans "Credits" %}: <b>{{ credit_amount }}</b>
-            {% else %}
-            {% trans "Add Credits" %}
-            {% endif %}
-        </a>
+    <div class="fixed bottom-6 right-6" style="z-index: 1000;">
+        <div class="relative group">
+
+
+            <button type="button"
+                class="bg-violet-800 text-white rounded-full p-4 shadow-lg hover:bg-violet-900 transition flex items-center focus:outline-none {% if credit_amount == 0 %}animate-pulse{% endif %}"
+                id="credit-fab">
+                {% if credit_amount > 0 %}
+                    {% trans "Credits" %}: <b>{{ credit_amount }}</b>
+                {% else %}
+                    <span class="text-gray-500 text-bold"></span>{% trans "Add Credits" %}</span>
+                {% endif %}
+            </button>
+
+            <div class="absolute right-0 bottom-16 w-48 bg-white rounded-md shadow-lg py-2 hidden group-focus-within:block z-50"
+                id="credit-options">
+                {% comment %}
+                <a href="{% url 'buy_credits' %}" class="block px-4 py-2 text-gray-800 hover:bg-violet-100 transition">
+                    <img src="{% static 'images/mercadopago.png' %}" alt="Mercado Pago"
+                        class="inline w-5 h-5 mr-2 align-middle"> Mercado Pago
+                </a>
+                {% endcomment %}
+                <a href="{% url 'buy_stripe_credits' %}"
+                    class="block px-4 py-2 text-gray-800 hover:bg-violet-100 transition">
+                    <img src="{% static 'images/stripe.png' %}" alt="Stripe" class="inline w-5 h-5 mr-2 align-middle">
+                    Stripe
+                </a>
+            </div>
+        </div>
     </div>
+
 
     <!-- Footer -->
     <footer class="py-6 text-center" style="color: var(--dark-brown);">
@@ -78,7 +118,21 @@
             <p class="text-sm opacity-75">© 2025 {% trans "MyDraws - Creating memories to color" %}</p>
         </div>
     </footer>
-</div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fab = document.getElementById('credit-fab');
+            const options = document.getElementById('credit-options');
+            if (fab && options) {
+                fab.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    options.classList.toggle('hidden');
+                });
+                document.addEventListener('click', function () {
+                    options.classList.add('hidden');
+                });
+            }
+        });
+    </script>
 
-{% endblock body %}
+    {% endblock body %}

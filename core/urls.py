@@ -93,4 +93,20 @@ urlpatterns = [
         views.buy_credits,
         name="buy_credits",
     ),
+    # Stripe URLs
+    path(
+        "stripe/checkout/",
+        views.stripe_create_checkout_session,
+        name="stripe_checkout",
+    ),
+    path(
+        "webhook/stripe/",
+        views.stripe_webhook,
+        name="stripe_webhook",
+    ),
+    path(
+        "credits/",
+        views.buy_stripe_credits,
+        name="buy_stripe_credits",
+    ),
 ]

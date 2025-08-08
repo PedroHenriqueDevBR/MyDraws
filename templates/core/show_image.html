@@ -90,7 +90,6 @@
                         </h3>
 
                         <div class="space-y-4">
-                            {% if request.user.is_superuser %}
                             <button id="simple-convert-btn"
                                 class="w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                                 style="border-color: var(--book-brown); color: var(--book-brown);">
@@ -105,7 +104,6 @@
                                     <text x="10" y="14" text-anchor="middle" font-size="10" fill="gold" font-family="Arial" font-weight="bold">¢</text>
                                 </svg> 1 Credit
                             </button>
-                            {% endif %}
 
                             <button id="ia-convert-btn"
                                 class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"

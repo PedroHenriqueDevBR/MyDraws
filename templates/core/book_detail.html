@@ -55,7 +55,7 @@
 
                 <!-- Image Container -->
                 <div class="relative overflow-hidden rounded-lg mb-4 cursor-pointer" style="aspect-ratio: 4/3;"
-                    onclick="openImageModal('{{ image.image.url }}', '{{ image.title }}')">
+                    onclick="goToDetailsPage('{% url "show_uploaded_image" image.id %}')">
                     <img src="{{ image.image.url }}" alt="{{ image.title }}"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                     <div
@@ -156,19 +156,13 @@
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
-                    Baixar
-                </a>
-
-                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    </svg>
-                    {% trans "Download" %}
+                    {% trans "Download" %}                    
                 </a>
 
                 <button onclick="closeImageModal()"
                     class="inline-flex items-center px-4 py-2 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                     style="border-color: var(--book-brown); color: var(--book-brown);">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    </svg>
+                    <span class="mr-2" style="border-color: var(--book-brown); color: var(--book-brown);">X</span>
                     {% trans "Close" %}
                 </button>
             </div>
@@ -196,6 +190,11 @@
             closeFormModal();
         }
     });
+
+    // Go to details page
+    function goToDetailsPage(url) {
+        window.location.href = url;
+    }
 
     // Image Modal Functions
     function openImageModal(imageSrc, imageTitle) {
