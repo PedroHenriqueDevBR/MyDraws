@@ -14,13 +14,13 @@
                 MyDraws
             </h1>
             <p class="text-sm" style="color: var(--leather);">
-                {% trans "Access your personal library of coloring pages" %}
+                Access your personal library of coloring pages
             </p>
         </div>
 
         {% if form.errors %}
         <div class="error-messages bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-            <strong class="font-bold">{% trans "Error" %}:</strong>
+            <strong class="font-bold">Error:</strong>
             <ul class="mt-2">
                 {% for field, errors in form.errors.items %}
                     {% for error in errors %}
@@ -37,13 +37,13 @@
 
             <div>
                 <label for="username" class="block text-sm font-semibold mb-2" style="color: var(--dark-brown);">
-                    👤 Nome de Usuário
+                    👤 Username
                 </label>
                 <div class="relative">
                     <input type="text" id="username" name="username" required
                         class="w-full px-4 py-3 pl-12 border-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
                         style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);"
-                        placeholder="Digite seu nome de usuário">
+                        placeholder="Enter your username">
                     <svg class="w-5 h-5 absolute left-4 top-4" style="color: var(--book-brown);" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -54,13 +54,13 @@
 
             <div>
                 <label for="password" class="block text-sm font-semibold mb-2" style="color: var(--dark-brown);">
-                    🔑 Senha
+                    🔑 Password
                 </label>
                 <div class="relative">
                     <input type="password" id="password" name="password" required
                         class="w-full px-4 py-3 pl-12 border-2 rounded-lg transition-all duration-300 focus:outline-none focus:ring-4 focus:border-amber-800 focus:ring-amber-200"
                         style="border-color: var(--light-brown); background-color: #FFFEF7; color: var(--dark-brown);"
-                        placeholder="Digite sua senha">
+                        placeholder="Enter your password">
                     <svg class="w-5 h-5 absolute left-4 top-4" style="color: var(--book-brown);" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -74,7 +74,7 @@
                 class="w-full py-4 text-white font-bold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1"
                 style="background: linear-gradient(135deg, var(--book-brown), var(--leather)); ">
                 <span class="flex items-center justify-center">
-                    📖 Entrar na Biblioteca
+                    📖 Enter Library
                 </span>
             </button>
         </form>
@@ -95,12 +95,12 @@
                         d="M12.17 7.1c1.3 0 2.46.44 3.36 1.3l2.52-2.52c-1.48-1.36-3.5-2.16-5.88-2.16-3.76 0-6.8 1.94-8.27 4.88l4.41.92c.54-1.6 2.06-2.8 3.86-2.8z"
                         fill="#EA4335" />
                 </svg>
-                Entrar com Google
+                Sign in with Google
             </a>
         </div>
     </div>
 
-    <!-- Decorative Element1s -->
+    <!-- Decorative Elements -->
     <div class="text-center mt-8">
         <div class="flex items-center justify-center space-x-2" style="color: var(--light-brown);">
             <span class="text-2xl">📚</span>
@@ -108,7 +108,7 @@
             <span class="text-2xl">🎨</span>
         </div>
         <p class="text-sm mt-2" style="color: var(--leather);">
-            Solte sua criatividade e transforme suas imagens em páginas para colorir
+            Unleash your creativity and turn your images into coloring pages
         </p>
     </div>
 </div>
