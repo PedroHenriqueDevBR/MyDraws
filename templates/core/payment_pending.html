@@ -1,6 +1,7 @@
 {% extends "base_site.html" %}
+{% load i18n %}
 
-{% block title %}Pagamento Pendente{% endblock %}
+{% block title %}{% trans "Pending Payment" %}{% endblock %}
 
 {% block content %}
 <div class="container mx-auto mt-10">
@@ -8,36 +9,36 @@
         <div class="w-full max-w-md">
             <div class="border border-yellow-500 rounded-lg shadow-lg">
                 <div class="bg-yellow-500 text-black text-center py-4 rounded-t-lg">
-                    <h4 class="text-lg font-semibold"><i class="fas fa-clock"></i> Pagamento em Processamento</h4>
+                    <h4 class="text-lg font-semibold"><i class="fas fa-clock"></i> {% trans "Payment Processing" %}</h4>
                 </div>
                 <div class="bg-white p-6 text-center rounded-b-lg">
                     <div class="mb-6">
                         <i class="fas fa-hourglass-half text-yellow-500 text-4xl mb-4"></i>
-                        <h5 class="text-lg font-medium">Seu pagamento está sendo processado</h5>
+                        <h5 class="text-lg font-medium">{% trans "Your payment is being processed" %}</h5>
                     </div>
                     
                     <div class="bg-violet-100 text-violet-800 p-4 rounded-lg mb-6">
-                        <p class="mb-2">Aguarde alguns instantes...</p>
-                        <p>Você receberá uma confirmação assim que o pagamento for aprovado.</p>
+                        <p class="mb-2">{% trans "Please wait a few moments..." %}</p>
+                        <p>{% trans "You will receive a confirmation as soon as the payment is approved." %}</p>
                     </div>
                     
                     {% if payment_id %}
                     <div class="mb-4">
-                        <small class="text-gray-500">ID do Pagamento: {{ payment_id }}</small>
+                        <small class="text-gray-500">{% trans "Payment ID" %}: {{ payment_id }}</small>
                     </div>
                     {% endif %}
                     
                     <div class="mb-6">
                         <div class="animate-spin h-8 w-8 border-4 border-violet-500 border-t-transparent rounded-full mx-auto"></div>
-                        <p class="mt-4 text-gray-500">Verificando status do pagamento...</p>
+                        <p class="mt-4 text-gray-500">{% trans "Checking payment status..." %}</p>
                     </div>
                     
                     <div class="space-y-4">
                         <button class="w-full bg-violet-500 text-white py-2 px-4 rounded-lg hover:bg-violet-600 transition" onclick="checkPaymentStatus()" id="checkBtn">
-                            <i class="fas fa-sync"></i> Verificar Status
+                            <i class="fas fa-sync"></i> {% trans "Check Status" %}
                         </button>
                         <a href="{% url 'home' %}" class="w-full block bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition">
-                            <i class="fas fa-home"></i> Voltar ao Início
+                            <i class="fas fa-home"></i> {% trans "Back to Home" %}
                         </a>
                     </div>
                 </div>
@@ -56,7 +57,7 @@ async function checkPaymentStatus() {
     const originalText = checkBtn.innerHTML;
     
     try {
-        checkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+        checkBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> {% trans "Checking..." %}';
         checkBtn.disabled = true;
         
         const response = await fetch(`/payment/status/${paymentId}/`);
@@ -73,14 +74,14 @@ async function checkPaymentStatus() {
                 window.location.href = `/payment/failure/?payment_id=${paymentId}&status=${status}`;
             } else {
                 // Ainda pendente
-                alert('Pagamento ainda em processamento. Aguarde mais um pouco.');
+                alert('{% trans "Payment still processing. Please wait a little longer." %}');
             }
         } else {
-            alert('Erro ao verificar status do pagamento.');
+            alert('{% trans "Error checking payment status." %}');
         }
     } catch (error) {
         console.error('Erro:', error);
-        alert('Erro ao verificar status do pagamento.');
+        alert('{% trans "Error checking payment status." %}');
     } finally {
         checkBtn.innerHTML = originalText;
         checkBtn.disabled = false;

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}Entrar - MyDraws{% endblock %}
+{% block title %}{% trans "Sign In" %} - MyDraws{% endblock %}
 
 {% block body %}
 <div class="login-page max-w-md mx-auto my-12">
@@ -13,13 +14,13 @@
                 MyDraws
             </h1>
             <p class="text-sm" style="color: var(--leather);">
-                Acesse sua biblioteca pessoal de páginas para colorir
+                {% trans "Access your personal library of coloring pages" %}
             </p>
         </div>
 
         {% if form.errors %}
         <div class="error-messages bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
-            <strong class="font-bold">Erro:</strong>
+            <strong class="font-bold">{% trans "Error" %}:</strong>
             <ul class="mt-2">
                 {% for field, errors in form.errors.items %}
                     {% for error in errors %}

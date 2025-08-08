@@ -1,4 +1,5 @@
 {% extends "base_site.html" %}
+{% load i18n %}
 
 {% block title %}{{ uploaded_image.title }} - MyDraws{% endblock %}
 
@@ -15,7 +16,7 @@
                         d="M10 19l-7-7m0 0l7-7m-7 7h18">
                     </path>
                 </svg>
-                Biblioteca
+                {% trans "Library" %}
             </a>
             <a href="{% url 'book_detail' uploaded_image.book.id %}"
                 class="flex items-center px-4 py-2 rounded-lg border-2 transition-all duration-300 hover:shadow-md"
@@ -41,8 +42,18 @@
                 </h1>
                 <div class="w-24 h-1 mx-auto mb-4" style="background-color: var(--book-brown);"></div>
                 <p class="text-sm" style="color: var(--leather);">
-                    📅 Criado em {{ uploaded_image.created_at|date:"d/m/Y à\s H:i" }}
+                    📅 {% trans "Created on" %} {{ uploaded_image.created_at|date:"d/m/Y à\s H:i" }}
                 </p>
+
+                <a href="{% url 'remove_uploaded_image' uploaded_image.id %}" 
+                    class="inline-flex items-center px-4 py-2 mt-4">
+                     <svg class="w-4 h-4 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m5 0H4">
+                          </path>
+                     </svg>
+                     {% trans "Remove this image" %}
+                </a>
             </div>
 
             <!-- Image Display -->
@@ -50,7 +61,7 @@
                 <div class="image-container vintage-border book-shadow">
                     <div class="p-4" style="background-color: #FFFEF7;">
                         <h3 class="text-lg font-bold mb-4 text-center" style="color: var(--dark-brown);">
-                            🖼️ Imagem Original
+                            🖼️ {% trans "Original Image" %}
                         </h3>
                         <div class="relative overflow-hidden rounded-lg cursor-pointer"
                             onclick="openImageModal('{{ uploaded_image.image.url }}', '{{ uploaded_image.title }}')">
@@ -75,11 +86,10 @@
                 <div class="conversion-panel">
                     <div class="vintage-border p-6" style="background-color: #FFFEF7;">
                         <h3 class="text-lg font-bold mb-6 text-center" style="color: var(--dark-brown);">
-                            🎨 Opções de Conversão
+                            🎨 {% trans "Conversion Options" %}
                         </h3>
 
                         <div class="space-y-4">
-                            {% if request.user.is_superuser %}
                             <button id="simple-convert-btn"
                                 class="w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                                 style="border-color: var(--book-brown); color: var(--book-brown);">
@@ -88,15 +98,22 @@
                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
                                     </path>
                                 </svg>
-                                Conversão Simples
+                                {% trans "Hand Drawing" %} 
+                                <span class="mx-2"> - </span> <svg class="w-5 h-5 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <circle cx="10" cy="10" r="8" stroke="gold" stroke-width="2" fill="yellow" />
+                                    <text x="10" y="14" text-anchor="middle" font-size="10" fill="gold" font-family="Arial" font-weight="bold">¢</text>
+                                </svg> 1 Credit
                             </button>
-                            {% endif %}
 
                             <button id="ia-convert-btn"
                                 class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
                                 style="background: linear-gradient(135deg, var(--book-brown), var(--leather));"
                                 data-bs-toggle="modal" data-bs-target="#iaConvertModal">
-                                ✨ Conversão por IA
+                                ✨ {% trans "Convert to Anime" %} 
+                                <span class="mx-2"> - </span> <svg class="w-5 h-5 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <circle cx="10" cy="10" r="8" stroke="gold" stroke-width="2" fill="yellow" />
+                                    <text x="10" y="14" text-anchor="middle" font-size="10" fill="gold" font-family="Arial" font-weight="bold">¢</text>
+                                </svg> 3 Credits
                             </button>
                         </div>
                     </div>
@@ -104,7 +121,7 @@
                     <a href="#variations"
                         class="mt-8 w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                         style="border-color: var(--book-brown); color: var(--book-brown);">
-                        🎨 Ver artes geradas
+                        🎨 {% trans "View generated art" %}
                     </a>
                 </div>
 
@@ -113,11 +130,11 @@
                 <div class="conversion-panel">
                     <div class="vintage-border p-6" style="background-color: #FFFEF7;">
                         <h3 class="text-lg font-bold mb-6 text-center" style="color: var(--dark-brown);">
-                            🎨 Opções de Conversão
+                            🎨 {% trans "Conversion Options" %}
                         </h3>
 
                         <p class="text-center mb-4" style="color: var(--leather);">
-                            Você não possui créditos suficientes para converter esta imagem.
+                            {% trans "You don't have enough credits to convert this image." %}
                         </p>
 
                         <div class="space-y-4">
@@ -125,7 +142,7 @@
                                 class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
                                 style="background: linear-gradient(135deg, var(--book-brown), var(--leather));"
                                 >
-                                Adicionar créditos
+                                {% trans "Add credits" %}
                             </a>
                         </div>
                     </div>
@@ -133,7 +150,7 @@
                     <a href="#variations"
                         class="mt-8 w-full flex items-center justify-center px-6 py-4 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                         style="border-color: var(--book-brown); color: var(--book-brown);">
-                        🎨 Ver artes geradas
+                        🎨 {% trans "View generated art" %}
                     </a>
                 </div>
                 {% endif %}
@@ -144,13 +161,22 @@
             <!-- Variations Display -->
             <div class="variations-section">
                 <h3 id="variations" class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
-                    🎨 Variações Criadas
+                    🎨 {% trans "Created Variations" %}
                 </h3>
 
                 {% if uploaded_image.variations.all %}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {% for image in uploaded_image.variations.all %}
-                    <div class="variation-item">
+                    <div class="variation-item relative">
+                        <!-- Remove Button -->
+                            <a href="{% url 'remove_uploaded_image' image.id %}"
+                                class="absolute p-4 top-2 right-2 z-10 rounded-full bg-white bg-opacity-80 hover:bg-red-100 transition-colors duration-200 shadow-md border border-red-200">
+                                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m5 0H4">
+                                    </path>
+                                </svg>
+                            </a>
                         <div class="vintage-border p-4 transition-all duration-300 hover:shadow-lg"
                             style="background-color: #FFFEF7;">
                             <div class="relative overflow-hidden rounded-lg mb-4 cursor-pointer"
@@ -178,7 +204,7 @@
                                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                                         </path>
                                     </svg>
-                                    Baixar
+                                    {% trans "Download" %}
                                 </a>
                             </div>
                         </div>
@@ -195,7 +221,7 @@
                     </svg>
                     <div class="Nenhuma arte">
                         <p class="text-lg" style="color: var(--leather);">
-                            🌟 Nenhum desenho mágico foi gerado ainda! 🖌️ Use as opções acima para liberar sua criatividade e criar páginas incríveis para colorir! 🎨✨
+                            🌟 {% trans "No magical drawings have been generated yet! 🖌️ Use the options above to unleash your creativity and create amazing coloring pages! 🎨✨" %}
                         </p>
                     </div>
                 </div>
@@ -211,22 +237,22 @@
     <div class="vintage-border book-shadow m-4 max-w-md w-full" style="background-color: #FFFEF7;">
         <div class="p-8">
             <h2 class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
-                ⚙️ Opções de Conversão Simples
+                ⚙️ {% trans "Hand Drawing Options" %}
             </h2>
 
             <form id="simple-convert-form" action="{% url 'simple_convert' uploaded_image.id %}" method="post">
                 {% csrf_token %}
-                <div class="mb-6">
+                <div class="mb-6 hidden">
                     <label for="detail_level" class="block text-lg font-semibold mb-4"
                         style="color: var(--dark-brown);">
-                        🎯 Nível de Detalhes:
+                        🎯 {% trans "Detail Level:" %}
                     </label>
-                    <input type="range" id="detail_level" name="detail_level" min="1" max="50" value="21"
-                        class="w-full h-2 rounded-lg appearance-none cursor-pointer"
+                    <input type="range" id="detail_level" name="detail_level" min="1" max="50" value="50"
+                        class="w-full h-2 rounded-lg appearance-none cursor-pointer hidden"
                         style="background: var(--light-brown);">
-                    <div class="flex justify-between text-sm mt-2" style="color: var(--leather);">
-                        <span>Menos detalhes</span>
-                        <span>Mais detalhes</span>
+                    <div class="flex justify-between text-sm mt-2 hidden" style="color: var(--leather);">
+                        <span>{% trans "Less details" %}</span>
+                        <span>{% trans "More details" %}</span>
                     </div>
                 </div>
 
@@ -235,12 +261,12 @@
                         class="px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                         style="border-color: var(--book-brown); color: var(--book-brown);"
                         onclick="document.getElementById('simpleConvertModal').classList.add('hidden');">
-                        Cancelar
+                        {% trans "Cancel" %}
                     </button>
                     <button type="submit" onclick="showLoading()"
                         class="px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                         style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
-                        ✨ Converter
+                        ✨ {% trans "Convert" %}
                     </button>
                 </div>
         </div>
@@ -253,7 +279,7 @@
     <div class="vintage-border book-shadow m-4 max-w-md w-full" style="background-color: #FFFEF7;">
         <div class="p-8">
             <h2 class="text-2xl font-bold mb-6 text-center" style="color: var(--dark-brown);">
-                🤖 Opções de Conversão por IA
+                🤖 {% trans "Convert to Anime Options" %}
             </h2>
 
             <div class="flex justify-end space-x-4">
@@ -261,12 +287,12 @@
                     class="px-6 py-3 border-2 font-semibold rounded-lg transition-all duration-300 hover:shadow-md"
                     style="border-color: var(--book-brown); color: var(--book-brown);"
                     onclick="document.getElementById('simpleConvertModal').classList.add('hidden');">
-                    Cancelar
+                    {% trans "Cancel" %}
                 </button>
                 <a href="{% url 'generate_by_ai' uploaded_image.id %}" onclick="showLoading()"
                     class="px-6 py-3 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                     style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
-                    ✨ Converter
+                    ✨ {% trans "Convert" %}
                 </a>
             </div>
         </div>
@@ -290,7 +316,7 @@
             <!-- Image Header -->
             <div class="px-6 py-4 border-b" style="background-color: var(--parchment);">
                 <h3 id="modalImageTitle" class="text-xl font-bold text-center" style="color: var(--dark-brown);">
-                    Visualizar Imagem
+                    {% trans "View Image" %}
                 </h3>
             </div>
 
@@ -310,7 +336,7 @@
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
-                    Baixar
+                    {% trans "Download" %}
                 </a>
 
                 <button onclick="closeImageModal()" type="button"
@@ -320,7 +346,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                         </path>
                     </svg>
-                    Fechar
+                    {% trans "Close" %}
                 </button>
             </div>
         </div>

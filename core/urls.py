@@ -33,6 +33,11 @@ urlpatterns = [
         name="show_uploaded_image",
     ),
     path(
+        "image/<int:image_id>/remove",
+        views.remove_uploaded_image,
+        name="remove_uploaded_image",
+    ),
+    path(
         "image/<int:image_id>/simple_convert/",
         views.simple_convert,
         name="simple_convert",
@@ -87,5 +92,21 @@ urlpatterns = [
         "buy-credits/",
         views.buy_credits,
         name="buy_credits",
+    ),
+    # Stripe URLs
+    path(
+        "stripe/checkout/",
+        views.stripe_create_checkout_session,
+        name="stripe_checkout",
+    ),
+    path(
+        "webhook/stripe/",
+        views.stripe_webhook,
+        name="stripe_webhook",
+    ),
+    path(
+        "credits/",
+        views.buy_stripe_credits,
+        name="buy_stripe_credits",
     ),
 ]

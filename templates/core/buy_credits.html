@@ -1,6 +1,7 @@
 {% extends "base_site.html" %}
+{% load i18n %}
 
-{% block title %}Comprar Créditos{% endblock %}
+{% block title %}{% trans "Buy Credits" %}{% endblock %}
 
 {% block content %}
 
@@ -25,23 +26,23 @@
     <div>
         <div class="px-6 py-4 border-b border-gray-200">
             <h1 class="text-2xl font-bold text-gray-800 flex items-center">
-                <i class="fas fa-coins mr-2"></i> Comprar Créditos
+                <i class="fas fa-coins mr-2"></i> {% trans "Buy Credits" %}
             </h1>
-            <p class="text-sm text-gray-500">Adicione créditos à sua conta para usar recursos premium</p>
+            <p class="text-sm text-gray-500">{% trans "Add credits to your account to use premium features" %}</p>
         </div>
 
         <div class="px-6 py-4 mt-10">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <div class="mb-6">
-                        <h6 class="text-lg font-semibold text-gray-800">Saldo Atual</h6>
+                        <h6 class="text-lg font-semibold text-gray-800">{% trans "Current Balance" %}</h6>
                         <div class="bg-blue-100 text-blue-800 p-4 rounded-lg flex items-center">
                             <i class="fas fa-wallet mr-2"></i>
-                            <strong>{{ user.credit_amount }} créditos</strong>
+                            <strong>{{ user.credit_amount }} {% trans "credits" %}</strong>
                         </div>
                     </div>
 
-                    <h2 class="text-xl font-semibold text-gray-800">Pacotes Disponíveis</h2>
+                    <h2 class="text-xl font-semibold text-gray-800">{% trans "Available Packages" %}</h2>
 
                     <div class="space-y-4">
                         <!-- Pacote Básico -->
@@ -49,8 +50,8 @@
                             data-credits="50" data-price="37.50">
                             <div class="flex justify-between items-center">
                                 <div>
-                                    <h6 class="text-lg font-semibold text-gray-800">Pacote Básico</h6>
-                                    <p class="text-sm text-gray-500">50 créditos</p>
+                                    <h6 class="text-lg font-semibold text-gray-800">{% trans "Basic Package" %}</h6>
+                                    <p class="text-sm text-gray-500">50 {% trans "credits" %}</p>
                                 </div>
                                 <div class="text-right">
                                     <span class="text-xl font-bold text-gray-800">R$ 37,50</span>
@@ -101,7 +102,7 @@
                         <!-- Pacote Customizado -->
                         <div class="border rounded-lg p-4 cursor-pointer transition-transform transform hover:-translate-y-1 hover:shadow-lg credit-package"
                             data-credits="custom" data-price="custom">
-                            <h6 class="text-lg font-semibold text-gray-800 mb-4">Pacote Personalizado</h6>
+                            <h6 class="text-lg font-semibold text-gray-800 mb-4">{% trans "Custom Package" %}</h6>
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label for="customCredits" class="block text-sm font-medium text-gray-700">Créditos</label>
@@ -123,10 +124,10 @@
 
                 <div>
                     <div class="p-4 rounded-lg">
-                        <h6 class="text-lg font-semibold text-gray-800">Resumo da Compra</h6>
+                        <h6 class="text-lg font-semibold text-gray-800">{% trans "Purchase Summary" %}</h6>
                         <div class="bg-white p-4 rounded-lg shadow">
                             <div id="selectedPackage" class="mb-4">
-                                <p class="text-sm text-gray-500">Selecione um pacote ao lado</p>
+                                <p class="text-sm text-gray-500">{% trans "Select a package on the side" %}</p>
                             </div>
 
                             <div id="paymentDetails" class="hidden">
@@ -145,14 +146,14 @@
                                 </div>
 
                                 <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition" onclick="processPayment()">
-                                    <i class="fas fa-credit-card mr-2"></i> Pagar com Mercado Pago
+                                    <i class="fas fa-credit-card mr-2"></i> Pay with mercado pago
                                 </button>
                             </div>
                         </div>
 
                         <div class="mt-4 text-sm text-gray-500 flex items-center">
                             <i class="fas fa-shield-alt mr-2"></i>
-                            Pagamento seguro processado pelo Mercado Pago
+                            {% trans "Secure payment processed by Mercado Pago" %}
                         </div>
                     </div>
                 </div>

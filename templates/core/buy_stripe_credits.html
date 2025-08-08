@@ -1,0 +1,110 @@
+{% extends "base_site.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Buy Credits" %}{% endblock %}
+
+{% block content %}
+
+<div class="py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-lg mx-auto">
+    <!-- Header Section -->
+    <div class="text-center mb-10">
+      <h2 class="text-4xl font-bold text-gray-900 mb-3">Buy Credits</h2>
+      <p class="text-lg text-gray-600 max-w-md mx-auto">Purchase credits to transform more images into unique drawings!
+      </p>
+    </div>
+
+    <!-- Credit Packages -->
+    <div class="space-y-4 mb-8">
+      {% with packs=packages %}
+      {% for pack in packs %}
+      <div class="relative group">
+        <button onclick="buy('{{ pack.id }}')" class="w-full group-hover:scale-105 transition-all duration-300 ease-in-out
+               {% if forloop.counter == 3 %}
+                 text-white bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 shadow-purple-200
+               {% endif %}
+              rounded-xl shadow-lg hover:shadow-xl px-6 py-5 flex flex-col items-start justify-start">
+
+          <div class="text-left">
+            <div class="text-xl">{{ pack.label }}</div>
+            {% if pack.bonus %}
+            <div class="text-sm opacity-90">+ {{ pack.bonus }} bonus credits</div>
+            {% endif %}
+          </div>
+
+          <div class="text-right">
+            <div class="font-bold text-2xl">${{ pack.amount|floatformat:2 }}</div>
+            {% if pack.per_credit_cost %}
+            <div class="text-xs opacity-75">${{ pack.per_credit_cost }} per credit</div>
+            {% endif %}
+          </div>
+
+          {% if forloop.counter == 3 %}
+          <div class="bg-white text-black mt-4 text-xs font-bold px-3 py-1 rounded-full">
+            MOST POPULAR
+          </div>
+          {% endif %}
+        </button>
+
+      </div>
+      {% endfor %}
+      {% endwith %}
+    </div>
+
+    <!-- Security Notice -->
+    <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+      <div class="flex items-center justify-center mb-3">
+        <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+          </path>
+        </svg>
+        <span class="font-semibold text-gray-800">100% Secure Payment</span>
+      </div>
+      <p class="text-gray-600 text-sm text-center leading-relaxed">
+        Processed via <strong>Stripe</strong> with SSL encryption. Your credits will be added automatically after
+        payment confirmation.
+      </p>
+    </div>
+
+    <!-- Features -->
+    <div class="mt-8 grid grid-cols-2 gap-4 text-center">
+      <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+        <div class="text-blue-500 font-semibold text-sm">⚡ Instant</div>
+        <div class="text-gray-600 text-xs mt-1">Credits added immediately</div>
+      </div>
+      <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
+        <div class="text-green-500 font-semibold text-sm">♻️ No Expiration</div>
+        <div class="text-gray-600 text-xs mt-1">Use whenever you want</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+  const url = "{% url 'stripe_checkout' %}";
+
+  function buy(pack_id) {
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      body: JSON.stringify({ pack_id: pack_id })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.sessionId) {
+          stripe.redirectToCheckout({ sessionId: data.sessionId });
+        } else {
+          alert("Error: " + data.error);
+        }
+      });
+  }
+</script>
+
+{% endblock %}

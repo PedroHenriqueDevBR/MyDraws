@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 from decouple import Csv, config
+import stripe
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY")
@@ -31,6 +32,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -64,6 +66,36 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+
+# Payment settings
+STRIPE_SECRET_KEY = config("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = config("STRIPE_PUBLISHABLE_KEY")
+
+stripe.api_key = STRIPE_SECRET_KEY
+
+CREDIT_PACKAGES = [
+    {
+        "id": "pack_50",
+        "amount": 999,
+        "credits": 50,
+        "label": "50 Credits",
+    },
+    {
+        "id": "pack_90",
+        "amount": 1499,
+        "credits": 90,
+        "label": "90 Credits (15 for free)",
+    },
+    {
+        "id": "pack_150",
+        "amount": 2499,
+        "credits": 150,
+        "label": "150 Credits (25 for free)",
+    },
+]
+
+
+# Auth settings
 
 SITE_ID = 2
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
@@ -122,10 +154,20 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": V4},
 ]
 
-LANGUAGE_CODE = "pt-br"
+# Internationalization
+LANGUAGE_CODE = "en"
 TIME_ZONE = "America/Fortaleza"
 USE_I18N = True
 USE_TZ = True
+
+LANGUAGES = [
+    ("en", "English"),
+    ("pt-br", "Português (Brasil)"),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
