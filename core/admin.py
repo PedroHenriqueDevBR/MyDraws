@@ -132,7 +132,7 @@ class ProfileAdmin(UserAdmin):
 
 @admin.register(ProfileAddress)
 class ProfileAddressAdmin(admin.ModelAdmin):
-    list_display = ("profile", "address_display", "default", "enabled")
+    list_display = ("profile", "address", "default", "enabled")
     list_filter = ("default", "enabled", "address__city__state__country")
     search_fields = (
         "profile__username",
@@ -143,27 +143,16 @@ class ProfileAddressAdmin(admin.ModelAdmin):
     ordering = ("profile__username", "-default")
     autocomplete_fields = ("profile", "address")
 
-    def address_display(self, obj):
-        return str(obj.address) if obj.address else "-"
-
-    address_display.short_description = "Endereço"
-
 
 @admin.register(CreditTransaction)
 class CreditTransactionAdmin(admin.ModelAdmin):
-    list_display = ("profile", "amount_display", "transaction_type", "created_at")
+    list_display = ("profile", "amount", "transaction_type", "created_at")
     list_filter = ("transaction_type", "created_at", "amount")
     search_fields = ("profile__username", "profile__email", "transaction_type")
     ordering = ("-created_at",)
     readonly_fields = ("created_at",)
     autocomplete_fields = ("profile",)
     date_hierarchy = "created_at"
-
-    def amount_display(self, obj):
-        color = "green" if obj.amount > 0 else "red"
-        return format_html('<span style="color: {};">{:+d}</span>', color, obj.amount)
-
-    amount_display.short_description = "Quantidade"
 
 
 @admin.register(Book)

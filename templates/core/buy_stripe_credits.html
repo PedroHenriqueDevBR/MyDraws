@@ -8,14 +8,12 @@
 
 <div class="py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-lg mx-auto">
-    <!-- Header Section -->
     <div class="text-center mb-10">
       <h2 class="text-4xl font-bold text-gray-900 mb-3">Buy Credits</h2>
       <p class="text-lg text-gray-600 max-w-md mx-auto">Purchase credits to transform more images into unique drawings!
       </p>
     </div>
 
-    <!-- Credit Packages -->
     <div class="space-y-4 mb-8">
       {% with packs=packages %}
       {% for pack in packs %}
@@ -52,7 +50,6 @@
       {% endwith %}
     </div>
 
-    <!-- Security Notice -->
     <div class="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
       <div class="flex items-center justify-center mb-3">
         <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,7 +65,6 @@
       </p>
     </div>
 
-    <!-- Features -->
     <div class="mt-8 grid grid-cols-2 gap-4 text-center">
       <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
         <div class="text-blue-500 font-semibold text-sm">⚡ Instant</div>
@@ -84,7 +80,7 @@
 
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-  const stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+  const stripe = Stripe("{{ publishable_key }}");
   const url = "{% url 'stripe_checkout' %}";
 
   function buy(pack_id) {

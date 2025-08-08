@@ -22,7 +22,8 @@
                     <h1 class="text-2xl font-bold text-gray-900 hidden sm:block">MyDraws</h1>
                 </div>
                 <nav class="md:flex space-x-2">
-                    <div class="relative group mr-4">
+                    {% comment %}
+                    <!-- <div class="relative group mr-4">
                         <button class="flex items-center space-x-2 text-gray-600 hover:text-gray-800 px-3 py-1 rounded-md transition-all duration-200">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m0 0v8m0-8h3m-3 8l3-3m-3 3l-3-3m9 3h-8"></path>
@@ -47,13 +48,14 @@
                                 </button>
                             </form>
                         </div>
-                    </div>
+                    </div> -->
+                    {% endcomment %}
                     <a href="{% url 'login' %}"
                         class="bg-violet-100 text-violet-600 px-4 py-2 rounded-lg hover:bg-violet-200 transition">{% trans "Sign In" %}</a>
                     <a href="/accounts/google/login/"
                         class="bg-violet-600 text-white px-4 py-2 rounded-lg hover:bg-violet-700 transition">
-                        <i class="fab fa-google mr-2"></i>
-                        Google
+                    <i class="fab fa-google mr-2"></i>
+                    Google
                     </a>
                 </nav>
             </div>
@@ -63,24 +65,22 @@
     <!-- Hero Section -->
     <section class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                {% trans "Transform your" %}
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-600">{% trans "photos" %}</span>
-                {% trans "into art" %}
-            </h2>
-            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                {% trans "Convert any image into a professional coloring drawing using our advanced image processing technology." %}
-            </p>
+                <h2 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+                    Transform your <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-600">photos</span> into art
+                </h2>
+                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                    Convert any image into a professional coloring drawing using our advanced image processing technology.
+                </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <a href="#how-it-works"
                     class="border-2 border-violet-600 text-violet-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-violet-600 hover:text-white transition">
                     <i class="fas fa-info mr-2"></i>
-                    Ver Como Funciona
+                    See How It Works
                 </a>
                 <a href="#upload"
                     class="bg-violet-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-violet-700 transition transform hover:scale-105">
                     <i class="fas fa-images mr-2"></i>
-                    Ver Exemplos
+                    See Examples
                 </a>
             </div>
         </div>
@@ -90,33 +90,30 @@
     <section id="features" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h3 class="text-4xl font-bold text-gray-900 mb-4">Por que escolher o MyDraws?</h3>
-                <p class="text-xl text-gray-600">Recursos profissionais para resultados incríveis</p>
+                <h3 class="text-4xl font-bold text-gray-900 mb-4">Why choose MyDraws?</h3>
+                <p class="text-xl text-gray-600">Professional features for amazing results</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="text-center p-6 rounded-xl border border-gray-100 hover:shadow-lg transition">
                     <div class="bg-violet-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-magic text-violet-600 text-2xl"></i>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Processamento Automático</h4>
-                    <p class="text-gray-600">Algoritmos avançados de detecção de bordas que transformam automaticamente
-                        suas fotos em desenhos para colorir.</p>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Automatic Processing</h4>
+                    <p class="text-gray-600">Advanced edge detection algorithms automatically turn your photos into coloring book drawings.</p>
                 </div>
                 <div class="text-center p-6 rounded-xl border border-gray-100 hover:shadow-lg transition">
                     <div class="bg-pink-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-sliders-h text-pink-600 text-2xl"></i>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Controle de Detalhes</h4>
-                    <p class="text-gray-600">Ajuste o nível de detalhes dos seus desenhos para criar desde esboços
-                        simples até arte complexa.</p>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Detail Control</h4>
+                    <p class="text-gray-600">Adjust the level of detail in your drawings to create anything from simple sketches to complex art.</p>
                 </div>
                 <div class="text-center p-6 rounded-xl border border-gray-100 hover:shadow-lg transition">
                     <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-download text-blue-600 text-2xl"></i>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Download Instantâneo</h4>
-                    <p class="text-gray-600">Baixe suas criações imediatamente em alta qualidade, prontas para impressão
-                        ou compartilhamento.</p>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-2">Instant Download</h4>
+                    <p class="text-gray-600">Download your creations instantly in high quality, ready for printing or sharing.</p>
                 </div>
             </div>
         </div>
@@ -126,8 +123,8 @@
     <section id="how-it-works" class="py-20 bg-gradient-to-r from-violet-50 to-pink-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h3 class="text-4xl font-bold text-gray-900 mb-4">Como Funciona</h3>
-                <p class="text-xl text-gray-600">Três passos simples para criar sua arte</p>
+                <h3 class="text-4xl font-bold text-gray-900 mb-4">How It Works</h3>
+                <p class="text-xl text-gray-600">Three simple steps to create your art</p>
             </div>
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="text-center">
@@ -135,27 +132,24 @@
                         class="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <span class="text-3xl font-bold text-violet-600">1</span>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-900 mb-4">Envie sua Imagem</h4>
-                    <p class="text-gray-600">Faça upload de qualquer foto ou imagem que você queira transformar em um
-                        desenho para colorir.</p>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-4">Upload Your Image</h4>
+                    <p class="text-gray-600">Upload any photo or image you want to turn into a coloring drawing.</p>
                 </div>
                 <div class="text-center">
                     <div
                         class="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <span class="text-3xl font-bold text-violet-600">2</span>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-900 mb-4">Processamento Automático</h4>
-                    <p class="text-gray-600">Nossa IA analisa a imagem e aplica algoritmos de detecção de bordas para
-                        criar o desenho perfeito.</p>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-4">Automatic Processing</h4>
+                    <p class="text-gray-600">Our AI analyzes the image and applies edge detection algorithms to create the perfect drawing.</p>
                 </div>
                 <div class="text-center">
                     <div
                         class="bg-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                         <span class="text-3xl font-bold text-violet-600">3</span>
                     </div>
-                    <h4 class="text-xl font-semibold text-gray-900 mb-4">Baixe e Divirta-se</h4>
-                    <p class="text-gray-600">Receba seu desenho para colorir em segundos e comece a criar sua obra de
-                        arte personalizada.</p>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-4">Download & Enjoy</h4>
+                    <p class="text-gray-600">Receive your coloring drawing in seconds and start creating your personalized artwork.</p>
                 </div>
             </div>
         </div>
@@ -164,27 +158,26 @@
     <!-- Upload Section -->
     <section id="upload" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h3 class="text-4xl font-bold text-gray-900 mb-8">Veja o Resultado</h3>
-            <p class="text-xl text-gray-600 mb-12">Confira alguns exemplos de imagens transformadas em desenhos para
-                colorir</p>
+            <h3 class="text-4xl font-bold text-gray-900 mb-8">See the Results</h3>
+            <p class="text-xl text-gray-600 mb-12">Check out some examples of images turned into coloring drawings</p>
 
             <div class="grid md:grid-cols-3 gap-8">
                 <div class="text-center">
-                    <img src="{% static 'images/example-01-original.jpg' %}" alt="Imagem Original"
+                    <img src="{% static 'images/example-01-original.jpg' %}" alt="Original Image"
                         class="rounded-lg shadow-lg mb-4 w-full h-96 object-cover">
-                    <img src="{% static 'images/example-01-sketch.jpg' %}" alt="Desenho para Colorir"
+                    <img src="{% static 'images/example-01-sketch.jpg' %}" alt="Coloring Drawing"
                         class="rounded-lg shadow-lg w-full h-96 object-cover">
                 </div>
                 <div class="text-center">
-                    <img src="{% static 'images/example-02-original.jpg' %}" alt="Imagem Original"
+                    <img src="{% static 'images/example-02-original.jpg' %}" alt="Original Image"
                         class="rounded-lg shadow-lg mb-4 w-full h-96 object-cover">
-                    <img src="{% static 'images/example-02-sketch.jpg' %}" alt="Desenho para Colorir"
+                    <img src="{% static 'images/example-02-sketch.jpg' %}" alt="Coloring Drawing"
                         class="rounded-lg shadow-lg w-full h-96 object-cover">
                 </div>
                 <div class="text-center">
-                    <img src="{% static 'images/example-03-original.jpg' %}" alt="Imagem Original"
+                    <img src="{% static 'images/example-03-original.jpg' %}" alt="Original Image"
                         class="rounded-lg shadow-lg mb-4 w-full h-96 object-cover">
-                    <img src="{% static 'images/example-03-sketch.jpg' %}" alt="Desenho para Colorir"
+                    <img src="{% static 'images/example-03-sketch.jpg' %}" alt="Coloring Drawing"
                         class="rounded-lg shadow-lg w-full h-96 object-cover">
                 </div>
             </div>
@@ -201,21 +194,20 @@
                         <h5 class="text-xl font-bold">MyDraws</h5>
                     </div>
                     <p class="text-gray-400 mb-4">
-                        Transforme suas memórias em arte criativa. MyDraws usa tecnologia avançada para criar desenhos
-                        para colorir únicos e personalizados.
+                        Turn your memories into creative art. MyDraws uses advanced technology to create unique and personalized coloring drawings.
                     </p>
                 </div>
                 <div>
-                    <h6 class="font-semibold mb-4">Recursos</h6>
+                    <h6 class="font-semibold mb-4">Features</h6>
                     <ul class="space-y-2 text-gray-400">
-                        <li><a href="#" class="hover:text-white transition">Processamento de Imagem</a></li>
-                        <li><a href="#" class="hover:text-white transition">Controle de Qualidade</a></li>
-                        <li><a href="#" class="hover:text-white transition">Download HD</a></li>
+                        <li><a href="#" class="hover:text-white transition">Image Processing</a></li>
+                        <li><a href="#" class="hover:text-white transition">Quality Control</a></li>
+                        <li><a href="#" class="hover:text-white transition">HD Download</a></li>
                     </ul>
                 </div>
             </div>
             <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2025 MyDraws. Todos os direitos reservados.</p>
+                <p>&copy; 2025 MyDraws. All rights reserved.</p>
             </div>
         </div>
     </footer>
