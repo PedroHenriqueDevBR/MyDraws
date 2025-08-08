@@ -126,7 +126,7 @@ class CreditTransaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"{self.transaction_type} of {self.amount} credits for {self.profile or 'No Profile'}"
+        return f"{self.transaction_type} of {self.amount} credits for {self.profile}"
 
     class Meta:
         verbose_name_plural = "Credit Transactions"

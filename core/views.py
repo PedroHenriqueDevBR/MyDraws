@@ -661,7 +661,7 @@ def stripe_webhook(request: HttpRequest):
         return redirect("buy_stripe_credits")
 
     sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
-    endpoint_secret = settings.STRIPE_SECRET_KEY
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
 
     try:
         event = stripe.Webhook.construct_event(
@@ -670,8 +670,10 @@ def stripe_webhook(request: HttpRequest):
             endpoint_secret,
         )
     except ValueError as e:
+        print(f"Error parsing webhook payload: {str(e)}")
         return JsonResponse({"error": str(e)}, status=400)
     except stripe.error.SignatureVerificationError as e:  # type: ignore
+        print(f"Error verifying webhook signature: {str(e)}")
         return JsonResponse({"error": str(e)}, status=400)
 
     if event["type"] == "checkout.session.completed":
@@ -689,6 +691,11 @@ def stripe_webhook(request: HttpRequest):
             if pack:
                 profile.credit_amount += pack["credits"]
                 profile.save()
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    "Credit purchase successful!",
+                )
 
     return JsonResponse(
         {"status": "success"},
@@ -699,7 +706,8 @@ def stripe_webhook(request: HttpRequest):
 @login_required
 def buy_stripe_credits(request: HttpRequest):
     packages = settings.CREDIT_PACKAGES
-    STRIPE_PUBLISHABLE_KEY = settings.STRIPE_PUBLISHABLE_KEY
+    publishable_key = settings.STRIPE_PUBLISHABLE_KEY
+
     packages = list(
         map(
             lambda pkg: {
@@ -709,11 +717,12 @@ def buy_stripe_credits(request: HttpRequest):
             packages,
         )
     )
+
     return render(
         request,
         "core/buy_stripe_credits.html",
         {
             "packages": packages,
-            "STRIPE_PUBLISHABLE_KEY": STRIPE_PUBLISHABLE_KEY,
+            "publishable_key": publishable_key,
         },
     )

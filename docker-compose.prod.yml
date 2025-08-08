@@ -17,8 +17,6 @@ services:
       context: .
       dockerfile: ./dockerfiles/python/Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "${APP_PORT}:8000"
     volumes:
       - .:/code
     links:
@@ -37,7 +35,3 @@ services:
       - 80:80
     depends_on:
       - web
-
-volumes:
-  static_volume:
-  media_volume:
