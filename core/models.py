@@ -150,9 +150,7 @@ class Book(models.Model):
 
 
 def upload_to(instance, filename):
-    if not instance.profile:
-        return f"uploads/{filename}"
-    return f"uploads/{instance.profile.username}/{filename}"
+    return f"uploads/{filename}"
 
 
 class UploadedImage(models.Model):
