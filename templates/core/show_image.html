@@ -4,6 +4,12 @@
 {% block title %}{{ uploaded_image.title }} - MyDraws{% endblock %}
 
 {% block content %}
+
+<div id="ai-task-notification"
+    class="hidden fixed top-4 right-4 z-50 bg-yellow-100 border border-yellow-400 text-yellow-800 px-6 py-4 rounded-lg shadow-lg">
+    <span id="ai-task-message">A geração da arte por IA está em andamento...</span>
+</div>
+
 <div class="book-viewer">
     <!-- Page Navigation Header -->
     <div class="flex justify-between items-center mb-8">
@@ -45,14 +51,14 @@
                     📅 {% trans "Created on" %} {{ uploaded_image.created_at|date:"d/m/Y à\s H:i" }}
                 </p>
 
-                <a href="{% url 'remove_uploaded_image' uploaded_image.id %}" 
+                <a href="{% url 'remove_uploaded_image' uploaded_image.id %}"
                     class="inline-flex items-center px-4 py-2 mt-4">
-                     <svg class="w-4 h-4 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m5 0H4">
-                          </path>
-                     </svg>
-                     {% trans "Remove this image" %}
+                    <svg class="w-4 h-4 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m5 0H4">
+                        </path>
+                    </svg>
+                    {% trans "Remove this image" %}
                 </a>
             </div>
 
@@ -98,10 +104,12 @@
                                         d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z">
                                     </path>
                                 </svg>
-                                {% trans "Hand Drawing" %} 
-                                <span class="mx-2"> - </span> <svg class="w-5 h-5 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                {% trans "Hand Drawing" %}
+                                <span class="mx-2"> - </span> <svg class="w-5 h-5 mr-2 text-yellow-400"
+                                    fill="currentColor" viewBox="0 0 20 20">
                                     <circle cx="10" cy="10" r="8" stroke="gold" stroke-width="2" fill="yellow" />
-                                    <text x="10" y="14" text-anchor="middle" font-size="10" fill="gold" font-family="Arial" font-weight="bold">¢</text>
+                                    <text x="10" y="14" text-anchor="middle" font-size="10" fill="gold"
+                                        font-family="Arial" font-weight="bold">¢</text>
                                 </svg> 1 Credit
                             </button>
 
@@ -109,10 +117,12 @@
                                 class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
                                 style="background: linear-gradient(135deg, var(--book-brown), var(--leather));"
                                 data-bs-toggle="modal" data-bs-target="#iaConvertModal">
-                                ✨ {% trans "Convert to Anime" %} 
-                                <span class="mx-2"> - </span> <svg class="w-5 h-5 mr-2 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                ✨ {% trans "Convert to Anime" %}
+                                <span class="mx-2"> - </span> <svg class="w-5 h-5 mr-2 text-yellow-400"
+                                    fill="currentColor" viewBox="0 0 20 20">
                                     <circle cx="10" cy="10" r="8" stroke="gold" stroke-width="2" fill="yellow" />
-                                    <text x="10" y="14" text-anchor="middle" font-size="10" fill="gold" font-family="Arial" font-weight="bold">¢</text>
+                                    <text x="10" y="14" text-anchor="middle" font-size="10" fill="gold"
+                                        font-family="Arial" font-weight="bold">¢</text>
                                 </svg> 3 Credits
                             </button>
                         </div>
@@ -140,8 +150,7 @@
                         <div class="space-y-4">
                             <a href="{% url 'buy_credits' %}"
                                 class="w-full flex items-center justify-center px-6 py-4 text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1"
-                                style="background: linear-gradient(135deg, var(--book-brown), var(--leather));"
-                                >
+                                style="background: linear-gradient(135deg, var(--book-brown), var(--leather));">
                                 {% trans "Add credits" %}
                             </a>
                         </div>
@@ -169,14 +178,14 @@
                     {% for image in uploaded_image.variations.all %}
                     <div class="variation-item relative">
                         <!-- Remove Button -->
-                            <a href="{% url 'remove_uploaded_image' image.id %}"
-                                class="absolute p-4 top-2 right-2 z-10 rounded-full bg-white bg-opacity-80 hover:bg-red-100 transition-colors duration-200 shadow-md border border-red-200">
-                                <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m5 0H4">
-                                    </path>
-                                </svg>
-                            </a>
+                        <a href="{% url 'remove_uploaded_image' image.id %}"
+                            class="absolute p-4 top-2 right-2 z-10 rounded-full bg-white bg-opacity-80 hover:bg-red-100 transition-colors duration-200 shadow-md border border-red-200">
+                            <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m5 0H4">
+                                </path>
+                            </svg>
+                        </a>
                         <div class="vintage-border p-4 transition-all duration-300 hover:shadow-lg"
                             style="background-color: #FFFEF7;">
                             <div class="relative overflow-hidden rounded-lg mb-4 cursor-pointer"
@@ -221,7 +230,8 @@
                     </svg>
                     <div class="Nenhuma arte">
                         <p class="text-lg" style="color: var(--leather);">
-                            🌟 {% trans "No magical drawings have been generated yet! 🖌️ Use the options above to unleash your creativity and create amazing coloring pages! 🎨✨" %}
+                            🌟 {% trans "No magical drawings have been generated yet! 🖌️ Use the options above to
+                            unleash your creativity and create amazing coloring pages! 🎨✨" %}
                         </p>
                     </div>
                 </div>
@@ -358,7 +368,6 @@
 </div>
 
 <script>
-
     function showLoading() {
         document.querySelector('.loading').classList.remove('hidden');
         document.querySelector('.loading').classList.add('flex');
@@ -439,6 +448,41 @@
         }
     });
 </script>
+
+<script>
+    // Polling para status da task Celery
+    document.addEventListener('DOMContentLoaded', function () {
+        const imageId = '{{ uploaded_image.id }}';
+        const notification = document.getElementById('ai-task-notification');
+        let polling = false;
+
+        function pollTaskStatus() {
+            fetch(`/check_ai_task_status/${imageId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'pending') {
+                        notification.classList.remove('hidden');
+                        document.getElementById('ai-task-message').textContent = 'A geração da arte por IA está em andamento...';
+                        setTimeout(pollTaskStatus, 3000);
+                    } else if (data.status === 'done') {
+                        notification.classList.remove('hidden');
+                        document.getElementById('ai-task-message').textContent = 'Arte por IA gerada! Atualize a página para visualizar.';
+                    } else if (data.status === 'error') {
+                        notification.classList.remove('hidden');
+                        document.getElementById('ai-task-message').textContent = 'Erro ao gerar arte por IA.';
+                    } else {
+                        notification.classList.add('hidden');
+                    }
+                });
+        }
+
+        {% if has_imagem_task %}
+        polling = true;
+        pollTaskStatus();
+        {% endif %}
+    });
+</script>
+
 
 <style>
     .variation-item:hover .vintage-border {

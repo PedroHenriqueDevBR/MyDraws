@@ -1,48 +1,68 @@
 import json
-from pathlib import Path
 import math
-from decouple import config
-
-from django.core.files import File
-from django.http.request import HttpRequest
-from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
-from django.contrib import messages
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
-from django.urls import reverse
-from django.conf import settings
-
-from core.services.design_by_openai import DesignByOpenAI
-from core.services.mercado_pago import get_mercado_pago_service
-
-from core.forms import ImageUploadForm
-from core.models import CreditTransaction, Profile, UploadedImage, Book
-from core.services import local_converter
+from pathlib import Path
 
 import stripe
+from celery.result import AsyncResult
+from decouple import config
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.core.files import File
+from django.http.response import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+
+from core.forms import ImageUploadForm
+from core.models import Book, Profile, UploadedImage
+from core.services import local_converter
+from core.services.mercado_pago import get_mercado_pago_service
+from core.tasks import generate_ai_image_task
+from core.types import CustomRequest
+from core.utils import use_credit_amount
 
 
-def landing(request: HttpRequest):
+# Endpoint para polling do status da task Celery
+def check_ai_task_status(request: CustomRequest, image_id: int):
+    task_id = request.session.get(f"ai_task_{image_id}")
+    if not task_id:
+        return JsonResponse({"status": "not_found"})
+
+    result = AsyncResult(task_id)
+
+    print(result.state)  # Debugging line to check task state
+
+    if result.state == "SUCCESS":
+        request.session.pop(f"ai_task_{image_id}", None)
+        return JsonResponse({"status": "done", "image_path": result.result})
+    elif result.state == "FAILURE":
+        request.session.pop(f"ai_task_{image_id}", None)
+        return JsonResponse({"status": "error"})
+    else:
+        return JsonResponse({"status": "pending"})
+
+
+def landing(request: CustomRequest):
     return render(request, "core/landing.html")
 
 
-def custom_logout(request: HttpRequest):
+def custom_logout(request: CustomRequest):
     logout(request)
     request.session.flush()
     return redirect("login")
 
 
 @login_required
-def home(request: HttpRequest):
+def home(request: CustomRequest):
     books = Book.objects.filter(author=request.user).order_by("-created_at")
     return render(request, "core/home.html", {"books": books})
 
 
 @login_required
-def book_detail(request: HttpRequest, book_id: int):
+def book_detail(request: CustomRequest, book_id: int):
     user = request.user
     book = Book.objects.filter(id=book_id, author=request.user).first()
 
@@ -62,7 +82,7 @@ def book_detail(request: HttpRequest, book_id: int):
         )
         return redirect("home")
 
-    uploaded_images = book.uploaded_images.all().order_by("-created_at")
+    uploaded_images = book.uploaded_images.all().order_by("-id")  # type: ignore
     return render(
         request,
         "core/book_detail.html",
@@ -71,7 +91,7 @@ def book_detail(request: HttpRequest, book_id: int):
 
 
 @login_required
-def book_create(request: HttpRequest):
+def book_create(request: CustomRequest):
     if request.method == "POST":
         title = request.POST.get("title", "Untitled Book")
         description = request.POST.get("description", "")
@@ -90,13 +110,13 @@ def book_create(request: HttpRequest):
             messages.SUCCESS,
             "Você pode começar a adicionar páginas a este livro.",
         )
-        return redirect("book_detail", book_id=book.id)
+        return redirect("book_detail", book_id=book.id)  # type: ignore
     else:
         return redirect("home")
 
 
 @login_required
-def upload_image(request: HttpRequest, book_id: int):
+def upload_image(request: CustomRequest, book_id: int):
     user = request.user
     book = Book.objects.filter(id=book_id, author=request.user).first()
 
@@ -127,16 +147,16 @@ def upload_image(request: HttpRequest, book_id: int):
         messages.add_message(
             request,
             messages.SUCCESS,
-            f"Página mágica carregada com sucesso, hora da diversão! 🎉",
+            "Página mágica carregada com sucesso, hora da diversão! 🎉",
         )
-        return redirect("show_uploaded_image", image_id=uploaded_image.id)
+        return redirect("show_uploaded_image", image_id=uploaded_image.id)  # type: ignore
     else:
         form = ImageUploadForm()
     return render(request, "core/upload.html", {"form": form})
 
 
 @login_required
-def show_uploaded_image(request: HttpRequest, image_id: int):
+def show_uploaded_image(request: CustomRequest, image_id: int):
     user = request.user
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
 
@@ -156,11 +176,20 @@ def show_uploaded_image(request: HttpRequest, image_id: int):
         )
         return redirect("home")
 
-    return render(request, "core/show_image.html", {"uploaded_image": uploaded_image})
+    has_imagem_task = request.session.get(f"ai_task_{image_id}") is not None
+
+    return render(
+        request,
+        "core/show_image.html",
+        {
+            "uploaded_image": uploaded_image,
+            "has_imagem_task": has_imagem_task,
+        },
+    )
 
 
 @login_required
-def remove_uploaded_image(request: HttpRequest, image_id: int):
+def remove_uploaded_image(request: CustomRequest, image_id: int):
     user = request.user
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
 
@@ -196,7 +225,7 @@ def remove_uploaded_image(request: HttpRequest, image_id: int):
 
 
 @login_required
-def simple_convert(request: HttpRequest, image_id: int):
+def simple_convert(request: CustomRequest, image_id: int):
     user = request.user
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
 
@@ -245,28 +274,23 @@ def simple_convert(request: HttpRequest, image_id: int):
     messages.add_message(
         request,
         messages.SUCCESS,
-        f"Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
+        "Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
     )
 
     use_credit_amount(user, 1)  # type: ignore
 
-    return redirect("show_uploaded_image", image_id=uploaded_image.id)
+    return redirect(
+        "show_uploaded_image",
+        image_id=uploaded_image.id,  # type: ignore
+    )
 
 
 @login_required
-def generate_by_ai(request: HttpRequest, image_id: int):
+def generate_by_ai(request: CustomRequest, image_id: int):
     user = request.user
     uploaded_image = UploadedImage.objects.filter(id=image_id).first()
 
-    if not uploaded_image:
-        messages.add_message(
-            request,
-            messages.ERROR,
-            "Você não possui permissão para ver esta imagem.",
-        )
-        return redirect("home")
-
-    if uploaded_image and uploaded_image.profile != user:
+    if not uploaded_image or uploaded_image.profile != user:
         messages.add_message(
             request,
             messages.ERROR,
@@ -282,46 +306,21 @@ def generate_by_ai(request: HttpRequest, image_id: int):
         )
         return redirect("show_uploaded_image", image_id=image_id)
 
-    designer = DesignByOpenAI(image_path=uploaded_image.image.path)
-    converted_image_path, _ = designer.generate()
-    converted_image_file = File(open(converted_image_path, "rb"))
-
-    UploadedImage.objects.create(
-        title=f"IA {uploaded_image.title}",
-        image=converted_image_file,
-        profile=request.user,
-        based_on=uploaded_image,
-    )
-
-    Path(converted_image_path).unlink()
+    # Celery task
+    task = generate_ai_image_task.delay(uploaded_image.id)  # type: ignore
+    request.session[f"ai_task_{image_id}"] = task.id
 
     messages.add_message(
         request,
-        messages.SUCCESS,
-        f"Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
+        messages.INFO,
+        "A geração da arte por IA foi iniciada! Você será notificado quando estiver pronta.",
     )
 
-    use_credit_amount(user, 3, "AI_GENERATION")  # type: ignore
-
-    return redirect("show_uploaded_image", image_id=uploaded_image.id)
-
-
-def use_credit_amount(profile: Profile, amount: int, origin: str = "LOCAL"):
-    profile.credit_amount -= amount
-    if profile.credit_amount < 0:
-        profile.credit_amount = 0
-    profile.save()
-
-    CreditTransaction.objects.create(
-        profile=profile,
-        amount=-amount,
-        transaction_type=f"CREDIT_USE_{origin}",
-    )
-    return True
+    return redirect("show_uploaded_image", image_id=uploaded_image.id)  # type: ignore
 
 
 @csrf_exempt
-def webhook(request: HttpRequest):
+def webhook(request: CustomRequest):
     print("Webhook received POST:", request.body)
     print("Webhook received GET:", request.GET)
 
@@ -339,7 +338,7 @@ def webhook(request: HttpRequest):
 
 @login_required
 @require_http_methods(["POST"])
-def create_payment_preference(request: HttpRequest):
+def create_payment_preference(request: CustomRequest):
     profile = request.user
     try:
         data = json.loads(request.body)
@@ -369,7 +368,7 @@ def create_payment_preference(request: HttpRequest):
         preference = mp_service.create_payment_preference(
             profile=request.user,
             credit_amount=credit_amount,
-            unit_price=unit_price,
+            unit_price=unit_price,  # type: ignore
             description=description,
         )
 
@@ -402,7 +401,7 @@ def create_payment_preference(request: HttpRequest):
 
 @csrf_exempt
 @require_http_methods(["POST"])
-def mercado_pago_webhook(request: HttpRequest):
+def mercado_pago_webhook(request: CustomRequest):
     try:
 
         print(f"Webhook Mercado Pago - Body: {request.body}")
@@ -451,7 +450,7 @@ def mercado_pago_webhook(request: HttpRequest):
 
 
 @login_required
-def payment_success(request: HttpRequest):
+def payment_success(request: CustomRequest):
     payment_id = request.GET.get("payment_id")
     status = request.GET.get("status")
     external_reference = request.GET.get("external_reference")
@@ -483,7 +482,7 @@ def payment_success(request: HttpRequest):
 
 
 @login_required
-def payment_failure(request: HttpRequest):
+def payment_failure(request: CustomRequest):
     payment_id = request.GET.get("payment_id")
     status = request.GET.get("status")
 
@@ -498,7 +497,7 @@ def payment_failure(request: HttpRequest):
 
 
 @login_required
-def payment_pending(request: HttpRequest):
+def payment_pending(request: CustomRequest):
     payment_id = request.GET.get("payment_id")
     status = request.GET.get("status")
 
@@ -512,7 +511,7 @@ def payment_pending(request: HttpRequest):
 
 
 @login_required
-def check_payment_status(request: HttpRequest, payment_id: str):
+def check_payment_status(request: CustomRequest, payment_id: str):
     """
     API para consultar status de um pagamento específico
     """
@@ -549,7 +548,7 @@ def check_payment_status(request: HttpRequest, payment_id: str):
 
 
 @login_required
-def get_available_payment_methods(request: HttpRequest):
+def get_available_payment_methods(request: CustomRequest):
     """
     API para consultar métodos de pagamento disponíveis
     """
@@ -576,7 +575,7 @@ def get_available_payment_methods(request: HttpRequest):
 
 
 @login_required
-def buy_credits(request: HttpRequest):
+def buy_credits(request: CustomRequest):
     unit_price = config("UNIT_PRICE", default="0.75", cast=float)
     unit_price_str = config("UNIT_PRICE")
     medium_price = unit_price * 0.9
@@ -601,7 +600,7 @@ def buy_credits(request: HttpRequest):
 @csrf_exempt
 @login_required
 @require_http_methods(["POST"])
-def stripe_create_checkout_session(request: HttpRequest):
+def stripe_create_checkout_session(request: CustomRequest):
     profile = request.user
     data = json.loads(request.body)
     selected_pack = data.get("pack_id")
@@ -654,7 +653,7 @@ def stripe_create_checkout_session(request: HttpRequest):
 
 @csrf_exempt
 # @require_http_methods(["GET", "POST"])
-def stripe_webhook(request: HttpRequest):
+def stripe_webhook(request: CustomRequest):
     payload = request.body
 
     if payload == b"":
@@ -704,7 +703,7 @@ def stripe_webhook(request: HttpRequest):
 
 
 @login_required
-def buy_stripe_credits(request: HttpRequest):
+def buy_stripe_credits(request: CustomRequest):
     packages = settings.CREDIT_PACKAGES
     publishable_key = settings.STRIPE_PUBLISHABLE_KEY
 

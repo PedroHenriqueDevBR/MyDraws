@@ -3,6 +3,11 @@ from core import views
 
 urlpatterns = [
     path(
+        "check_ai_task_status/<int:image_id>/",
+        views.check_ai_task_status,
+        name="check_ai_task_status",
+    ),
+    path(
         "",
         views.home,
         name="home",
