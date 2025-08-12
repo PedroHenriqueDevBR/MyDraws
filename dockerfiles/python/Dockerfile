@@ -11,7 +11,7 @@ RUN apt install -y libgl1
 RUN pip install -U pip setuptools
 
 COPY requirements.txt $HOME
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 ADD . $HOME
 
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

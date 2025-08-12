@@ -1,4 +1,20 @@
 services:
+  web:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/python/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+    links:
+      - db
+      - celery
+    depends_on:
+      - db
+      - celery
+
   db:
     image: postgres:15
     volumes:
@@ -12,20 +28,41 @@ services:
     ports:
       - "5432:5432"
 
-  web:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  celery:
     build:
       context: .
       dockerfile: ./dockerfiles/python/Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
-    ports:
-      - "${APP_PORT}:8000"
+    command: celery -A bobbies_creator worker --loglevel=info
     volumes:
       - .:/code
-    links:
-      - db
     depends_on:
       - db
+      - redis
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
 
-volumes:
-  static_volume:
-  media_volume:
+  flower:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/python/Dockerfile
+    command: >
+      celery -A bobbies_creator.celery_app flower
+      --basic_auth=${FLOWER_USER}:${FLOWER_PASSWORD}
+      --address=0.0.0.0 --port=5555
+      --broker=${CELERY_BROKER_URL}
+    ports:
+      - "5555:5555"
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
