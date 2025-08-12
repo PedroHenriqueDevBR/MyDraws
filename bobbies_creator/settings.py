@@ -78,20 +78,20 @@ CREDIT_PACKAGES = [
     {
         "id": "pack_50",
         "amount": 999,
-        "credits": 50,
-        "label": "50 Credits",
+        "credits": 30,
+        "label": "30 Credits",
     },
     {
         "id": "pack_90",
         "amount": 1499,
-        "credits": 90,
-        "label": "90 Credits (15 for free)",
+        "credits": 60,
+        "label": "60 Credits (15 for free)",
     },
     {
         "id": "pack_150",
         "amount": 2499,
-        "credits": 150,
-        "label": "150 Credits (25 for free)",
+        "credits": 100,
+        "label": "100 Credits (25 for free)",
     },
 ]
 
@@ -180,7 +180,7 @@ MEDIA_ROOT = BASE_DIR / "mediafiles/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Celery Config
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://localhost:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get(
-    "CELERY_RESULT_BACKEND", "redis://localhost:6379/0"
-)
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
+CELERY_TASK_ALWAYS_EAGER = False
+CELERY_TASK_EAGER_PROPAGATES = False

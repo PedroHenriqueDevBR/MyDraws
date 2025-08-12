@@ -26,7 +26,13 @@ class DesignByOpenAI:
 
         # Prompt padrão
         self.prompt = (
-            "Transform the image into an anime scene, sunset in the background"
+            "Transform the provided image into a vibrant anime-style scene, "
+            "preserving the user's exact facial features, proportions, and expression. "
+            "Place the character in a cinematic anime environment with rich background details "
+            "and dynamic lighting. "
+            "Then, reinterpret the entire scene as a high-quality hand-painted artwork, "
+            "using visible brush strokes, textured canvas feel, and rich, deep colors, "
+            "while keeping the anime style in character design and composition."
         )
 
         if prompt:
@@ -51,8 +57,8 @@ class DesignByOpenAI:
             n=1,
             output_format="jpeg",
             # response_format="b64_json",
-            quality="low",
-            input_fidelity="low",
+            quality="auto",
+            input_fidelity="high",
             size="1024x1536",
         )
 
