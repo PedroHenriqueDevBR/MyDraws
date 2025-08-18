@@ -180,7 +180,7 @@ MEDIA_ROOT = BASE_DIR / "mediafiles/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Celery Config
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "redis://redis:6379/0")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
+CELERY_BROKER_URL = config("CELERY_BROKER_URL", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = config("CELERY_RESULT_BACKEND", "redis://redis:6379/0")
 CELERY_TASK_ALWAYS_EAGER = False
 CELERY_TASK_EAGER_PROPAGATES = False

@@ -26,13 +26,14 @@ class DesignByOpenAI:
 
         # Prompt padrão
         self.prompt = (
-            "Transform the provided image into a vibrant anime-style scene, "
-            "preserving the user's exact facial features, proportions, and expression. "
-            "Place the character in a cinematic anime environment with rich background details "
-            "and dynamic lighting. "
-            "Then, reinterpret the entire scene as a high-quality hand-painted artwork, "
-            "using visible brush strokes, textured canvas feel, and rich, deep colors, "
-            "while keeping the anime style in character design and composition."
+            "Transform this photo of a person into a black-and-white coloring book illustration "
+            "in the style of an anime scene. "
+            "Use clean, bold outlines with no shading or gray areas. "
+            "Keep the features recognizable but stylized as anime, "
+            "including expressive eyes, simplified hair, and dynamic pose if possible. "
+            "Remove or simplify the background so it resembles a typical anime scene, "
+            "but keep it minimal to focus on coloring. "
+            "The result should look like a page from an anime coloring book."
         )
 
         if prompt:
@@ -56,8 +57,7 @@ class DesignByOpenAI:
             prompt=self.prompt,
             n=1,
             output_format="jpeg",
-            # response_format="b64_json",
-            quality="auto",
+            quality="medium",
             input_fidelity="high",
             size="1024x1536",
         )

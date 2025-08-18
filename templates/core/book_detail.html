@@ -80,15 +80,19 @@
                     <!-- Variations Count -->
                     {% if image.variations.count > 0 %}
                     <div class="flex items-center justify-center mb-4 text-sm" style="color: var(--book-brown);">
-                        {{ image.variations.count }} variação {{ image.variations.count|pluralize:"ões" }} 
-                        criada{{ image.variations.count|pluralize }}
+                        {{ image.variations.count }} Variation{{ image.variations.count|pluralize:"s" }}
+                        Created
+                    </div>
+                    {% else %}
+                    <div class="flex items-center justify-center mb-4 text-sm" style="color: var(--book-brown);">
+                        No variations created yet.
                     </div>
                     {% endif %}
 
                     <a href="{% url 'show_uploaded_image' image.id %}"
                         class="inline-flex items-center px-6 py-2 text-white rounded-lg shadow-md transition-all duration-300 hover:shadow-lg"
                         style="background: linear-gradient(135deg, var(--book-brown), var(--dark-brown)); ">
-                        📖 Abrir Página
+                        📖 Open page
                         <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
                             </path>

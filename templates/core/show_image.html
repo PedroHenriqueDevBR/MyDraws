@@ -450,7 +450,7 @@
 </script>
 
 <script>
-    // Polling para status da task Celery
+    // Polling for Celery task status
     document.addEventListener('DOMContentLoaded', function () {
         const imageId = '{{ uploaded_image.id }}';
         const notification = document.getElementById('ai-task-notification');
@@ -462,14 +462,17 @@
                 .then(data => {
                     if (data.status === 'pending') {
                         notification.classList.remove('hidden');
-                        document.getElementById('ai-task-message').textContent = 'A geração da arte por IA está em andamento...';
+                        document.getElementById('ai-task-message').textContent = 'AI art generation is in progress...';
                         setTimeout(pollTaskStatus, 3000);
                     } else if (data.status === 'done') {
                         notification.classList.remove('hidden');
-                        document.getElementById('ai-task-message').textContent = 'Arte por IA gerada! Atualize a página para visualizar.';
+                        document.getElementById('ai-task-message').textContent = 'AI art generated! Refresh the page to view or auto refreshing in 3s...';
+                        setTimeout(function () {
+                            location.reload();
+                        }, 3000);
                     } else if (data.status === 'error') {
                         notification.classList.remove('hidden');
-                        document.getElementById('ai-task-message').textContent = 'Erro ao gerar arte por IA.';
+                        document.getElementById('ai-task-message').textContent = 'Error generating AI art.';
                     } else {
                         notification.classList.add('hidden');
                     }
