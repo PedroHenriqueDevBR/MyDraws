@@ -70,7 +70,7 @@ def book_detail(request: CustomRequest, book_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver este livro.",
+            "You don't have permission to view this book.",
         )
         return redirect("home")
 
@@ -78,7 +78,7 @@ def book_detail(request: CustomRequest, book_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver este livro.",
+            "You don't have permission to view this book.",
         )
         return redirect("home")
 
@@ -103,12 +103,12 @@ def book_create(request: CustomRequest):
         messages.add_message(
             request,
             messages.SUCCESS,
-            f"Livro '{book.title}' criado com sucesso.",
+            f"Book '{book.title}' created successfully.",
         )
         messages.add_message(
             request,
             messages.SUCCESS,
-            "Você pode começar a adicionar páginas a este livro.",
+            "You can start adding pages to this book.",
         )
         return redirect("book_detail", book_id=book.id)  # type: ignore
     else:
@@ -124,7 +124,7 @@ def upload_image(request: CustomRequest, book_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver este livro.",
+            "You don't have permission to view this book.",
         )
         return redirect("home")
 
@@ -132,7 +132,7 @@ def upload_image(request: CustomRequest, book_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver este livro.",
+            "You don't have permission to view this book.",
         )
         return redirect("home")
 
@@ -147,7 +147,7 @@ def upload_image(request: CustomRequest, book_id: int):
         messages.add_message(
             request,
             messages.SUCCESS,
-            "Página mágica carregada com sucesso, hora da diversão! 🎉",
+            "Magic page uploaded successfully, time for fun! 🎉",
         )
         return redirect("show_uploaded_image", image_id=uploaded_image.id)  # type: ignore
     else:
@@ -164,7 +164,7 @@ def show_uploaded_image(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver esta imagem.",
+            "You don't have permission to view this image.",
         )
         return redirect("home")
 
@@ -172,7 +172,7 @@ def show_uploaded_image(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver esta imagem.",
+            "You don't have permission to view this image.",
         )
         return redirect("home")
 
@@ -197,7 +197,7 @@ def remove_uploaded_image(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver esta imagem.",
+            "You don't have permission to view this image.",
         )
         return redirect("home")
 
@@ -205,7 +205,7 @@ def remove_uploaded_image(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver esta imagem.",
+            "You don't have permission to view this image.",
         )
         return redirect("home")
 
@@ -233,7 +233,7 @@ def simple_convert(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver esta imagem.",
+            "You don't have permission to view this image.",
         )
         return redirect("home")
 
@@ -241,7 +241,7 @@ def simple_convert(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver esta imagem.",
+            "You don't have permission to view this image.",
         )
         return redirect("home")
 
@@ -249,7 +249,7 @@ def simple_convert(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui créditos suficientes para executar essa ação, compre alguns créditos.",
+            "You don't have enough credits to perform this action, please buy some credits.",
         )
         return redirect("show_uploaded_image", image_id=image_id)
 
@@ -274,7 +274,7 @@ def simple_convert(request: CustomRequest, image_id: int):
     messages.add_message(
         request,
         messages.SUCCESS,
-        "Arte convertida com sucesso! 🎨✨ Você pode ver a nova imagem abaixo.",
+        "Art converted successfully! 🎨✨ You can see the new image below.",
     )
 
     use_credit_amount(user, 1)  # type: ignore
@@ -294,7 +294,7 @@ def generate_by_ai(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui permissão para ver esta imagem.",
+            "You don't have permission to view this image.",
         )
         return redirect("home")
 
@@ -302,7 +302,7 @@ def generate_by_ai(request: CustomRequest, image_id: int):
         messages.add_message(
             request,
             messages.ERROR,
-            "Você não possui créditos suficientes para executar essa ação, compre alguns créditos.",
+            "You don't have enough credits to perform this action, please buy some credits.",
         )
         return redirect("show_uploaded_image", image_id=image_id)
 
@@ -313,7 +313,7 @@ def generate_by_ai(request: CustomRequest, image_id: int):
     messages.add_message(
         request,
         messages.INFO,
-        "A geração da arte por IA foi iniciada! Você será notificado quando estiver pronta.",
+        "AI art generation has been started! You will be notified when it's ready.",
     )
 
     return redirect("show_uploaded_image", image_id=uploaded_image.id)  # type: ignore
@@ -348,13 +348,13 @@ def create_payment_preference(request: CustomRequest):
             return JsonResponse(
                 {
                     "success": False,
-                    "error": "Quantidade de créditos deve ser maior ou igual a 5 (cinco)",
+                    "error": "Credit amount must be greater than or equal to 5 (five)",
                 },
                 status=400,
             )
 
         unit_price = config("UNIT_PRICE", default="0.75", cast=float)
-        description = f"Compra de {credit_amount} créditos por { profile } - MyDraws"
+        description = f"Purchase of {credit_amount} credits by { profile } - MyDraws"
 
         if credit_amount >= 120:
             unit_price = unit_price * 0.9
@@ -386,16 +386,16 @@ def create_payment_preference(request: CustomRequest):
             return JsonResponse(
                 {
                     "success": False,
-                    "error": "Erro interno ao criar preferência de pagamento",
+                    "error": "Internal error creating payment preference",
                 },
                 status=500,
             )
 
     except json.JSONDecodeError:
-        return JsonResponse({"success": False, "error": "JSON inválido"}, status=400)
+        return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
     except Exception as e:
         return JsonResponse(
-            {"success": False, "error": f"Erro inesperado: {str(e)}"}, status=500
+            {"success": False, "error": f"Unexpected error: {str(e)}"}, status=500
         )
 
 
@@ -422,7 +422,7 @@ def mercado_pago_webhook(request: CustomRequest):
             success, message = mp_service.process_payment_notification(str(payment_id))
 
             print(
-                f"Webhook - Processamento: {'Sucesso' if success else 'Falha'} - {message}"
+                f"Webhook - Processing: {'Success' if success else 'Failure'} - {message}"
             )
 
             return JsonResponse(
@@ -430,22 +430,22 @@ def mercado_pago_webhook(request: CustomRequest):
             )
         else:
 
-            print(f"Webhook - Notificação ignorada: {action}")
+            print(f"Webhook - Notification ignored: {action}")
             return JsonResponse(
                 {
                     "success": True,
-                    "message": "Notificação recebida, mas não processada",
+                    "message": "Notification received, but not processed",
                     "action": action,
                 }
             )
 
     except json.JSONDecodeError:
-        print("Webhook - Erro: JSON inválido")
-        return JsonResponse({"success": False, "error": "JSON inválido"}, status=400)
+        print("Webhook - Error: Invalid JSON")
+        return JsonResponse({"success": False, "error": "Invalid JSON"}, status=400)
     except Exception as e:
-        print(f"Webhook - Erro inesperado: {str(e)}")
+        print(f"Webhook - Unexpected error: {str(e)}")
         return JsonResponse(
-            {"success": False, "error": f"Erro interno: {str(e)}"}, status=500
+            {"success": False, "error": f"Internal error: {str(e)}"}, status=500
         )
 
 
@@ -467,16 +467,16 @@ def payment_success(request: CustomRequest):
         success, message = mp_service.process_payment_notification(str(payment_id))
 
         print(
-            f"Webhook - Processamento: {'Sucesso' if success else 'Falha'} - {message}"
+            f"Webhook - Processing: {'Success' if success else 'Failure'} - {message}"
         )
 
         messages.success(
-            request, "Pagamento aprovado! Seus créditos foram adicionados à sua conta."
+            request, "Payment approved! Your credits have been added to your account."
         )
     elif status == "pending":
-        messages.info(request, "Pagamento pendente. Aguarde a confirmação.")
+        messages.info(request, "Payment pending. Please wait for confirmation.")
     else:
-        messages.warning(request, "Status do pagamento: " + (status or "desconhecido"))
+        messages.warning(request, "Payment status: " + (status or "unknown"))
 
     return render(request, "core/payment_success.html", context)
 
@@ -490,7 +490,7 @@ def payment_failure(request: CustomRequest):
 
     messages.error(
         request,
-        "Pagamento não foi concluído. Tente novamente ou entre em contato conosco.",
+        "Payment was not completed. Please try again or contact us.",
     )
 
     return render(request, "core/payment_failure.html", context)
@@ -504,7 +504,7 @@ def payment_pending(request: CustomRequest):
     context = {"payment_id": payment_id, "status": status}
 
     messages.info(
-        request, "Pagamento em processamento. Você receberá uma confirmação em breve."
+        request, "Payment is being processed. You will receive confirmation shortly."
     )
 
     return render(request, "core/payment_pending.html", context)
@@ -513,7 +513,7 @@ def payment_pending(request: CustomRequest):
 @login_required
 def check_payment_status(request: CustomRequest, payment_id: str):
     """
-    API para consultar status de um pagamento específico
+    API to check status of a specific payment
     """
     try:
         mp_service = get_mercado_pago_service()
@@ -537,12 +537,12 @@ def check_payment_status(request: CustomRequest, payment_id: str):
             )
         else:
             return JsonResponse(
-                {"success": False, "error": "Pagamento não encontrado"}, status=404
+                {"success": False, "error": "Payment not found"}, status=404
             )
 
     except Exception as e:
         return JsonResponse(
-            {"success": False, "error": f"Erro ao consultar pagamento: {str(e)}"},
+            {"success": False, "error": f"Error checking payment: {str(e)}"},
             status=500,
         )
 
@@ -550,7 +550,7 @@ def check_payment_status(request: CustomRequest, payment_id: str):
 @login_required
 def get_available_payment_methods(request: CustomRequest):
     """
-    API para consultar métodos de pagamento disponíveis
+    API to check available payment methods
     """
     try:
         mp_service = get_mercado_pago_service()
@@ -562,14 +562,14 @@ def get_available_payment_methods(request: CustomRequest):
             return JsonResponse(
                 {
                     "success": False,
-                    "error": "Não foi possível consultar métodos de pagamento",
+                    "error": "Could not check payment methods",
                 },
                 status=500,
             )
 
     except Exception as e:
         return JsonResponse(
-            {"success": False, "error": f"Erro ao consultar métodos: {str(e)}"},
+            {"success": False, "error": f"Error checking methods: {str(e)}"},
             status=500,
         )
 
@@ -624,7 +624,7 @@ def stripe_create_checkout_session(request: CustomRequest):
             {
                 "price_data": {
                     "currency": "usd",
-                    "unit_amount": int(selected_pack["amount"]),  # Preço em centavos
+                    "unit_amount": int(selected_pack["amount"]),  # Price in cents
                     "product_data": {
                         "name": f"{selected_pack['label']}",
                     },

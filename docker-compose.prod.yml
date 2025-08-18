@@ -9,8 +9,10 @@ services:
       - .:/code
     links:
       - db
+      - celery
     depends_on:
       - db
+      - celery
 
   db:
     image: postgres:15
@@ -63,10 +65,13 @@ services:
       context: .
       dockerfile: ./dockerfiles/python/Dockerfile
     command: >
-      celery -A bobbies_creator.celery_app flower
+      celery --broker=${CELERY_BROKER_URL}
+      --result-backend=${CELERY_RESULT_BACKEND}
+      -A bobbies_creator.celery_app
+      flower
+      --address=0.0.0.0
+      --port=5555
       --basic_auth=${FLOWER_USER}:${FLOWER_PASSWORD}
-      --address=0.0.0.0 --port=5555
-      --broker=${CELERY_BROKER_URL}
     ports:
       - "5555:5555"
     volumes:
