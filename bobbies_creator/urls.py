@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.conf.urls.i18n import i18n_patterns
-from core.views import custom_logout
+from core.views.auth_views import custom_logout
 from core import urls as core_urls
 
 urlpatterns = [
