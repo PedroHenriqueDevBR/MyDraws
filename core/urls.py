@@ -1,117 +1,124 @@
 from django.urls import path
-from core import views
+
+from core.views import (
+    auth_views,
+    page_views,
+    convert_image_views,
+    mercado_pago_views,
+    stripe_views,
+)
 
 urlpatterns = [
     path(
         "check_ai_task_status/<int:image_id>/",
-        views.check_ai_task_status,
+        auth_views.check_ai_task_status,
         name="check_ai_task_status",
     ),
     path(
         "",
-        views.home,
+        page_views.home,
         name="home",
     ),
     path(
         "mydraws/",
-        views.landing,
+        auth_views.landing,
         name="mydraws",
     ),
     path(
         "upload/<int:book_id>/",
-        views.upload_image,
+        page_views.upload_image,
         name="upload_image",
     ),
     path(
         "book/create/",
-        views.book_create,
+        page_views.book_create,
         name="book_create",
     ),
     path(
         "book/<int:book_id>/",
-        views.book_detail,
+        page_views.book_detail,
         name="book_detail",
     ),
     path(
         "image/<int:image_id>/",
-        views.show_uploaded_image,
+        page_views.show_uploaded_image,
         name="show_uploaded_image",
     ),
     path(
         "image/<int:image_id>/remove",
-        views.remove_uploaded_image,
+        page_views.remove_uploaded_image,
         name="remove_uploaded_image",
     ),
     path(
         "image/<int:image_id>/simple_convert/",
-        views.simple_convert,
+        convert_image_views.simple_convert,
         name="simple_convert",
     ),
     path(
         "image/<int:image_id>/generate_by_ai/",
-        views.generate_by_ai,
+        convert_image_views.generate_by_ai,
         name="generate_by_ai",
     ),
     path(
         "route/webhook/",
-        views.webhook,
+        mercado_pago_views.webhook,
         name="webhook",
     ),
     # URLs do Mercado Pago
     path(
         "payment/create/",
-        views.create_payment_preference,
+        mercado_pago_views.create_payment_preference,
         name="create_payment_preference",
     ),
     path(
         "webhook/mercadopago/",
-        views.mercado_pago_webhook,
+        mercado_pago_views.mercado_pago_webhook,
         name="mercado_pago_webhook",
     ),
     path(
         "payment/success/",
-        views.payment_success,
+        mercado_pago_views.payment_success,
         name="payment_success",
     ),
     path(
         "payment/failure/",
-        views.payment_failure,
+        mercado_pago_views.payment_failure,
         name="payment_failure",
     ),
     path(
         "payment/pending/",
-        views.payment_pending,
+        mercado_pago_views.payment_pending,
         name="payment_pending",
     ),
     path(
         "payment/status/<str:payment_id>/",
-        views.check_payment_status,
+        mercado_pago_views.check_payment_status,
         name="check_payment_status",
     ),
     path(
         "payment/methods/",
-        views.get_available_payment_methods,
+        mercado_pago_views.get_available_payment_methods,
         name="get_payment_methods",
     ),
     path(
         "buy-credits/",
-        views.buy_credits,
+        mercado_pago_views.buy_credits,
         name="buy_credits",
     ),
     # Stripe URLs
     path(
         "stripe/checkout/",
-        views.stripe_create_checkout_session,
+        stripe_views.stripe_create_checkout_session,
         name="stripe_checkout",
     ),
     path(
         "webhook/stripe/",
-        views.stripe_webhook,
+        stripe_views.stripe_webhook,
         name="stripe_webhook",
     ),
     path(
         "credits/",
-        views.buy_stripe_credits,
+        stripe_views.buy_stripe_credits,
         name="buy_stripe_credits",
     ),
 ]
